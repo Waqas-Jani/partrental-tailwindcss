@@ -39,6 +39,7 @@ import footerLink from './objects/settings/footer/footerLink'
 import topBanner from './objects/settings/topBanner'
 import social from './objects/components/social'
 import link from './objects/settings/link'
+import commonLink from './objects/components/link'
 import figure from './objects/components/figure'
 import simpleBlock from './objects/components/simpleBlock'
 import seo from './objects/components/seo'
@@ -51,19 +52,15 @@ import contactObj from './objects/contactObj'
 import productSec from './objects/productSec'
 import heroHome from './objects/home/homeHero'
 import choose from './objects/choose'
-import commonLink from './objects/components/link'
 import downloadSec from './objects/download/downloadSec'
 import downloadCtaSec from './objects/download/downloadCtaSec'
 import clientSec from './objects/clientSec'
 import faqSec from './objects/faq'
 import faqItem from './objects/faq/item'
-import section from './objects/section'
 import partnerSec from './objects/partner'
 import contactSec from './objects/contactPage/contact'
 import contactItem from './objects/contactPage/item'
 import teamSec from './objects/teamSec'
-import feature from './objects/feature'
-import featureItem from './objects/feature/feature'
 import offer from './objects/home/offer'
 import contactHome from './objects/home/contact'
 import homeForm from './objects/home/contact/form'
@@ -78,9 +75,7 @@ import aboutSec from './objects/about'
 import aboutItem from './objects/about/item'
 import aboutHome from './objects/aboutHome'
 import aboutHomeItem from './objects/aboutHome/item'
-import test from './objects/test'
 import banner from './objects/banner'
-import paragraph from './objects/paragraph'
 import portfolioSec from './objects/portfolioSec'
 import portfolioSecTwo from './objects/portfolioSecTwo'
 import blogSec from './objects/blogSec'
@@ -160,6 +155,7 @@ const objects: SchemaTypeDefinition[] = [
     topBanner,
     social,
     link,
+    commonLink,
     figure,
     simpleBlock,
     seo,
@@ -171,21 +167,17 @@ const objects: SchemaTypeDefinition[] = [
     contactObj,
     productSec,
     heroHome,
-    
+
     choose,
-    commonLink,
     downloadSec,
     downloadCtaSec,
     clientSec,
     faqSec,
     faqItem,
-    section,
     partnerSec,
     contactSec,
     contactItem,
     teamSec,
-    feature,
-    featureItem,
     offer,
     contactHome,
     homeForm,
@@ -200,9 +192,7 @@ const objects: SchemaTypeDefinition[] = [
     aboutItem,
     aboutHome,
     aboutHomeItem,
-    test,
     banner,
-    paragraph,
     portfolioSec,
     portfolioSecTwo,
     blogSec,
