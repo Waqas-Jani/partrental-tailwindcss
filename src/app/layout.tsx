@@ -7,6 +7,7 @@ import "@/styles/globals.css";
 import LayoutWrapper from "@/layout";
 import { getSiteSettings } from "@/lib/getSiteSettings";
 import { getAllLandingPages } from "@/lib/getLandingPage";
+import PowerGenSlideout from "@/components/common/PowerGenSlideout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,7 +31,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const siteSettings = await getSiteSettings();
+  const data = await getSiteSettings();
   const landingPages = await getAllLandingPages();
 
   return (
@@ -62,15 +63,16 @@ export default async function RootLayout({
       ></Script> */}
       <body className={`${geistSans.variable} ${manrope.variable} antialiased`}>
         <LayoutWrapper
-          siteSettings={siteSettings?.siteSettings || null}
-          recentBlogs={siteSettings?.latestBlogs || []}
+          siteSettings={data?.siteSettings || null}
+          recentBlogs={data?.latestBlogs || []}
           landingPages={landingPages || []}
         >
           {children}
         </LayoutWrapper>
-        {/* {siteSettings?.slideoutPopup?.enable && (
-          <PowerGenSlideout data={siteSettings?.slideoutPopup} />
-        )} */}
+        {data?.siteSettings?.slideoutPopup?.enable &&
+          data?.siteSettings?.slideoutPopup && (
+            <PowerGenSlideout data={data?.siteSettings?.slideoutPopup} />
+          )}
         <Toaster />
       </body>
     </html>

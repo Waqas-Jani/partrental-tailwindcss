@@ -80,7 +80,7 @@ export interface ExitIntentPopup {
     caption: string
     successHeading: string
     successMessage: string
-    note: string
+    note?: any
 }
 
 export interface SlideoutPopup {
@@ -123,6 +123,7 @@ export interface SiteSettings {
 export interface SiteSettingsResponse {
     siteSettings: SiteSettings
     latestBlogs: BlogPost[]
+
 }
 
 

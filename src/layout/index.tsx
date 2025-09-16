@@ -4,8 +4,8 @@
 import React from "react";
 import { usePathname } from "next/navigation";
 import Header from "./Header";
-
 import Footer from "./Footer";
+import ExitIntentPopup from "@/components/common/ExitIntentPopup";
 import { BlogPost, SiteSettings } from "@/types/siteSettings";
 
 interface LayoutWrapperProps {
@@ -40,6 +40,9 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({
 
       {/* Main Content */}
       <main>{children}</main>
+      {!isLandingPage && (
+        <ExitIntentPopup config={siteSettings?.exitIntentPopup ?? null} />
+      )}
 
       {/* Footer */}
       <Footer posts={recentBlogs} footer={siteSettings?.footer ?? undefined} />

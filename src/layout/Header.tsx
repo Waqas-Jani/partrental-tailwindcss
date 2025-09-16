@@ -14,6 +14,7 @@ import {
   XIcon,
   ArrowRightIcon,
 } from "@/components/common/SocialIcons";
+
 import TopBanner from "./Topbar";
 import Button from "@/components/common/Button";
 
@@ -29,11 +30,7 @@ export default function Header({ topBanner, header }: Props) {
   const [hoveredDropdown, setHoveredDropdown] = useState<string | null>(null);
 
   const toggleMobileMenu = () => {
-    if (isMobileMenuOpen) {
-      setIsMobileMenuOpen(false);
-    } else {
-      setIsMobileMenuOpen(true);
-    }
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   const toggleDropdown = (index: number) => {
@@ -78,19 +75,19 @@ export default function Header({ topBanner, header }: Props) {
       {/* Main Header */}
       <header
         className={`bg-white shadow-md transition-all duration-300 ${
-          isSticky ? "sticky top-0 z-50 shadow-lg" : "relative"
+          isSticky ? "sticky top-0 z-40 shadow-lg" : "relative"
         }`}
       >
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between py-4">
             {/* Logo */}
-            <div className="">
+            <div className="w-full lg:w-auto">
               <Link href="/">
                 {header?.logo?.asset?.url && (
                   <Image
                     src={header?.logo?.asset?.url}
                     alt={header.logo.alt || "Partner Rentals"}
-                    width={150}
+                    width={200}
                     height={60}
                     className="h-auto w-[200px] object-contain"
                     priority
@@ -98,86 +95,86 @@ export default function Header({ topBanner, header }: Props) {
                 )}
               </Link>
             </div>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-8">
-              {header?.menu?.map((item, index) => (
-                <div
-                  key={index}
-                  className="relative group"
-                  onMouseEnter={() => setHoveredDropdown(index.toString())}
-                  onMouseLeave={() => setHoveredDropdown(null)}
-                >
-                  {item.childMenu?.length > 0 ? (
-                    <>
-                      <button
-                        className={`flex items-center space-x-1 transition-colors font-medium ${
-                          hoveredDropdown === index.toString() ||
-                          activeDropdown === index.toString()
-                            ? "text-red-600"
-                            : "text-gray-700 hover:text-red-600"
-                        }`}
-                        onClick={() => toggleDropdown(index)}
-                      >
-                        <span>{item.parent.label}</span>
-                        <ChevronDownIcon
-                          cls={`w-4 h-4 transition-transform ${
+            <div className="flex items-center space-x-8 justify-between w-full ml-10">
+              {/* Desktop Navigation */}
+              <nav className="hidden lg:flex items-center space-x-8">
+                {header?.menu?.map((item, index) => (
+                  <div
+                    key={index}
+                    className="relative group"
+                    onMouseEnter={() => setHoveredDropdown(index.toString())}
+                    onMouseLeave={() => setHoveredDropdown(null)}
+                  >
+                    {item.childMenu?.length > 0 ? (
+                      <>
+                        <button
+                          className={`flex items-center space-x-1 transition-colors font-extrabold ${
                             hoveredDropdown === index.toString() ||
                             activeDropdown === index.toString()
-                              ? "rotate-180"
-                              : ""
+                              ? "text-primary"
+                              : "text-secondary hover:text-primary"
                           }`}
-                        />
-                      </button>
+                          onClick={() => toggleDropdown(index)}
+                        >
+                          <span>{item.parent.label}</span>
+                          <ChevronDownIcon
+                            cls={`w-4 h-4 transition-transform ${
+                              hoveredDropdown === index.toString() ||
+                              activeDropdown === index.toString()
+                                ? "rotate-180"
+                                : ""
+                            }`}
+                          />
+                        </button>
 
-                      {/* Dropdown Menu */}
-                      <div
-                        className={`absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-100 py-2 z-50 transition-all duration-300 ease-in-out ${
-                          hoveredDropdown === index.toString() ||
-                          activeDropdown === index.toString()
-                            ? "opacity-100 visible translate-y-0"
-                            : "opacity-0 invisible -translate-y-2"
-                        }`}
+                        {/* Dropdown Menu */}
+                        <div
+                          className={`absolute top-full left-0 mt-2 w-64 bg-white shadow-xl border border-gray-100 overflow-hidden z-50 transition-all duration-300 ease-in-out ${
+                            hoveredDropdown === index.toString() ||
+                            activeDropdown === index.toString()
+                              ? "opacity-100 visible translate-y-0"
+                              : "opacity-0 invisible -translate-y-2"
+                          }`}
+                        >
+                          {item.childMenu.map((child, childIndex) => (
+                            <Link
+                              key={childIndex}
+                              href={child.link}
+                              className="block px-4 py-3 text-secondary hover:bg-primary hover:text-white transition-all duration-200 font-extrabold"
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </>
+                    ) : (
+                      <Link
+                        href={item.parent.link}
+                        className="text-secondary hover:text-primary transition-colors font-extrabold"
                       >
-                        {item.childMenu.map((child, childIndex) => (
-                          <Link
-                            key={childIndex}
-                            href={child.link}
-                            className="block px-4 py-3 text-gray-700 hover:bg-red-600 hover:text-white transition-all duration-200 font-medium"
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </>
-                  ) : (
-                    <Link
-                      href={item.parent.link}
-                      className="text-gray-700 hover:text-red-600 transition-colors font-medium"
-                    >
-                      {item.parent.label}
-                    </Link>
-                  )}
-                </div>
-              ))}
-            </nav>
+                        {item.parent.label}
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </nav>
 
-            {/* CTA Button */}
-            <div className="hidden lg:block">
-              {header?.button && (
-                <Button
-                  title={header.button.title}
-                  btnType={header.button?.btnType || "primary"}
-                  link={header.button.link || ""}
-                  linkType={header.button.linkType || "internal"}
-                  disabled={false}
-                />
-              )}
+              {/* CTA Button */}
+              <div className="hidden lg:block">
+                {header?.button && (
+                  <Button
+                    title={header.button.title}
+                    btnType={header.button?.btnType || "primary"}
+                    link={header.button.link || ""}
+                    linkType={header.button.linkType || "internal"}
+                    disabled={false}
+                  />
+                )}
+              </div>
             </div>
-
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2 text-gray-700 hover:text-red-600 transition-colors relative z-50"
+              className="lg:hidden p-2 text-secondary hover:text-primary transition-colors relative z-50"
               onClick={toggleMobileMenu}
             >
               <div className="relative w-6 h-6">
@@ -203,14 +200,14 @@ export default function Header({ topBanner, header }: Props) {
         {/* Mobile Sidebar Overlay */}
         {isMobileMenuOpen && (
           <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 lg:hidden transition-opacity duration-300"
             onClick={() => setIsMobileMenuOpen(false)}
           />
         )}
 
         {/* Mobile Sidebar */}
         <div
-          className={`fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 lg:hidden mobile-menu-container transition-transform duration-300 ease-in-out ${
+          className={`fixed top-0 left-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-[60] lg:hidden mobile-menu-container transition-transform duration-300 ease-in-out ${
             isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -236,12 +233,12 @@ export default function Header({ topBanner, header }: Props) {
                 {header?.menu?.map((item, index) => (
                   <div
                     key={index}
-                    className="border-b border-gray-100 pb-2 last:border-b-0"
+                    className="border-b border-gray-200 pb-2 last:border-b-0"
                   >
                     {item.childMenu?.length > 0 ? (
                       <>
                         <button
-                          className="flex items-center justify-between w-full py-3 text-left text-gray-800 hover:text-red-600 transition-colors font-medium"
+                          className="flex items-center justify-between w-full py-3 text-left text-gray-800 hover:text-red-600 transition-colors font-extrabold"
                           onClick={() => toggleDropdown(index)}
                         >
                           <span className="text-lg">{item.parent.label}</span>
@@ -278,7 +275,7 @@ export default function Header({ topBanner, header }: Props) {
                     ) : (
                       <Link
                         href={item.parent.link}
-                        className="flex items-center justify-between py-3 text-gray-800 hover:text-red-600 transition-colors font-medium group"
+                        className="flex items-center justify-between py-3 text-gray-800 hover:text-red-600 transition-colors font-extrabold group"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         <span className="text-lg">{item.parent.label}</span>

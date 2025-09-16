@@ -24,8 +24,6 @@ const CroTriggersComponent = () => {
   })
   const client = useClient()
 
-  console.log(selectedDocuments)
-
   useEffect(() => {
     const fetchDocuments = async () => {
       try {
