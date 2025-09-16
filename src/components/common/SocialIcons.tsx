@@ -192,6 +192,26 @@ export const ChevronDownIcon = ({ cls }: Props) => {
   );
 };
 
+export const ChevronRightIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9 6l6 6l-6 6" />
+    </svg>
+  );
+};
+
 export const ArrowLeftIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -232,6 +252,104 @@ export const ArrowRightIcon = ({ cls }: Props) => {
       <path d="M5 12l14 0" />
       <path d="M13 18l6 -6" />
       <path d="M13 6l6 6" />
+    </svg>
+  );
+};
+
+export const YoutubeIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M2 8a4 4 0 0 1 4 -4h12a4 4 0 0 1 4 4v8a4 4 0 0 1 -4 4h-12a4 4 0 0 1 -4 -4v-8z" />
+      <path d="M10 9l5 3l-5 3z" />
+    </svg>
+  );
+};
+
+export const LinkedinIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M8 11v5" />
+      <path d="M8 8v.01" />
+      <path d="M12 16v-5" />
+      <path d="M16 16v-3a2 2 0 1 0 -4 0" />
+      <path d="M3 7a4 4 0 0 1 4 -4h10a4 4 0 0 1 4 4v10a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4z" />
+    </svg>
+  );
+};
+
+export const CalendarIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z" />
+      <path d="M16 3v4" />
+      <path d="M8 3v4" />
+      <path d="M4 11h16" />
+      <path d="M7 14h.013" />
+      <path d="M10.01 14h.005" />
+      <path d="M13.01 14h.005" />
+      <path d="M16.015 14h.005" />
+      <path d="M13.015 17h.005" />
+      <path d="M7.01 17h.005" />
+      <path d="M10.01 17h.005" />
+    </svg>
+  );
+};
+
+export const CircleArrowRightIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0 -18" />
+      <path d="M16 12l-4 -4" />
+      <path d="M16 12h-8" />
+      <path d="M12 16l4 -4" />
     </svg>
   );
 };

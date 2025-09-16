@@ -2,7 +2,7 @@
 import Image from "next/image";
 
 import React, { useState } from "react";
-import { MenuIcon, XIcon, ChevronDownIcon } from "../common/SocialIcons";
+import { MenuIcon, XIcon, ChevronDownIcon } from "../../components/common/SocialIcons";
 import Link from "next/link";
 
 const Navbar = () => {

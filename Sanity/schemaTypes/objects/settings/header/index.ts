@@ -24,6 +24,10 @@ export default defineType({
             type: 'button',
             title: 'Button',
             validation: (rule) => rule.required(),
+            options: {
+                collapsible: true,
+                collapsed: true,
+            },
         }),
     ],
     preview: {

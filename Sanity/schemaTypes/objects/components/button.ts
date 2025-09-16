@@ -1,57 +1,59 @@
-export default {
-  name: 'button',
-  type: 'object',
-  title: 'Button',
-  fields: [
-    {
-      title: 'Button Type',
-      name: 'btnType',
-      type: 'string',
+import { defineType, defineField } from 'sanity'
 
-      options: {
-        list: [
-          {title: 'Primary', value: 'primary'},
-          {title: 'Secondary', value: 'secondary'},
-        ],
-      },
-    },
-    {
-      title: 'Link Type',
-      name: 'linkType',
-      type: 'string',
-      validation: (rule) =>
-        rule.custom((currentValue, {parent}) => {
-          if (parent?.btnType && currentValue === undefined) return 'This is required '
+export default defineType({
+    name: 'button',
+    type: 'object',
+    title: 'Button',
+    fields: [
+        defineField({
+            title: 'Button Type',
+            name: 'btnType',
+            type: 'string',
 
-          return true
+            options: {
+                list: [
+                    { title: 'Primary', value: 'primary' },
+                    { title: 'Secondary', value: 'secondary' },
+                ],
+            },
         }),
-      options: {
-        list: [
-          {title: 'Normal', value: 'normal'},
-          {title: 'Internal', value: 'internal'},
-          {title: 'External', value: 'external'},
-          {title: 'Reservation', value: 'reservation'},
-          {title: 'Section Id', value: 'id'},
-        ],
-      },
-    },
-    {
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: (rule) =>
-        rule.custom((currentValue, {parent}) => {
-          if (parent?.btnType && currentValue === undefined) return 'This is required '
+        defineField({
+            title: 'Link Type',
+            name: 'linkType',
+            type: 'string',
+            validation: (rule) =>
+                rule.custom((currentValue, { parent }) => {
+                    if ((parent as any)?.btnType && currentValue === undefined) return 'This is required '
 
-          return true
+                    return true
+                }),
+            options: {
+                list: [
+                    { title: 'Normal', value: 'normal' },
+                    { title: 'Internal', value: 'internal' },
+                    { title: 'External', value: 'external' },
+                    { title: 'Reservation', value: 'reservation' },
+                    { title: 'Section Id', value: 'id' },
+                ],
+            },
         }),
-    },
-    {
-      name: 'link',
-      title: 'Link',
-      type: 'string',
-      description: 'Depend on the frontend implementation',
-      hidden: ({parent}) => parent?.linkType === 'normal' || parent?.linkType === 'reservation',
-    },
-  ],
-}
+        defineField({
+            name: 'title',
+            title: 'Title',
+            type: 'string',
+            validation: (rule) =>
+                rule.custom((currentValue, { parent }) => {
+                    if ((parent as any)?.btnType && currentValue === undefined) return 'This is required '
+
+                    return true
+                }),
+        }),
+        defineField({
+            name: 'link',
+            title: 'Link',
+            type: 'string',
+            description: 'Depend on the frontend implementation',
+            hidden: ({ parent }) => parent?.linkType === 'normal' || parent?.linkType === 'reservation',
+        }),
+    ],
+})
