@@ -7,6 +7,10 @@ const HomeAbout = dynamic(() => import("@/sections/About"));
 const Services = dynamic(() => import("@/sections/Services"));
 const PromotionalBanner = dynamic(() => import("@/sections/PromotionalBanner"));
 const WhyChooseUs = dynamic(() => import("@/sections/WhyChoooseUs"));
+const Contact = dynamic(() => import("@/sections/Contact"));
+const Testimonials = dynamic(() => import("@/sections/Testimonials"));
+const Blogs = dynamic(() => import("@/sections/Blogs"));
+const Partners = dynamic(() => import("@/sections/Partners"));
 
 export async function generateMetadata() {
   const data = await getHomePage();
@@ -86,9 +90,19 @@ export default async function Home() {
         <WhyChooseUs data={offers as any} />
       )}
 
-      {/* {homeContact && (homeContact as any)?.enable && (
-        <Contact2 data={homeContact} isHome={true} />
-      )} */}
+      {homeContact && (homeContact as any)?.enable && (
+        <Contact data={homeContact} isHome={true} />
+      )}
+
+      {clientSec && (clientSec as any)?.enable && (
+        <Testimonials data={clientSec as any} />
+      )}
+
+      {blogSec && (blogSec as any)?.enable && <Blogs data={blogSec as any} />}
+
+      {partnerSec && (partnerSec as any)?.enable && (
+        <Partners data={partnerSec as any} />
+      )}
     </>
   );
 }

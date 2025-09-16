@@ -47,6 +47,9 @@ body {
 .input-field {
   @apply w-full bg-gray-900 border border-gray-700 rounded-md p-4 outline-none text-white;
 }
+.input-field-primary {
+  @apply w-full bg-[#FEFDFC] mt-4 rounded-md p-5 outline-none text-black text-xl font-extrabold placeholder:text-black placeholder:text-xl placeholder:font-extrabold;
+}
 
 .main-btn {
   @apply flex flex-row items-center gap-2 cursor-pointer rounded-md justify-center py-4 px-6 text-white font-bold text-base transition-all duration-300;
