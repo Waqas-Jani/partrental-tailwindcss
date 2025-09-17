@@ -1,4 +1,4 @@
-import { findDuplicates, findObject } from '../../utils/common'
+import { findDuplicates } from '../../utils/common'
 import { defineType, defineField } from 'sanity'
 
 export default defineType({

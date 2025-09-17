@@ -5,7 +5,6 @@ import Image from "next/image";
 import { CircleArrowRightIcon } from "@/components/common/SocialIcons";
 
 const BlogCard = ({ item, index, isHome = false }: any) => {
-  console.log(item);
   const truncate = (str: string, n: number) => {
     return str.length > n ? str.substr(0, n - 1) + "..." : str;
   };

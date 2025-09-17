@@ -35,13 +35,6 @@ export default defineType({
       type: 'figure',
       validation: (rule) => rule.required(),
     }),
-    // defineField({
-    //   title: 'Image 2',
-    //   name: 'img2',
-    //   type: 'figure',
-    //   validation: (rule) => rule.required(),
-    // }),
-
     defineField({
       title: 'Points',
       name: 'points',

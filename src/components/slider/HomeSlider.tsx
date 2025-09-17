@@ -57,7 +57,7 @@ const HeroSlider = ({ data }: HomeHeroProps) => {
       <div className="embla h-full" ref={emblaRef}>
         <div className="embla__container h-full">
           {slider.map((slide, index) => (
-            <div key={slide.id} className="embla__slide relative h-full">
+            <div key={index} className="embla__slide relative h-full">
               {/* Background Image */}
               <div className="absolute inset-0">
                 <Image

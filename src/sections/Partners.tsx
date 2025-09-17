@@ -54,7 +54,7 @@ const Partners = ({ data }: PartnersProps) => {
                         }
                         width={200}
                         height={100}
-                        className="object-contain max-h-16 w-auto grayscale hover:grayscale-0 transition-all duration-300"
+                        className="object-contain max-h-20 w-auto grayscale hover:grayscale-0 transition-all duration-300"
                       />
                     </div>
                   </div>

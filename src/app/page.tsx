@@ -31,7 +31,7 @@ export default async function Home() {
   const homePage = data.sanityHomePage || {};
   const hero = homePage.homeHero || {};
   const pageBuilder = homePage.pageBuilder || {};
-  const statistics = data.sanitySitesettings.statistic || {};
+//   const statistics = data.sanitySitesettings.statistic || {};
 
   let partnerSec,
     clientSec,
