@@ -70,6 +70,10 @@ body {
     after:w-8 after:h-8 after:bg-[url('/img/sub-title.png')] after:bg-contain after:bg-no-repeat;
 }
 
+.list-item {
+  @apply mb-5 relative list-none before:absolute before:-left-10 before:top-0 before:w-7 before:h-7 before:bg-primary before:rounded-full before:flex before:items-center before:justify-center before:bg-[url('/check.svg')] before:bg-no-repeat before:bg-center before:bg-contain;
+}
+
 /* Embla Carousel Styles */
 .embla {
   overflow: hidden;

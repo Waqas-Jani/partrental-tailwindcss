@@ -212,6 +212,26 @@ export const ChevronRightIcon = ({ cls }: Props) => {
   );
 };
 
+export const ChevronLeftIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M15 6l-6 6l6 6" />
+    </svg>
+  );
+};
+
 export const ArrowLeftIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -366,6 +386,26 @@ export const PlayIcon = ({ cls }: Props) => {
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M6 4v16a1 1 0 0 0 1.524 .852l13 -8a1 1 0 0 0 0 -1.704l-13 -8a1 1 0 0 0 -1.524 .852z" />
+    </svg>
+  );
+};
+
+export const CheckMarkIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M5 12l5 5l10 -10" />
     </svg>
   );
 };
