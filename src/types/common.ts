@@ -23,4 +23,5 @@ export interface SanityButton {
     disabled?: boolean;
     product?: any;
     locations?: any;
+    borderCls?: string;
 }

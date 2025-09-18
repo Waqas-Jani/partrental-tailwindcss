@@ -1,4 +1,4 @@
-export const productQuery = `
+export const rentSubCategoryQuery = `
 {
   "sanityRentSubCategory": *[_type == "rentSubcategory"][
     slug.current == $cleanSlug || 

@@ -2,7 +2,6 @@
 "use client";
 import React, { useState } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "../common/SocialIcons";
-import styles from "./Hero.module.css";
 import ReservationForm from "./ReservationForm";
 import Image from "next/image";
 
@@ -30,17 +29,17 @@ const ProductHeader = ({ data, locations }: any) => {
   };
 
   return (
-    <div className={styles.hero}>
+    <div className="bg-white pt-24 pb-12 border-b border-gray-200">
       {/* Main Product Section */}
-      <div className={styles.mainContainer}>
-        <div className={styles.productGrid}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Product Images */}
-          <div className={styles.imageContainer}>
-            <div className={styles.imageWrapper}>
+          <div className="relative">
+            <div className="aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden relative shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
               <Image
                 src={data.gallery[currentImageIndex].asset.url}
                 alt={data.title}
-                className={styles.productImage}
+                className="w-full h-full object-cover object-center"
                 width={1000}
                 height={1000}
               />
@@ -50,13 +49,13 @@ const ProductHeader = ({ data, locations }: any) => {
                 <>
                   <button
                     onClick={prevImage}
-                    className={`${styles.navButton} ${styles.navButtonLeft}`}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white border-none rounded-full p-2 shadow-md hover:shadow-lg cursor-pointer transition-all duration-200 flex items-center justify-center w-10 h-10"
                   >
                     <ChevronLeftIcon cls="h-6 w-6 text-gray-500" />
                   </button>
                   <button
                     onClick={nextImage}
-                    className={`${styles.navButton} ${styles.navButtonRight}`}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white border-none rounded-full p-2 shadow-md hover:shadow-lg cursor-pointer transition-all duration-200 flex items-center justify-center w-10 h-10"
                   >
                     <ChevronRightIcon cls="h-6 w-6 text-gray-500" />
                   </button>
@@ -66,15 +65,13 @@ const ProductHeader = ({ data, locations }: any) => {
 
             {/* Image Indicators */}
             {data.gallery.length > 1 && (
-              <div className={styles.indicators}>
+              <div className="flex justify-center mt-4 gap-2">
                 {data.gallery.map((_: any, index: any) => (
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
-                    className={`${styles.indicator} ${
-                      index === currentImageIndex
-                        ? styles.active
-                        : styles.inactive
+                    className={`w-3 h-3 rounded-full border-none cursor-pointer transition-colors duration-200 ${
+                      index === currentImageIndex ? "bg-red-600" : "bg-gray-300"
                     }`}
                   />
                 ))}
@@ -83,32 +80,29 @@ const ProductHeader = ({ data, locations }: any) => {
           </div>
 
           {/* Product Details */}
-          <div className={styles.detailsContainer}>
+          <div className="flex flex-col gap-6">
             {/* Product Title */}
-            <h1 className={styles.productTitle}>{data.title}</h1>
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight m-0">
+              {data.title}
+            </h1>
 
             {/* Location and Rental Dates */}
-            <div className={styles.rentalSection}>
+            <div className="p-0">
               {/* Quantity and Reserve Section */}
-              <div className={styles.quantityReserveContainer}>
-                <div className={styles.additionalInfo}>
+              <div className="flex flex-col  sm:items-stretch">
+                <div className="pt-6 border-t border-gray-200">
                   {/* Specifications */}
-                  <div className={styles.infoSection}>
-                    <div className={styles.specificationsGrid}>
-                      {data.description}
-                    </div>
+                  <div className="mb-6 last:mb-0">
+                    <div className="gap-4 text-sm">{data.description}</div>
                     {/* Product Variants */}
                     {data.productVariants?.length > 0 && (
-                      <div className={styles.productVariants}>
-                        <h4 className={styles.productVariantsTitle}>
+                      <div className="mt-4">
+                        <h4 className="text-lg font-semibold text-gray-900">
                           Variants
                         </h4>
-                        <ul className={styles.productVariantsList}>
+                        <ul className="list-disc list-inside p-0 m-0">
                           {data.productVariants.map((variant: any) => (
-                            <li
-                              key={variant}
-                              className={styles.productVariantsItem}
-                            >
+                            <li key={variant} className="mb-1">
                               {variant}
                             </li>
                           ))}
@@ -119,12 +113,14 @@ const ProductHeader = ({ data, locations }: any) => {
                 </div>
 
                 {/* Reserve Button */}
-                <button
-                  className={styles.reserveButton}
-                  onClick={() => setIsReservationFormOpen(true)}
-                >
-                  RESERVE NOW
-                </button>
+                <div>
+                  <button
+                    className="bg-red-600 text-white font-semibold px-8 py-3 rounded-md text-base border-none cursor-pointer transition-all duration-200 mt-6 shadow-md hover:bg-red-700 hover:shadow-lg w-full sm:w-auto"
+                    onClick={() => setIsReservationFormOpen(true)}
+                  >
+                    RESERVE NOW
+                  </button>
+                </div>
               </div>
             </div>
 

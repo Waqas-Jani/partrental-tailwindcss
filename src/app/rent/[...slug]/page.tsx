@@ -2,7 +2,7 @@
 import React from "react";
 import { _renderSection } from "@/components/RenderSection";
 import PageBanner from "@/components/common/PageBanner";
-import { getRentCategory, getProduct, getLocation } from "@/lib";
+import { getRentCategory, getRentSubCategory, getLocation } from "@/lib";
 import ProductHeader from "@/components/product/ProductHeader";
 
 export async function generateMetadata({ params }: any) {
@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: any) {
   const slug = rentParams.slug.join("/");
 
   if (rentParams.slug.length > 1) {
-    const data = await getProduct(slug);
+    const data = await getRentSubCategory(slug);
     const pageData = data?.sanityRentSubCategory;
 
     return {
@@ -69,7 +69,7 @@ const RentPage = async ({ params }: any) => {
   const locations = await getLocation();
 
   if (rentParams.slug.length > 1) {
-    const data = await getProduct(slug);
+    const data = await getRentSubCategory(slug);
 
     return (
       <div>
@@ -78,7 +78,9 @@ const RentPage = async ({ params }: any) => {
           locations={locations}
         />
         <div className="pt-[60px] pb-[60px]">
-          <h2 className="text-2xl container mx-auto px-5 font-bold">Description</h2>
+          <h2 className="text-2xl container mx-auto px-5 font-bold">
+            Description
+          </h2>
           {data?.sanityRentSubCategory?.pageBuilder?.map(
             (item: any, index: number) =>
               _renderSection(item, index, true, locations)

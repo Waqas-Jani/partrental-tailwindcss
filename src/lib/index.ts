@@ -6,8 +6,8 @@ import { homePageQuery } from "@/groq/homePage";
 import { downloadsPageQuery } from "@/groq/downloadPage";
 import { aboutPageQuery } from "@/groq/aboutPage";
 import { rentPageQuery, rentCategoryQuery } from "@/groq/rentPage";
-import { productQuery } from "@/groq/productPage";
-
+import { rentSubCategoryQuery } from "@/groq/productPage";
+import { contactPageQuery } from "@/groq/contactPage";
 /**
  * Fetches home page data from Sanity with Next.js caching
  * @returns {Promise<Object>} - A promise that resolves to the home page data
@@ -73,23 +73,24 @@ export const getRentCategory = async (slug: string) => {
     }
 }
 
-// Product
-export async function getProduct(slug: string) {
+// Rent Sub Category
+export async function getRentSubCategory(slug: string) {
     try {
         const cleanSlug = slug.replace(/^\/+|\/+$/g, "");
 
-        const product = await sanityClient.fetch(productQuery, {
+        const rentSubCategory = await sanityClient.fetch(rentSubCategoryQuery, {
             originalSlug: slug,
             cleanSlug: cleanSlug,
         }, { next: { revalidate: 60 } }); // 1 minutes
 
-        return product;
+        return rentSubCategory;
     } catch (error) {
         console.error("Error fetching Product:", error);
         return null;
     }
 }
 
+// Location
 export async function getLocation() {
     try {
         const locations = await sanityClient.fetch(
@@ -107,5 +108,19 @@ export async function getLocation() {
         return null;
     }
 }
+
+// Contact Page
+export const getContactPage = unstable_cache(
+    async () => {
+        try {
+            const contactPage = await sanityClient.fetch(contactPageQuery, {}, { next: { revalidate: 1800 } }); // 30 minutes
+            return contactPage;
+        } catch (error) {
+            console.error("Error fetching Contact Page:", error);
+            return null;
+        }
+    }
+);
+
 
 

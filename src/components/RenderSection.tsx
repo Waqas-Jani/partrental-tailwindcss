@@ -29,7 +29,7 @@ export const _renderSection = (
     case "partners":
       return item.enable && <PartnerSec key={key} data={item} />;
 
-    case "testimonials":
+    case "clientSec":
       return item.enable && <Testimonials key={key} data={item} />;
 
     case "imageContent":

@@ -27,7 +27,7 @@ const ContentSection = ({
                 )}
                 <h2 className="h1-type">{data.heading}</h2>
               </div>
-              <div className="prose text-black">
+              <div className="prose text-black max-w-none">
                 <PortableText
                   value={data.description}
                   components={PortableTextComponent}
@@ -51,6 +51,7 @@ const ContentSection = ({
                     link={data?.button.link}
                     linkType={data?.button.linkType}
                     locations={locations}
+                    borderCls="!border-primary !text-black"
                   />
                 )}
                 {data?.button2?.title && (
@@ -60,6 +61,7 @@ const ContentSection = ({
                     link={data?.button2.link}
                     linkType={data?.button2.linkType}
                     locations={locations}
+                    borderCls="!border-primary !text-black"
                   />
                 )}
               </div>

@@ -11,6 +11,7 @@ const Button = ({
   title,
   link,
   cls = "",
+  borderCls = "",
   btnType = "primary",
   linkType = "normal",
   onClick,
@@ -38,7 +39,7 @@ const Button = ({
       <button
         type="submit"
         className={`main-btn ${cls} ${
-          btnType === "primary" ? "primary-btn" : `secondary-btn`
+          btnType === "primary" ? "primary-btn" : `secondary-btn ${borderCls}`
         }`}
         disabled={disabled}
       >
@@ -51,7 +52,7 @@ const Button = ({
       <button
         type="button"
         className={`main-btn ${cls} ${
-          btnType === "primary" ? "primary-btn" : `secondary-btn`
+          btnType === "primary" ? "primary-btn" : `secondary-btn ${borderCls}`
         }`}
         onClick={onClick}
         disabled={disabled}
@@ -65,7 +66,7 @@ const Button = ({
       <Link
         href={link ?? ""}
         className={`main-btn ${cls} ${
-          btnType === "primary" ? "primary-btn" : `secondary-btn`
+          btnType === "primary" ? "primary-btn" : `secondary-btn ${borderCls}`
         }`}
       >
         {title}
@@ -82,7 +83,7 @@ const Button = ({
         <a
           href={`tel:${phoneNumber}`}
           className={`main-btn ${cls} ${
-            btnType === "primary" ? "primary-btn" : `secondary-btn`
+            btnType === "primary" ? "primary-btn" : `secondary-btn ${borderCls}`
           }`}
         >
           {title}
@@ -95,7 +96,7 @@ const Button = ({
       <a
         href={link}
         className={`main-btn ${cls} ${
-          btnType === "primary" ? "primary-btn" : `secondary-btn`
+          btnType === "primary" ? "primary-btn" : `secondary-btn ${borderCls}`
         } `}
         target={isPhoneNumber ? "_self" : "_blank"}
         rel="noopener noreferrer"
@@ -109,7 +110,7 @@ const Button = ({
       <a
         href={`#${link}`}
         className={`main-btn ${cls} ${
-          btnType === "primary" ? "primary-btn" : `secondary-btn`
+          btnType === "primary" ? "primary-btn" : `secondary-btn ${borderCls}`
         }`}
       >
         {title}
@@ -122,7 +123,7 @@ const Button = ({
         <button
           onClick={() => setIsOpen(true)}
           className={`main-btn ${cls} ${
-            btnType === "primary" ? "primary-btn" : "secondary-btn"
+            btnType === "primary" ? "primary-btn" : `secondary-btn ${borderCls}`
           } `}
         >
           {title}

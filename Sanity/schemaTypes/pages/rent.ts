@@ -35,8 +35,6 @@ export default defineType({
         {type: 'partnerSec'},
         {type: 'blogSec'},
         {type: 'clientSec'},
-        {type: 'splitContent'},
-        {type: 'stepsSec'},
         {type: 'homeContact'},
       ],
     }),

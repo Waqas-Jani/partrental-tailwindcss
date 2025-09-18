@@ -17,6 +17,7 @@ import {
 
 import TopBanner from "./Topbar";
 import Button from "@/components/common/Button";
+import MyLink from "@/components/common/Link";
 
 interface Props {
   topBanner: TopBannerType | null;
@@ -82,7 +83,7 @@ export default function Header({ topBanner, header }: Props) {
           <div className="flex items-center justify-between py-4">
             {/* Logo */}
             <div className="w-full lg:w-auto">
-              <Link href="/">
+              <Link href="/" className="block">
                 {header?.logo?.asset?.url && (
                   <Image
                     src={header?.logo?.asset?.url}
@@ -137,23 +138,23 @@ export default function Header({ topBanner, header }: Props) {
                           }`}
                         >
                           {item.childMenu.map((child, childIndex) => (
-                            <Link
+                            <MyLink
                               key={childIndex}
-                              href={child.link}
-                              className="block px-4 py-3 text-secondary hover:bg-primary hover:text-white transition-all duration-200 font-extrabold"
-                            >
-                              {child.label}
-                            </Link>
+                              text={child.label}
+                              linkType="internal"
+                              link={child.link}
+                              cls="block px-4 py-3 text-secondary hover:bg-primary hover:text-white transition-all duration-200 font-extrabold"
+                            />
                           ))}
                         </div>
                       </>
                     ) : (
-                      <Link
-                        href={item.parent.link}
-                        className="text-secondary hover:text-primary transition-colors font-extrabold"
-                      >
-                        {item.parent.label}
-                      </Link>
+                      <MyLink
+                        text={item.parent.label}
+                        linkType="internal"
+                        link={item.parent.link}
+                        cls="text-secondary hover:text-primary transition-colors font-extrabold"
+                      />
                     )}
                   </div>
                 ))}
@@ -259,7 +260,7 @@ export default function Header({ topBanner, header }: Props) {
                         >
                           <div className="pl-4 space-y-1 pt-2">
                             {item.childMenu.map((child, childIndex) => (
-                              <Link
+                              <a
                                 key={childIndex}
                                 href={child.link}
                                 className="flex items-center justify-between py-2 px-3 text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-md transition-all duration-200 group"
@@ -267,20 +268,20 @@ export default function Header({ topBanner, header }: Props) {
                               >
                                 <span>{child.label}</span>
                                 <ArrowRightIcon cls="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                              </Link>
+                              </a>
                             ))}
                           </div>
                         </div>
                       </>
                     ) : (
-                      <Link
+                      <a
                         href={item.parent.link}
                         className="flex items-center justify-between py-3 text-gray-800 hover:text-red-600 transition-colors font-extrabold group"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         <span className="text-lg">{item.parent.label}</span>
                         <ArrowRightIcon cls="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </Link>
+                      </a>
                     )}
                   </div>
                 ))}

@@ -349,17 +349,19 @@ export const rentCategoryQuery = /* groq */ `
         }
       },
       // ClientSec
-      _type == "clientSec" => {
+       _type == "clientSec" => {
         enable,
         heading,
         subheading,
-        "clients": clients[]->{
+        clients[]->{
           name,
           designation,
           feedback,
-          "photo": {
+          photo {
             alt,
-            "url": photo.asset->url
+            asset-> {
+              url
+            }
           }
         }
       },
@@ -414,59 +416,6 @@ export const rentCategoryQuery = /* groq */ `
             alt,
             "url": imgBlack.asset->url
           }
-        }
-      },
-      // StepsSec
-      _type == "stepsSec" => {
-        enable,
-        heading,
-        subheading,
-        "steps": steps[]{
-          step,
-          heading,
-          description
-        },
-        button {
-          btnType,
-          link,
-          linkType,
-          title
-        },
-        button2 {
-          btnType,
-          link,
-          linkType,
-          title
-        }
-      },
-      // SplitContent
-      _type == "splitContent" => {
-        enable,
-        headingLeft,
-        headingRight,
-        subheadingLeft,
-        subheadingRight,
-        descriptionLeft,
-        descriptionRight,
-        "pointsLeft": pointsLeft[]{
-          title,
-          description
-        },
-        "pointsRight": pointsRight[]{
-          title,
-          description
-        },
-        buttonLeft {
-          btnType,
-          link,
-          linkType,
-          title
-        },
-        buttonRight {
-          btnType,
-          link,
-          linkType,
-          title
         }
       }
     }

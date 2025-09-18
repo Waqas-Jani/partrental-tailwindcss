@@ -33,7 +33,7 @@ export default defineType({
                 { type: 'serviceSecOne' },
                 { type: 'teamSec' },
                 { type: 'portfolioSec' },
-                { type: 'productSec' },
+                // { type: 'productSec' },
                 { type: 'contactBanner' },
                 { type: 'clientSec' },
                 { type: 'promotionalBanner' },
