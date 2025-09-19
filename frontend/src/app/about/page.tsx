@@ -34,7 +34,6 @@ export default async function About() {
   const hero = sanityAboutPage?.hero;
 
   sanityAboutPage?.pageBuilder?.forEach((element: any) => {
-    console.log("==element", element._type);
     if (element?._type === "clientSec") {
       clientSec = element;
     } else if (element?._type === "teamSec") {

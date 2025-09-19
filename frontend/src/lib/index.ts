@@ -2,12 +2,13 @@
 
 import { sanityClient } from "./sanity";
 import { unstable_cache } from 'next/cache';
-import { homePageQuery } from "@/groq/homePage";
-import { downloadsPageQuery } from "@/groq/downloadPage";
-import { aboutPageQuery } from "@/groq/aboutPage";
-import { rentPageQuery, rentCategoryQuery } from "@/groq/rentPage";
-import { rentSubCategoryQuery } from "@/groq/productPage";
-import { contactPageQuery } from "@/groq/contactPage";
+import { homePageQuery } from "@/groq/home";
+import { downloadsPageQuery } from "@/groq/download";
+import { aboutPageQuery } from "@/groq/about";
+import { rentPageQuery, rentCategoryQuery } from "@/groq/rent";
+import { rentSubCategoryQuery } from "@/groq/product";
+import { contactPageQuery } from "@/groq/contact";
+import { locationQuery, locationQueryBySlug, locationServiceQuery } from "@/groq/location";
 /**
  * Fetches home page data from Sanity with Next.js caching
  * @returns {Promise<Object>} - A promise that resolves to the home page data
@@ -91,17 +92,9 @@ export async function getRentSubCategory(slug: string) {
 }
 
 // Location
-export async function getLocation() {
+export async function getAllLocation() {
     try {
-        const locations = await sanityClient.fetch(
-            ` *[_type == "location"] {
-              _id,
-              title,
-              "slug": {
-              "current": slug.current
-              }
-          }`
-            , {}, { next: { revalidate: 60 } }); // 1 minutes
+        const locations = await sanityClient.fetch(locationQuery, {}, { next: { revalidate: 60 } }); // 1 minutes
         return locations;
     } catch (error) {
         console.error("Error fetching Location:", error);
@@ -122,5 +115,19 @@ export const getContactPage = unstable_cache(
     }
 );
 
+export async function getLocationBySlug(slug: string, service: string | null) {
+    try {
+        if (service) {
+            const location = await sanityClient.fetch(locationServiceQuery, { slug, service }, { next: { revalidate: 60 } }); // 1 minutes
+            return location;
+        } else {
+            const location = await sanityClient.fetch(locationQueryBySlug, { slug }, { next: { revalidate: 60 } }); // 1 minutes
+            return location;
+        }
+    } catch (error) {
+        console.error("Error fetching Location by Slug:", error);
+        return null;
+    }
+}
 
 

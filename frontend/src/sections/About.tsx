@@ -6,7 +6,7 @@ import Image from "next/image";
 
 const About = ({ data }: { data: any }) => {
   return (
-    <section>
+    <section className="mt-10">
       <div className="lg:max-w-[1100px] mx-auto px-5 sm:px-[100px] lg:px-4">
         <div className="flex flex-col lg:flex-row lg:space-x-10">
           <div className="lg:w-[45%]">

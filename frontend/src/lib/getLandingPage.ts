@@ -1,5 +1,5 @@
 import { sanityClient } from "./sanity";
-import { landingPageBySlugQuery } from "@/groq/landingPage";
+import { landingPageBySlugQuery } from "@/groq/landing";
 
 export async function getAllLandingPages() {
     const query = `*[_type == "landingPage"] {

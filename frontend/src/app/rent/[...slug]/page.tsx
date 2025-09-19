@@ -2,7 +2,7 @@
 import React from "react";
 import { _renderSection } from "@/components/RenderSection";
 import PageBanner from "@/components/common/PageBanner";
-import { getRentCategory, getRentSubCategory, getLocation } from "@/lib";
+import { getRentCategory, getRentSubCategory, getAllLocation } from "@/lib";
 import ProductHeader from "@/components/product/ProductHeader";
 
 export async function generateMetadata({ params }: any) {
@@ -66,7 +66,7 @@ const RentPage = async ({ params }: any) => {
   const rentParams = await params;
   const slug = rentParams.slug.join("/");
 
-  const locations = await getLocation();
+  const locations = await getAllLocation();
 
   if (rentParams.slug.length > 1) {
     const data = await getRentSubCategory(slug);

@@ -6,6 +6,8 @@ import ReservationForm from "./ReservationForm";
 import Image from "next/image";
 
 const ProductHeader = ({ data, locations }: any) => {
+    console.log('===locations===', locations);
+    
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isReservationFormOpen, setIsReservationFormOpen] = useState(false);
 
