@@ -109,7 +109,6 @@ export const siteSettingsQuery = `
       }
     },
     publishedAt,
-    modifiedAt
   }
 }
 `;

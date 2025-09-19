@@ -9,7 +9,7 @@ import { rentPageQuery, rentCategoryQuery } from "@/groq/rent";
 import { rentSubCategoryQuery } from "@/groq/product";
 import { contactPageQuery } from "@/groq/contact";
 import { locationQuery, locationQueryBySlug, locationServiceQuery } from "@/groq/location";
-import { blogQueryBySlug } from "@/groq/blog";
+import { blogFullQueryBySlug, blogShortQueryBySlug, blogCategoryListQuery, blogTagListQuery, recentBlogsQuery } from "@/groq/blog";
 /**
  * Fetches home page data from Sanity with Next.js caching
  * @returns {Promise<Object>} - A promise that resolves to the home page data
@@ -132,10 +132,10 @@ export async function getLocationBySlug(slug: string, service: string | null) {
     }
 }
 
-// Blog by slug
+// Blog short info by slug
 export async function getBlogBySlug(slug: string) {
     try {
-        const blog = await sanityClient.fetch(blogQueryBySlug, { slug }, { next: { revalidate: 60 } }); // 1 minutes
+        const blog = await sanityClient.fetch(blogShortQueryBySlug, { slug }, { next: { revalidate: 60 } }); // 1 minutes
         return blog;
     } catch (error) {
         console.error("Error fetching Blog by Slug:", error);
@@ -143,5 +143,46 @@ export async function getBlogBySlug(slug: string) {
     }
 }
 
+// Blog full info by slug
+export async function getBlogFullBySlug(slug: string) {
+    try {
+        const blog = await sanityClient.fetch(blogFullQueryBySlug, { slug }, { next: { revalidate: 60 } }); // 1 minutes
+        return blog;
+    } catch (error) {
+        console.error("Error fetching Blog by Slug:", error);
+        return null;
+    }
+}
 
+// Blog category list
+export async function getBlogCategoryList() {
+    try {
+        const blogCategoryList = await sanityClient.fetch(blogCategoryListQuery, {}, { next: { revalidate: 60 } }); // 1 minutes
+        return blogCategoryList;
+    } catch (error) {
+        console.error("Error fetching Blog Category List:", error);
+        return null;
+    }
+}
 
+// Blog tag list
+export async function getBlogTagList() {
+    try {
+        const blogTagList = await sanityClient.fetch(blogTagListQuery, {}, { next: { revalidate: 60 } }); // 1 minutes
+        return blogTagList;
+    } catch (error) {
+        console.error("Error fetching Blog Tag List:", error);
+        return null;
+    }
+}
+
+// Recent blogs
+export async function getRecentBlogs() {
+    try {
+        const recentBlogs = await sanityClient.fetch(recentBlogsQuery, {}, { next: { revalidate: 60 } }); // 1 minutes
+        return recentBlogs;
+    } catch (error) {
+        console.error("Error fetching Recent Blogs:", error);
+        return null;
+    }
+}
