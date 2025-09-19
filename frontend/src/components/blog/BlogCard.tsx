@@ -6,7 +6,7 @@ import { CircleArrowRightIcon } from "@/components/common/SocialIcons";
 
 const BlogCard = ({ item, index, isHome = false }: any) => {
   const truncate = (str: string, n: number) => {
-    return str.length > n ? str.substr(0, n - 1) + "..." : str;
+    return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   };
   return (
     <div
@@ -15,24 +15,30 @@ const BlogCard = ({ item, index, isHome = false }: any) => {
       }`}
       key={index}
     >
-      <Link href={`/${item?.slug?.current}`} className="mb-[40px] group">
-        <div className="relative aspect-video w-full ">
+      <Link
+        href={`/${item?.slug?.current}`}
+        className="mb-3 group h-full flex flex-col"
+      >
+        <div className="relative aspect-video w-full">
           <Image
-            src={item.featuredImage?.asset?.url}
+            src={item?.featuredImage?.asset?.url}
             alt="Post Image"
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
-        <div>
-          <h3 className="text-2xl font-extrabold text-center px-5 py-7 group-hover:text-primary transition-all duration-300">
-            {truncate(item.title, 50)}
+
+        {/* Content wrapper fills the rest of card */}
+        <div className="flex flex-col flex-grow">
+          <h3 className="text-2xl font-extrabold text-center px-5 py-7 group-hover:text-primary transition-all duration-300 flex-grow">
+            {truncate(item?.title, 46)}
           </h3>
 
-          <div className="border-t border-gray-200">
-            <span className="main-btn bg-transparent hover:bg-primary !text-black !rounded-none hover:!text-white">
-              Read More <CircleArrowRightIcon cls="w-5 h-5" />
+          {/* Push button to bottom */}
+          <div className="border-t border-gray-200 mt-auto">
+            <span className="main-btn bg-transparent hover:bg-primary !text-black !rounded-none hover:!text-white w-full flex items-center justify-center">
+              Read More <CircleArrowRightIcon cls="w-5 h-5 ml-2" />
             </span>
           </div>
         </div>

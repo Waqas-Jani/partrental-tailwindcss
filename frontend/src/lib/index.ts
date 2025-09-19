@@ -9,7 +9,9 @@ import { rentPageQuery, rentCategoryQuery } from "@/groq/rent";
 import { rentSubCategoryQuery } from "@/groq/product";
 import { contactPageQuery } from "@/groq/contact";
 import { locationQuery, locationQueryBySlug, locationServiceQuery } from "@/groq/location";
-import { blogFullQueryBySlug, blogShortQueryBySlug, blogCategoryListQuery, blogTagListQuery, recentBlogsQuery } from "@/groq/blog";
+import { blogFullQueryBySlug, blogShortQueryBySlug, blogCategoryListQuery, blogTagListQuery, recentBlogsQuery, categoryBySlugQuery, categoryPageQuery, tagBySlugQuery, tagPageQuery } from "@/groq/blog";
+import { servicePageQuery } from "@/groq/service";
+
 /**
  * Fetches home page data from Sanity with Next.js caching
  * @returns {Promise<Object>} - A promise that resolves to the home page data
@@ -186,3 +188,61 @@ export async function getRecentBlogs() {
         return null;
     }
 }
+
+// categroy by slug
+export async function getCategoryBySlug(slug: string) {
+    try {
+        const category = await sanityClient.fetch(categoryBySlugQuery, { slug }, { next: { revalidate: 60 } }); // 1 minutes
+        return category;
+    } catch (error) {
+        console.error("Error fetching Category by Slug:", error);
+        return null;
+    }
+}
+
+// tag by slug
+export async function getTagBySlug(slug: string) {
+    try {
+        const tag = await sanityClient.fetch(tagBySlugQuery, { slug }, { next: { revalidate: 60 } }); // 1 minutes
+        return tag;
+    } catch (error) {
+        console.error("Error fetching Tag by Slug:", error);
+        return null;
+    }
+}
+
+// category by blog page
+export async function getCategoryByBlogPage(slug: string) {
+    try {
+        const category = await sanityClient.fetch(categoryPageQuery, { slug }, { next: { revalidate: 60 } }); // 1 minutes
+        return category;
+    } catch (error) {
+        console.error("Error fetching Category by Blog Page:", error);
+        return null;
+    }
+}
+
+// tag by blog page
+export async function getTagByBlogPage(slug: string) {
+    try {
+        const tag = await sanityClient.fetch(tagPageQuery, { slug }, { next: { revalidate: 60 } }); // 1 minutes
+        return tag;
+    } catch (error) {
+        console.error("Error fetching Tag by Blog Page:", error);
+        return null;
+    }
+}
+
+// service page
+export const getServicePage = unstable_cache(
+    async () => {
+        try {
+            const servicePage = await sanityClient.fetch(servicePageQuery, {}, { next: { revalidate: 120 } }); // 2 minutes
+            return servicePage;
+        }
+        catch (error) {
+            console.error("Error fetching Service Page:", error);
+            return null;
+        }
+    }
+);

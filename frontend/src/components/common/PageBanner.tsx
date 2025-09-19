@@ -4,7 +4,15 @@ import Link from "next/link";
 import Button from "./Button";
 import { ChevronRightIcon } from "./SocialIcons";
 
-const PageBanner = ({ pageName, data }: { pageName: string; data: any }) => {
+const PageBanner = ({
+  pageName,
+  data,
+  heading = null,
+}: {
+  pageName: string;
+  data: any;
+  heading?: string | null;
+}) => {
   return (
     <section
       className="relative bg-cover bg-center bg-no-repeat py-20 md:py-32"
@@ -31,7 +39,7 @@ const PageBanner = ({ pageName, data }: { pageName: string; data: any }) => {
 
           {/* Page Title */}
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight">
-            {data?.heading}
+            {heading || data?.heading}
           </h1>
 
           {/* Description */}

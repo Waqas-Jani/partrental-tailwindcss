@@ -1,0 +1,305 @@
+import React from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { PortableText } from "@portabletext/react";
+import { sanityClient } from "@/lib/sanity.client";
+import PageBannerTwo from "@/components/PageBannerTwo";
+import ContactWidget from "@/components/widgets/ContactWidget";
+import ServiceSlider from "@/components/sliders/ServiceSlider";
+
+// Metadata generation
+export async function generateMetadata({ params }) {
+  const service = await getServiceDetails(params.slug);
+
+  return {
+    title: service?.title || "Service Details",
+    description:
+      service?.description || "Detailed information about our service",
+    openGraph: {
+      title: service?.title,
+      description: service?.description,
+      images: [
+        {
+          url: service?.thumbnail?.url || "",
+          width: 1200,
+          height: 630,
+          alt: service?.title,
+        },
+      ],
+    },
+  };
+}
+
+// Generate static paths for all service pages
+export async function generateStaticParams() {
+  const query = `*[_type == "service"] {
+    "slug": slug.current
+  }`;
+
+  const services = await sanityClient.fetch(query);
+
+  return services.map((service) => ({
+    slug: service.slug,
+  }));
+}
+
+/**
+ * Fetches detailed information about a specific service
+ * @param {string} slug - The service slug
+ * @returns {Promise<Object>} The service data
+ */
+async function getServiceDetails(slug) {
+  const query = `{
+    "service": *[_type == "service" && slug.current == $slug][0] {
+      _id,
+      title,
+      description,
+      "slug": slug.current,
+      body,
+      "thumbnail": {
+        "url": thumbnail.asset->url,
+        "alt": thumbnail.alt,
+        "width": thumbnail.asset->metadata.dimensions.width,
+        "height": thumbnail.asset->metadata.dimensions.height
+      },
+      "hero": {
+        "asset": {
+          "url": hero.asset->url
+        }
+      },
+      "fileSec": fileSec[] {
+        title,
+        "fileURL": {
+          "url": fileURL.asset->url,
+          "extension": fileURL.asset->extension
+        }
+      },
+      "serviceSec": {
+        "enable": serviceSec.enable,
+        "heading": serviceSec.heading,
+        "subheading": serviceSec.subheading,
+        "list": *[_type == "service" && _id != ^._id][0..3] {
+          title,
+          description,
+          "slug": slug.current,
+          "thumbnail": {
+            "url": thumbnail.asset->url,
+            "alt": thumbnail.alt
+          }
+        }
+      }
+    },
+    "siteSettings": *[_type == "siteSettings"][0] {
+      "contact": {
+        "enable": contact.enable,
+        "phone": contact.phone,
+        "email": contact.email,
+        "button": contact.button {
+          "btnType": btnType,
+          "link": link,
+          "linkType": linkType,
+          "title": title
+        },
+        "bg": {
+          "url": contact.bg.asset->url
+        }
+      }
+    }
+  }`;
+
+  const data = await sanityClient.fetch(query, { slug }, { cache: "no-store" });
+  return data.service;
+}
+
+/**
+ * Parse Sanity image URLs from references
+ * @param {string} ref - Sanity asset reference
+ * @returns {string} Image URL
+ */
+function parseURL(ref) {
+  if (ref) {
+    const split = ref.split("-");
+    if (split.length === 4) {
+      return `https://cdn.sanity.io/images/${
+        process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "ff86wg9s"
+      }/${process.env.NEXT_PUBLIC_SANITY_DATASET || "production"}/${split[1]}-${
+        split[2]
+      }.${split[3]}`;
+    }
+    return "";
+  }
+  return "";
+}
+
+export default async function ServiceDetails({ params }) {
+  // Fetch service data
+  const service = await getServiceDetails(params.slug);
+  if (!service) {
+    return (
+      <div className="container py-20 text-center">
+        <h2>Service not found</h2>
+        <p>The service you're looking for doesn't exist or has been removed.</p>
+        <Link href="/services" className="main-btn btn-yellow mt-4">
+          Back to Services
+        </Link>
+      </div>
+    );
+  }
+
+  // Fetch site settings for contact widget
+  const siteSettings = await sanityClient.fetch(
+    `*[_type == "siteSettings"][0] {
+      "contact": {
+        "enable": contact.enable,
+        "phone": contact.phone,
+        "email": contact.email,
+        "button": contact.button {
+          "btnType": btnType,
+          "link": link,
+          "linkType": linkType,
+          "title": title
+        },
+        "bg": {
+          "url": contact.bg.asset->url
+        }
+      }
+    }`
+  );
+
+  const contact = siteSettings?.contact;
+  const serviceSec = service?.serviceSec;
+  const list = serviceSec?.list ? serviceSec.list : [];
+
+  // Custom components for PortableText rendering
+  const components = {
+    marks: {
+      color: ({ value, children }) => (
+        <span style={{ color: value.hex }}>{children}</span>
+      ),
+      link: ({ value, children }) => {
+        const target = (value?.href || "").startsWith("http")
+          ? "_blank"
+          : undefined;
+        return (
+          <a
+            href={value?.href}
+            target={target}
+            rel={target === "_blank" ? "noopener noreferrer" : undefined}
+            className="underline transition-colors duration-150 ease-linear underline-offset-8 hover:text-primary"
+          >
+            {children}
+          </a>
+        );
+      },
+    },
+    types: {
+      figure: ({ value }) => (
+        <div className="img-container">
+          <Image
+            src={parseURL(value?.asset?._ref)}
+            alt={value?.alt || "Service image"}
+            width={800}
+            height={500}
+            style={{ objectFit: "cover", width: "100%" }}
+          />
+        </div>
+      ),
+      banner: ({ value }) => (
+        <div className="banner">
+          <h1>{value.heading}</h1>
+          {value?.subheading && <h2>{value.subheading}</h2>}
+        </div>
+      ),
+    },
+  };
+
+  return (
+    <>
+      <PageBannerTwo image={service?.hero} heading={service?.title} />
+
+      <section className="service-details-section pt-170 pb-90">
+        <div className="container">
+          <div className="row">
+            <div className="col-xl-8 col-lg-7">
+              <div className="service-details-wrapper">
+                <div className="img-holder wow fadeInUp">
+                  {service?.thumbnail && (
+                    <Image
+                      src={service.thumbnail.url}
+                      alt={service.thumbnail.alt || service.title}
+                      width={800}
+                      height={500}
+                      style={{ objectFit: "cover", width: "100%" }}
+                      priority
+                    />
+                  )}
+                </div>
+
+                <div className="content text-center wow fadeInDown">
+                  <h3 className="title">{service.title}</h3>
+                  <p>{service?.description}</p>
+                </div>
+
+                <div className="blog-details-wrapper mb-40 wow fadeInUp">
+                  <div className="post-content">
+                    {service?.body && (
+                      <PortableText
+                        value={service.body}
+                        components={components}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-xl-4 col-lg-5">
+              <div className="sidebar-widget-area">
+                {contact && contact.enable && <ContactWidget data={contact} />}
+
+                {service?.fileSec && service.fileSec.length > 0 && (
+                  <div className="widget download-widget mb-40 wow fadeInUp">
+                    {service.fileSec.map((item, index) => (
+                      <a
+                        href={item.fileURL.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        key={index}
+                      >
+                        <i
+                          className={`far ${
+                            item.fileURL.extension === "pdf"
+                              ? "fa-file-pdf"
+                              : "fa-file-word"
+                          }`}
+                        />
+                        {item.title}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {serviceSec && serviceSec.enable && (
+        <section className="service-section light-gray-bg pt-130 pb-130">
+          <div className="container">
+            <div className="row justify-content-center">
+              <div className="col-xl-6 col-lg-10">
+                <div className="section-title text-center mb-50">
+                  <span className="sub-title">{serviceSec?.heading}</span>
+                  <h2>{serviceSec?.subheading}</h2>
+                </div>
+              </div>
+            </div>
+
+            <ServiceSlider services={list} />
+          </div>
+        </section>
+      )}
+    </>
+  );
+}

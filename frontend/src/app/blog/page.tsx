@@ -1,12 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import Link from "next/link";
-import { sanityClient } from "@/lib/sanity";
+import { getBlogPageData } from "@/lib/getBlogPageData";
 import PageBanner from "@/components/common/PageBanner";
 import Contact from "@/components/blog/ContactCard";
 import RecentCard from "@/components/blog/RecentCard";
 import PaginationControl from "@/components/PaginationControl";
 import BlogCard from "@/components/blog/BlogCard";
+import CategoryCard from "@/components/blog/CategoryCard";
+import TagCard from "@/components/blog/TagCard";
+
+type PageProps = {
+  searchParams: Promise<{ page: string }>;
+};
 
 export async function generateMetadata() {
   const { sanityBlogPage } = await getBlogPageData();
@@ -31,134 +36,7 @@ export async function generateMetadata() {
   };
 }
 
-/**
- * Fetches data for the blog page using GROQ query
- * @param {number} page - Current page number
- * @param {number} limit - Number of posts per page
- * @returns {Promise<Object>} The data for the blog page
- */
-async function getBlogPageData(page = 1, limit = 6) {
-  const skip = (page - 1) * limit;
-
-  return sanityClient.fetch(
-    `
-    {
-      "sanityBlogPage": *[_type == "blogPage"][0] {
-        "seo": {
-          "title": seo.title,
-          "ldSchema": seo.ldSchema,
-          "keywords": seo.keywords,
-          "description": seo.description
-        },
-        hero {
-            heading,
-            description,
-            "bg": {
-              "asset": {
-                "url": bg.asset->url
-              }
-            },
-            isBreadcrumb,
-            button {
-              btnType,
-              link,
-              linkType,
-              title
-            },
-            button2 {
-              btnType,
-              link,
-              linkType,
-              title
-            }
-        },
-        "contact": {
-          "enable": contact.enable,
-          "phone": contact.phone,
-          "email": contact.email,
-          "button": {
-            "btnType": contact.button.btnType,
-            "link": contact.button.link,
-            "linkType": contact.button.linkType,
-            "title": contact.button.title
-          },
-          "bg": {
-            "url": contact.bg.asset->url
-          }
-        }
-      },
-      "allSanityBlog": {
-        "edges": *[_type == "blog"] | order(modifiedAt desc) [${skip}...${
-      skip + limit
-    }] {
-          "node": {
-            "title": title,
-            "slug": {
-              "current": slug.current
-            },
-            "featuredImage": {
-              "alt": featuredImage.alt,
-              "asset": {
-                "url": featuredImage.asset->url
-              }
-            },
-            "publishedAt": publishedAt,
-            "modifiedAt": modifiedAt,
-            "category": category->{
-              "name": name
-            }
-          }
-        },
-        "totalCount": count(*[_type == "blog"])
-      },
-      "recentNews": {
-        "edges": *[_type == "blog"] | order(modifiedAt desc) [0...3] {
-          "node": {
-            "title": title,
-            "slug": {
-              "current": slug.current
-            },
-            "featuredImage": {
-              "alt": featuredImage.alt,
-              "asset": {
-                "url": featuredImage.asset->url
-              }
-            },
-            "author": author->{
-              "name": name
-            }
-          }
-        }
-      },
-      "categories": *[_type == "category"] {
-        "name": name,
-        "slug": {
-          "current": slug.current
-        }
-      },
-      "tags": *[_type == "tag"][0...10] {
-        "name": name,
-        "slug": {
-          "current": slug.current
-        }
-      },
-      "sanitySitesettings": *[_type == "sitesettings"][0] {
-        "favicon": {
-          "url": favicon.asset->url
-        }
-      }
-    }
-  `,
-    {},
-    { cache: "no-store" }
-  );
-}
-
-export default async function Blog({
-  searchParams,
-}: {
-  searchParams: Promise<{ page: string }>;
-}) {
+export default async function Blog({ searchParams }: PageProps) {
   const page = (await searchParams)?.page
     ? parseInt((await searchParams)?.page)
     : 1;
@@ -175,11 +53,11 @@ export default async function Blog({
   return (
     <>
       <PageBanner pageName={hero?.heading} data={hero} />
-      <section className="blog-standard-section pt-70 pb-80">
-        <div className="container">
-          <div className="row">
-            <div className="col-xl-8 col-lg-7">
-              <div className="row justify-content-center">
+      <section className="py-10 md:py-16">
+        <div className="lg:container mx-auto px-5">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
+            <div className="md:col-span-8">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
                 {allSanityBlog?.edges?.map(
                   ({ node }: { node: any }, index: number) => (
                     <BlogCard
@@ -191,7 +69,7 @@ export default async function Blog({
                   )
                 )}
               </div>
-              <div className="pagination mb-50 wow fadeInUp justify-content-center">
+              <div className="mb-10">
                 {numPages !== 1 && (
                   <PaginationControl
                     currentPage={page}
@@ -201,53 +79,24 @@ export default async function Blog({
                 )}
               </div>
             </div>
-            <div className="col-xl-4 col-lg-5">
-              <div className="sidebar-widget-area">
-                <div className="widget category-widget mb-40 wow fadeInUp">
-                  <h4 className="widget-title">Category</h4>
-                  <ul className="category-nav">
-                    {categories?.map(
-                      (
-                        item: { name: string; slug: { current: string } },
-                        index: number
-                      ) => (
-                        <li key={index}>
-                          <Link href={`/category/${item.slug.current}`}>
-                            {item?.name}
-                            <span>
-                              <i className="far fa-arrow-right" />
-                            </span>
-                          </Link>
-                        </li>
-                      )
-                    )}
-                  </ul>
-                </div>
-                <Contact data={contact} />
-                <div className="widget recent-post-widget mb-40 wow fadeInUp">
-                  <h4 className="widget-title">Recent News</h4>
-                  <ul className="recent-post-list">
-                    {recentNews.edges
-                      ?.slice(0, 3)
-                      .map(({ node }: { node: any }, index: number) => (
-                        <RecentCard data={node} key={index} />
-                      ))}
-                  </ul>
-                </div>
-                <div className="widget tag-cloud-widget mb-40 wow fadeInUp">
-                  <h4 className="widget-title">Popular Tags</h4>
-                  {tags?.map(
-                    (
-                      item: { name: string; slug: { current: string } },
-                      index: number
-                    ) => (
-                      <Link href={`/tag/${item.slug.current}`} key={index}>
-                        {item?.name}
-                      </Link>
-                    )
-                  )}
-                </div>
+            <div className="md:col-span-4">
+              {/* Category */}
+              <CategoryCard list={categories} />
+              {/* Contact */}
+              <Contact data={contact} />
+              {/* Recent News */}
+              <div className="mb-10 border border-gray-200 rounded-lg p-8">
+                <h4 className="text-2xl font-bold">Recent News</h4>
+                <ul className="mt-5">
+                  {recentNews.edges
+                    ?.slice(0, 3)
+                    .map(({ node }: { node: any }, index: number) => (
+                      <RecentCard data={node} key={index} />
+                    ))}
+                </ul>
               </div>
+              {/* Popular Tags */}
+              <TagCard list={tags} />
             </div>
           </div>
         </div>

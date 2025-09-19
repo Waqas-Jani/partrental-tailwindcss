@@ -6,6 +6,8 @@ import { PortableText } from "@portabletext/react";
 import FaqList from "@/sections/FaqList";
 import RecentCard from "@/components/blog/RecentCard";
 import Contact from "@/components/blog/ContactCard";
+import CategoryCard from "@/components/blog/CategoryCard";
+import TagCard from "@/components/blog/TagCard";
 
 export default function BlogContent({ data }: { data: any }) {
   const { blog, categories, tags, recentBlogs, contact } = data;
@@ -23,11 +25,11 @@ export default function BlogContent({ data }: { data: any }) {
 
   return (
     <section className="py-10 md:py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="md:container mx-auto px-5">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            <article className="bg-white rounded-lg shadow-lg p-8">
+            <article className="bg-white p-8 prose max-w-none">
               {blog?.content && (
                 <PortableText
                   value={blog?.content}
@@ -91,12 +93,12 @@ export default function BlogContent({ data }: { data: any }) {
               {blog?.tags?.length > 0 && (
                 <div className="mt-8 pt-6 border-t border-gray-200">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-gray-600 font-medium">Tags:</span>
+                    <span className="text-gray-600 text-lg font-extrabold">Tags:</span>
                     {blog?.tags?.map((item: any, index: number) => (
                       <Link
                         key={index}
-                        href={`/tag/${item?.slug}`}
-                        className="inline-flex items-center px-3 py-1 bg-gray-100 hover:bg-red-100 text-gray-700 hover:text-red-700 rounded-full text-sm font-medium transition-colors duration-200"
+                        href={`/tag/${item?.slug.current}`}
+                        className="inline-flex no-underline items-center px-3 py-1 bg-gray-100 hover:bg-red-100 text-gray-700 hover:text-red-700 rounded-full text-sm font-medium transition-colors duration-200"
                       >
                         {item.name}
                       </Link>
@@ -110,43 +112,14 @@ export default function BlogContent({ data }: { data: any }) {
           {/* Sidebar */}
           <div className="space-y-8">
             {/* Categories */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Categories
-              </h3>
-              <ul className="space-y-2">
-                {categories?.map((item: any, index: number) => (
-                  <li key={index}>
-                    <Link
-                      href={`/category/${item.slug}`}
-                      className="flex items-center justify-between text-gray-600 hover:text-red-600 transition-colors duration-200"
-                    >
-                      <span>{item?.name}</span>
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {categories && <CategoryCard list={categories} />}
 
             {/* Contact */}
             {contact && contact.enable && <Contact data={contact} />}
 
             {/* Recent Posts */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
+            <div className="bg-white border border-gray-200 rounded-lg p-8">
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">
                 Recent News
               </h3>
               <div className="space-y-4">
@@ -159,22 +132,7 @@ export default function BlogContent({ data }: { data: any }) {
             </div>
 
             {/* Popular Tags */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">
-                Popular Tags
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {tags?.map((item: any, index: number) => (
-                  <Link
-                    key={index}
-                    href={`/tag/${item.slug}`}
-                    className="inline-flex items-center px-3 py-1 bg-gray-100 hover:bg-red-100 text-gray-700 hover:text-red-700 rounded-full text-sm font-medium transition-colors duration-200"
-                  >
-                    {item?.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
+            {tags && <TagCard list={tags} />}
           </div>
         </div>
       </div>

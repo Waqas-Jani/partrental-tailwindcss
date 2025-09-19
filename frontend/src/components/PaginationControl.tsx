@@ -62,8 +62,8 @@ const PaginationControl = ({
   };
 
   return (
-    <div className="mt-10">
-      <ul className="pagination center">
+    <div className="mt-10 flex justify-center">
+      <ul className="flex flex-row gap-x-2">
         {currentPage > 1 && (
           <li className="prev">
             <a
@@ -79,6 +79,7 @@ const PaginationControl = ({
               onKeyDown={(e: React.KeyboardEvent<HTMLAnchorElement>) =>
                 e.key === "Enter" && goToPage(currentPage - 1)
               }
+              className="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 cursor-pointer"
             >
               &lt;
             </a>
@@ -89,7 +90,9 @@ const PaginationControl = ({
           if (page === "...") {
             return (
               <li key={`ellipsis-${index}`}>
-                <span>...</span>
+                <span className="flex items-center justify-center w-10 h-10 text-gray-500">
+                  ...
+                </span>
               </li>
             );
           }
@@ -98,10 +101,14 @@ const PaginationControl = ({
           const pageHref = page === 1 ? basePath : `${basePath}?page=${page}`;
 
           return (
-            <li key={page} className={isActive ? "active" : ""}>
+            <li key={page}>
               <Link
                 href={slug(pageHref)}
-                className={isActive ? "active" : ""}
+                className={`flex items-center justify-center w-10 h-10 rounded-lg border text-sm font-medium transition-all duration-300 ${
+                  isActive
+                    ? "bg-primary text-white border-primary"
+                    : "bg-white text-gray-700 border-gray-300 hover:bg-primary hover:text-white hover:border-primary"
+                }`}
                 aria-current={isActive ? "page" : undefined}
               >
                 {page}
@@ -121,6 +128,7 @@ const PaginationControl = ({
               onKeyDown={(e: React.KeyboardEvent<HTMLAnchorElement>) =>
                 e.key === "Enter" && goToPage(currentPage + 1)
               }
+              className="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 cursor-pointer"
             >
               &gt;
             </a>
