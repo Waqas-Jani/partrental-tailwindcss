@@ -9,6 +9,7 @@ import { rentPageQuery, rentCategoryQuery } from "@/groq/rent";
 import { rentSubCategoryQuery } from "@/groq/product";
 import { contactPageQuery } from "@/groq/contact";
 import { locationQuery, locationQueryBySlug, locationServiceQuery } from "@/groq/location";
+import { blogQueryBySlug } from "@/groq/blog";
 /**
  * Fetches home page data from Sanity with Next.js caching
  * @returns {Promise<Object>} - A promise that resolves to the home page data
@@ -116,6 +117,7 @@ export const getContactPage = unstable_cache(
 );
 
 export async function getLocationBySlug(slug: string, service: string | null) {
+
     try {
         if (service) {
             const location = await sanityClient.fetch(locationServiceQuery, { slug, service }, { next: { revalidate: 60 } }); // 1 minutes
@@ -129,5 +131,17 @@ export async function getLocationBySlug(slug: string, service: string | null) {
         return null;
     }
 }
+
+// Blog by slug
+export async function getBlogBySlug(slug: string) {
+    try {
+        const blog = await sanityClient.fetch(blogQueryBySlug, { slug }, { next: { revalidate: 60 } }); // 1 minutes
+        return blog;
+    } catch (error) {
+        console.error("Error fetching Blog by Slug:", error);
+        return null;
+    }
+}
+
 
 

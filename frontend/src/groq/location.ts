@@ -7,7 +7,7 @@ export const locationQuery = `*[_type == "location"] {
 
 // Query for locationService (when service param is passed)
 export const locationServiceQuery = `{
-    sanityLocation: *[_type == "locationService" && slug.current == $service][0]{
+    "sanityLocation": *[_type == "locationService" && slug.current == $service][0]{
       seo {
         title,
         ldSchema,
@@ -234,7 +234,7 @@ export const locationServiceQuery = `{
         }
       }
     },
-    sanitySitesettings: *[_type == "sitesettings"][0]{
+    "sanitySitesettings": *[_type == "sitesettings"][0]{
       favicon {
         asset->{
           url
@@ -246,7 +246,7 @@ export const locationServiceQuery = `{
 
 // Query for location (when slug param is used)
 export const locationQueryBySlug = `{
-    sanityLocation: *[_type == "location" && slug.current == $slug][0]{
+    "sanityLocation": *[_type == "location" && slug.current == $slug][0]{
       seo {
         title,
         ldSchema,
@@ -281,7 +281,217 @@ export const locationQueryBySlug = `{
       },
       pageBuilder[] {
         _type,
-        // ... same sections as above ...
+  
+        // ImageContent
+        _type == "imageContent" => {
+          enable,
+          heading,
+          subheading,
+          description,
+          "image": {
+            alt,
+            "asset": {
+              "url": image.asset->url
+            }
+          },
+          "points": points[] {
+            title,
+            description
+          },
+          button {
+            btnType,
+            link,
+            linkType,
+            title
+          },
+          button2 {
+            btnType,
+            link,
+            linkType,
+            title
+          }
+        },
+  
+        // ContentSection
+        _type == "contentSection" => {
+          enable,
+          heading,
+          subheading,
+          description,
+          button {
+            btnType,
+            link,
+            linkType,
+            title
+          },
+          button2 {
+            btnType,
+            link,
+            linkType,
+            title
+          }
+        },
+  
+        // ListingSec
+        _type == "listingSec" => {
+          enable,
+          heading,
+          "list": list[] {
+            heading,
+            path,
+            "icon": {
+              alt,
+              "asset": {
+                "url": icon.asset->url
+              }
+            }
+          },
+          button {
+            btnType,
+            link,
+            linkType,
+            title
+          },
+          button2 {
+            btnType,
+            link,
+            linkType,
+            title
+          }
+        },
+  
+        // ClientSec
+        _type == "clientSec" => {
+          enable,
+          heading,
+          subheading,
+          "clients": clients[]->{
+            name,
+            designation,
+            feedback,
+            "photo": {
+              alt,
+              "asset": {
+                "url": photo.asset->url
+              }
+            }
+          }
+        },
+  
+        // HomeContact
+        _type == "homeContact" => {
+          enable,
+          homeForm {
+            _type,
+            heading,
+            subheading,
+            button {
+              btnType,
+              link,
+              linkType,
+              title
+            }
+          },
+          mapUrl
+        },
+  
+        // BlogSec
+        _type == "blogSec" => {
+          enable,
+          heading,
+          subheading,
+          button {
+            btnType,
+            link,
+            linkType,
+            title
+          },
+          "list": list[]->{
+            "category": category[]->{
+              name
+            },
+            publishedAt,
+            "slug": {
+              "current": slug.current
+            },
+            title,
+            "hero": {
+              "asset": {
+                "url": hero.asset->url
+              }
+            }
+          }
+        },
+  
+        // PartnerSec
+        _type == "partnerSec" => {
+          enable,
+          heading,
+          "partners": partners[]->{
+            org,
+            "imgBlack": {
+              alt,
+              "asset": {
+                "url": imgBlack.asset->url
+              }
+            }
+          }
+        },
+  
+        // StepsSec
+        _type == "stepsSec" => {
+          enable,
+          heading,
+          subheading,
+          "steps": steps[] {
+            step,
+            heading,
+            description
+          },
+          button {
+            btnType,
+            link,
+            linkType,
+            title
+          },
+          button2 {
+            btnType,
+            link,
+            linkType,
+            title
+          }
+        },
+  
+        // SplitContent
+        _type == "splitContent" => {
+          enable,
+          headingLeft,
+          headingRight,
+          subheadingLeft,
+          subheadingRight,
+          descriptionLeft,
+          descriptionRight,
+          "pointsLeft": pointsLeft[] {
+            title,
+            description
+          },
+          "pointsRight": pointsRight[] {
+            title,
+            description
+          },
+          buttonLeft {
+            btnType,
+            link,
+            linkType,
+            title
+          },
+          buttonRight {
+            btnType,
+            link,
+            linkType,
+            title
+          }
+        }
       },
       locationServices[]->{
         title,
@@ -290,11 +500,12 @@ export const locationQueryBySlug = `{
         }
       }
     },
-    sanitySitesettings: *[_type == "sitesettings"][0]{
+    "sanitySitesettings": *[_type == "sitesettings"][0]{
       favicon {
         asset->{
           url
         }
       }
     }
-  }`;
+}`;
+

@@ -1,120 +1,103 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { _renderSection } from "@/components/RenderSection";
 import PageBanner from "@/components/common/PageBanner";
-import { getLocationBySlug, getAllLocation } from "@/lib";
+import { getLocationBySlug, getAllLocation, getBlogBySlug } from "@/lib";
 import { getAllLandingPages, getLandingPageBySlug } from "@/lib/getLandingPage";
-// import LandingPage from "@/components/landingpage";
 import RecentCard from "@/components/blog/RecentCard";
 import Contact from "@/components/blog/ContactCard";
 import { sanityClient } from "@/lib/sanity";
 import { PortableText } from "@portabletext/react";
 import { notFound } from "next/navigation";
 import FaqList from "@/sections/FaqList";
+import { CircleArrowRightIcon } from "@/components/common/SocialIcons";
 
-export async function generateMetadata({ params }: any) {
+interface MetadataProps {
+  params: Promise<{ location: string[] }>;
+}
+interface ServicesPageProps {
+  params: Promise<{ location: string[] }>;
+}
+
+export async function generateMetadata({ params }: MetadataProps) {
   const locationParams = await params;
-  console.log("===locationParams===", locationParams);
-
-  //   const landingList = await getAllLandingPages();
-  const landingList: any[] = [];
-  const locationList = await getAllLocation();
-//   console.log("===locationList===", locationList);
-
   const slug = locationParams.location.join("/");
-//   console.log("===slug===", slug);
 
-locationList.some(
-    (landing: any) => {
-        console.log("===landing===", landing);
-        console.log("===locationParams.location[0]===", locationParams.location[0] == landing.slug);
-        return landing.slug === locationParams.location[0];
-    }
-  )
+  try {
+    const [landingList, locationList] = await Promise.all([
+      getAllLandingPages(),
+      getAllLocation(),
+    ]);
 
-  if (
-    landingList.some(
+    // Check for landing page
+    const isLandingPage = landingList.some(
       (landing: any) => landing.slug === locationParams.location[0]
-    )
-  ) {
-    const data = await getLandingPageBySlug(slug);
-    console.log("===if data===", data);
+    );
 
-    return {
-      title: data.seo?.title || data.title,
-      description: data.seo?.description,
-      keywords: data.seo?.keywords,
-      openGraph: {
+    if (isLandingPage) {
+      const data = await getLandingPageBySlug(slug);
+
+      return {
         title: data.seo?.title || data.title,
         description: data.seo?.description,
-        images: [
-          {
-            url: data.landingHero?.bg?.asset?.url,
-            width: 1200,
-            height: 630,
-          },
-        ],
-      },
+        keywords: data.seo?.keywords,
+        openGraph: {
+          title: data.seo?.title || data.title,
+          description: data.seo?.description,
+          images: [
+            {
+              url: data.landingHero?.bg?.asset?.url,
+              width: 1200,
+              height: 630,
+            },
+          ],
+        },
+        alternates: {
+          canonical: `https://partnerrentals.com/${slug}`,
+        },
+      };
+    }
 
-      alternates: {
-        canonical: `https://partnerrentals.com/${slug}`,
-      },
-    };
-  } else if (
-    locationList.some(
-      (location: any) => location.slug.current === locationParams.location[0]
-    )
-  ) {
-    const data = await getLocationBySlug(
-      locationParams.location[0],
-      locationParams.location.length > 1 ? locationParams.location[1] : null
+    // Check for location page
+    const isLocationPage = locationList.some(
+      (location: any) => location.slug === locationParams.location[0]
     );
-    console.log("===if else data===", data);
 
-    return {
-      title: data.sanityLocation?.seo?.title || data.sanityLocation?.title,
-      description: data.sanityLocation?.seo?.description,
-      keywords: data.sanityLocation?.seo?.keywords,
-      openGraph: {
+    if (isLocationPage) {
+      const data = await getLocationBySlug(
+        locationParams.location[0],
+        locationParams.location.length > 1 ? locationParams.location[1] : null
+      );
+
+      return {
         title: data.sanityLocation?.seo?.title || data.sanityLocation?.title,
         description: data.sanityLocation?.seo?.description,
-        images: [
-          {
-            url: data.sanityLocation?.hero?.bg?.asset?.url,
-            width: 1200,
-            height: 630,
-          },
-        ],
-      },
-
-      alternates: {
-        canonical: `https://partnerrentals.com/${slug}`,
-      },
-    };
-  } else {
-    const blog = await sanityClient.fetch(
-      `
-      *[_type == "blog" && slug.current == $slug][0] {
-        title,
-        seo {
-          description,
-          keywords
+        keywords: data.sanityLocation?.seo?.keywords,
+        openGraph: {
+          title: data.sanityLocation?.seo?.title || data.sanityLocation?.title,
+          description: data.sanityLocation?.seo?.description,
+          images: [
+            {
+              url: data.sanityLocation?.hero?.bg?.asset?.url,
+              width: 1200,
+              height: 630,
+            },
+          ],
         },
-        featuredImage {
-          alt,
-          asset -> {
-            url
-          }
-        }
-      }
-    `,
-      { slug: locationParams.location[0] }
-    );
+        alternates: {
+          canonical: `https://partnerrentals.com/${slug}`,
+        },
+      };
+    }
 
-    console.log("===Else blog===", blog);
-
-    if (!blog) return { title: "Blog not found" };
+    // Check for blog post
+    const blog = await getBlogBySlug(locationParams.location[0]);
+    console.log("===blog===", blog);
+    if (!blog) {
+      return { title: "Page not found" };
+    }
 
     return {
       title: blog.title,
@@ -135,175 +118,164 @@ locationList.some(
         canonical: `https://partnerrentals.com/${locationParams.location[0]}`,
       },
     };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return { title: "Error" };
   }
 }
 
-const ServicesPage = async ({ params }: any) => {
+const ServicesPage = async ({ params }: ServicesPageProps) => {
   const locationParams = await params;
-  const landingList = await getAllLandingPages();
-  const locationList = await getAllLocation();
 
-  return <div>ServicesPage</div>;
+  try {
+    const [landingList, locationList] = await Promise.all([
+      getAllLandingPages(),
+      getAllLocation(),
+    ]);
 
-  if (
-    landingList.some(
+    // Check for landing page
+    const isLandingPage = landingList.some(
       (landing: any) => landing.slug === locationParams.location[0]
-    )
-  ) {
-    const data = await getLandingPageBySlug(locationParams.location.join("/"));
-    return null;
-    // return <LandingPage data={data} />;
-  } else if (
-    locationList.some(
-      (location: any) => location.slug.current === locationParams.location[0]
-    )
-  ) {
-    const data = await getLocationBySlug(
-      locationParams.location[0],
-      locationParams.location.length > 1 ? locationParams.location[1] : null
     );
 
-    return (
-      <div>
-        <PageBanner
-          pageName={data?.sanityLocation?.hero?.heading}
-          data={data?.sanityLocation?.hero}
-        />
-        {data?.sanityLocation?.pageBuilder?.map((item: any, index: number) =>
-          _renderSection(item, index)
-        )}
+    if (isLandingPage) {
+      // TODO: Implement LandingPage component
+      return <div>Landing Page - Coming Soon</div>;
+    }
 
-        {/* Service Area Section - Only shown on location pages */}
-        {data?.sanityLocation?.locationServices &&
-          data.sanityLocation.locationServices.length > 0 && (
-            <section className="service-area pt-70 pb-40">
-              <div className="container">
-                <div className="row justify-content-center">
-                  <div className="col-lg-8">
-                    <div className="section-title text-center mb-55">
-                      <h2>Services Area</h2>
-                    </div>
+    // Check for location page
+    const isLocationPage = locationList.some(
+      (location: any) => location.slug === locationParams.location[0]
+    );
+
+    if (isLocationPage) {
+      const data = await getLocationBySlug(
+        locationParams.location[0],
+        locationParams.location.length > 1 ? locationParams.location[1] : null
+      );
+
+      return (
+        <div>
+          <PageBanner
+            pageName={data?.sanityLocation?.hero?.heading}
+            data={data?.sanityLocation?.hero}
+          />
+          {data?.sanityLocation?.pageBuilder?.map((item: any, index: number) =>
+            _renderSection(item, index)
+          )}
+
+          {/* Service Area Section - Only shown on location pages */}
+          {data?.sanityLocation?.locationServices &&
+            data.sanityLocation.locationServices.length > 0 && (
+              <section className="py-5 md:py-16">
+                <div className="container mx-auto px-5">
+                  <div className="text-center mb-12">
+                    <h2 className="h1-type">Services Area</h2>
                   </div>
-                </div>
 
-                <div className="row">
-                  {data.sanityLocation.locationServices.map(
-                    (service: any, index: number) => (
-                      <div
-                        key={index}
-                        className="col-lg-4 col-md-6 col-sm-12 shadow-md mb-25"
-                      >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {data?.sanityLocation?.locationServices?.map(
+                      (service: any, index: number) => (
                         <div
-                          className="service-item mb-25 wow fadeInUp"
-                          data-wow-delay={`0.${index + 1}s`}
+                          key={index}
+                          className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6"
                         >
-                          <div className="card h-100 border-0">
-                            <div className="card-body">
-                              <h4 className="card-title">{service.title}</h4>
-                              <Link
-                                href={`/${data.sanityLocation.slug?.current}/${service.slug?.current}`}
-                                className="main-btn btn-yellow"
-                              >
-                                View Details
-                              </Link>
-                            </div>
+                          <h4 className="text-xl md:text-2xl font-bold text-secondary mb-4">
+                            {service.title}
+                          </h4>
+                          <div className="flex">
+                            <Link
+                              href={`/${data.sanityLocation.slug?.current}/${service.slug?.current}`}
+                              className="main-btn primary-btn"
+                            >
+                              View Details
+                              <CircleArrowRightIcon />
+                            </Link>
                           </div>
                         </div>
-                      </div>
-                    )
-                  )}
+                      )
+                    )}
+                  </div>
                 </div>
-              </div>
-            </section>
-          )}
-      </div>
-    );
-  } else {
-    const blog = await sanityClient.fetch(
-      `
-      *[_type == "blog" && slug.current == $slug][0] {
-        title,
-        "slug": slug.current,
-        excerpt,
-        featuredImage {
-          alt,
-          asset -> {
-            url
-          }
-        },
-        "categories": categories[]->{
-          name,
-          "slug": slug.current
-        },
-        "author": author->{
-          name,
-          photo {
-            asset->{
+              </section>
+            )}
+        </div>
+      );
+    }
+
+    // Handle blog post - fetch all data in parallel
+    const [blog, categories, tags, recentBlogs, contact] = await Promise.all([
+      sanityClient.fetch(
+        `*[_type == "blog" && slug.current == $slug][0] {
+          title,
+          "slug": slug.current,
+          excerpt,
+          featuredImage {
+            alt,
+            asset -> {
               url
             }
           },
-          Bio
-        },
-        "tags": tags[]->{
+          "categories": categories[]->{
+            name,
+            "slug": slug.current
+          },
+          "author": author->{
+            name,
+            photo {
+              asset->{
+                url
+              }
+            },
+            Bio
+          },
+          "tags": tags[]->{
+            name,
+            "slug": slug.current
+          },
+          publishedAt,
+          modifiedAt,
+          content
+        }`,
+        { slug: locationParams.location[0] }
+      ),
+      sanityClient.fetch(`
+        *[_type == "category"] {
           name,
           "slug": slug.current
-        },
-        publishedAt,
-        modifiedAt,
-        content
-  }
-    `,
-      { slug: locationParams.location[0] }
-    );
-
-    // Fetch categories for sidebar
-    const categories = await sanityClient.fetch(`
-      *[_type == "category"] {
-        name,
-        "slug": slug.current
-      }
-    `);
-
-    // Fetch tags for sidebar
-    const tags = await sanityClient.fetch(`
-      *[_type == "tag"][0...10] {
-        name,
-        "slug": slug.current
-      }
-    `);
-
-    // Fetch recent blogs
-    const recentBlogs = await sanityClient.fetch(
-      `
-      {
-        "recentNews": {
-          "edges": *[_type == "blog"] | order(_createdAt desc) [0...3] {
-            "node": {
-              "title": title,
-              "slug": {
-                "current": slug.current
-              },
-              "featuredImage": {
-                "alt": featuredImage.alt,
-                "asset": {
-                  "url": featuredImage.asset->url
+        }
+      `),
+      sanityClient.fetch(`
+        *[_type == "tag"][0...10] {
+          name,
+          "slug": slug.current
+        }
+      `),
+      sanityClient.fetch(
+        `{
+          "recentNews": {
+            "edges": *[_type == "blog"] | order(_createdAt desc) [0...3] {
+              "node": {
+                "title": title,
+                "slug": {
+                  "current": slug.current
+                },
+                "featuredImage": {
+                  "alt": featuredImage.alt,
+                  "asset": {
+                    "url": featuredImage.asset->url
+                  }
+                },
+                "author": author->{
+                  "name": name
                 }
-              },
-              "author": author->{
-                "name": name
               }
             }
           }
-        }
-      }
-    `,
-      { slug: locationParams.location[0] }
-    );
-
-    // Fetch contact information
-    const contact = await sanityClient.fetch(`
-      *[_type == "blogPage"][0].contact
-    `);
+        }`
+      ),
+      sanityClient.fetch(`*[_type == "blogPage"][0].contact`),
+    ]);
 
     if (!blog) {
       notFound();
@@ -317,163 +289,180 @@ const ServicesPage = async ({ params }: any) => {
           return `https://cdn.sanity.io/images/ff86wg9s/production/${split[1]}-${split[2]}.${split[3]}`;
         }
         return "";
-      } else {
-        return "";
       }
+      return "";
     };
 
     return (
       <>
+        {/* Hero Banner */}
         <section
-          className="page-banner bg_cover position-relative z-1"
+          className="relative bg-cover bg-center bg-no-repeat py-24"
           style={{
             backgroundImage: `url(${blog?.featuredImage?.asset?.url})`,
           }}
         >
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="page-title text-white">
-                  <h2>{blog?.title}</h2>
-                </div>
-              </div>
+          <div className="absolute inset-0 bg-black/50"></div>
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <h1 className="text-4xl md:text-5xl font-bold text-white">
+                {blog?.title}
+              </h1>
             </div>
           </div>
         </section>
 
-        <section className="blog-details-page pt-50 pb-90">
-          <div className="container">
-            <div className="row">
-              <div className="col-xl-8 col-lg-7">
-                <div className="blog-details-wrapper mb-40 wow fadeInUp">
-                  <div className="blog-post-item">
-                    <div className="post-content pt-50">
-                      {blog?.content && (
-                        <PortableText
-                          value={blog?.content}
-                          components={{
-                            marks: {
-                              color: ({ value, children }) => (
-                                <span style={{ color: value.hex }}>
-                                  {children}
-                                </span>
-                              ),
-                              link: ({ value, children }) => {
-                                const target = (value?.href || "").startsWith(
-                                  "http"
-                                )
-                                  ? "_blank"
-                                  : undefined;
-                                return (
-                                  <a
-                                    href={value?.href}
-                                    target={target}
-                                    rel={
-                                      target === "_blank"
-                                        ? "noindex nofollow"
-                                        : undefined
-                                    }
-                                    className="underline link transition-colors duration-150 ease-linear underline-offset-8 hover:text-primary"
-                                  >
-                                    {children}
-                                  </a>
-                                );
-                              },
-                            },
-                            types: {
-                              figure: ({ value }) => {
-                                return (
-                                  <div className="img-container">
-                                    <img
-                                      src={parseURL(value?.asset?._ref)}
-                                      alt={value?.alt}
-                                    />
-                                  </div>
-                                );
-                              },
-                              banner: ({ value }) => {
-                                return (
-                                  <div className="banner">
-                                    <h1>{value.heading}</h1>
-                                    {value?.subheading && (
-                                      <h2>{value.subheading}</h2>
-                                    )}
-                                  </div>
-                                );
-                              },
-                              faqSec: ({ value }) => {
-                                return (
-                                  value?.enable && <FaqList data={value} />
-                                );
-                              },
-                            },
-                          }}
-                        />
-                      )}
-
-                      <br />
-                      {blog?.tags?.length > 0 && (
-                        <div className="post-share-tag mb-40">
-                          <div className="row">
-                            <div className="col-12">
-                              <div className="post-tag-cloud">
-                                <ul>
-                                  <li className="item-heading">Tags :</li>
-                                  {blog?.tags?.map(
-                                    (item: any, index: number) => (
-                                      <li key={index}>
-                                        <Link href={`/tag/${item?.slug}`}>
-                                          {item.name}
-                                        </Link>
-                                      </li>
-                                    )
-                                  )}
-                                </ul>
-                              </div>
+        {/* Blog Content */}
+        <section className="py-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Main Content */}
+              <div className="lg:col-span-2">
+                <article className="bg-white rounded-lg shadow-lg p-8">
+                  {blog?.content && (
+                    <PortableText
+                      value={blog?.content}
+                      components={{
+                        marks: {
+                          color: ({ value, children }) => (
+                            <span style={{ color: value.hex }}>{children}</span>
+                          ),
+                          link: ({ value, children }) => {
+                            const target = (value?.href || "").startsWith(
+                              "http"
+                            )
+                              ? "_blank"
+                              : undefined;
+                            return (
+                              <a
+                                href={value?.href}
+                                target={target}
+                                rel={
+                                  target === "_blank"
+                                    ? "noindex nofollow"
+                                    : undefined
+                                }
+                                className="underline transition-colors duration-150 ease-linear underline-offset-8 hover:text-red-600"
+                              >
+                                {children}
+                              </a>
+                            );
+                          },
+                        },
+                        types: {
+                          figure: ({ value }) => (
+                            <div className="my-8 relative">
+                              <Image
+                                src={parseURL(value?.asset?._ref)}
+                                alt={value?.alt || "Blog image"}
+                                width={800}
+                                height={600}
+                                className="w-full h-auto rounded-lg"
+                              />
                             </div>
-                          </div>
-                        </div>
-                      )}
+                          ),
+                          banner: ({ value }) => (
+                            <div className="bg-gray-100 p-6 rounded-lg my-8">
+                              <h2 className="text-2xl font-bold text-gray-900">
+                                {value.heading}
+                              </h2>
+                              {value?.subheading && (
+                                <h3 className="text-lg text-gray-600 mt-2">
+                                  {value.subheading}
+                                </h3>
+                              )}
+                            </div>
+                          ),
+                          faqSec: ({ value }) =>
+                            value?.enable && <FaqList data={value} />,
+                        },
+                      }}
+                    />
+                  )}
+
+                  {/* Tags */}
+                  {blog?.tags?.length > 0 && (
+                    <div className="mt-8 pt-6 border-t border-gray-200">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="text-gray-600 font-medium">Tags:</span>
+                        {blog?.tags?.map((item: any, index: number) => (
+                          <Link
+                            key={index}
+                            href={`/tag/${item?.slug}`}
+                            className="inline-flex items-center px-3 py-1 bg-gray-100 hover:bg-red-100 text-gray-700 hover:text-red-700 rounded-full text-sm font-medium transition-colors duration-200"
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  )}
+                </article>
               </div>
 
-              <div className="col-xl-4 col-lg-5">
-                <div className="sidebar-widget-area">
-                  <div className="widget category-widget mb-40 wow fadeInUp">
-                    <h4 className="widget-title">Categories</h4>
-                    <ul className="category-nav">
-                      {categories?.map((item: any, index: number) => (
-                        <li key={index}>
-                          <Link href={`/category/${item.slug}`}>
-                            {item?.name}
-                            <span>
-                              <i className="far fa-arrow-right" />
-                            </span>
-                          </Link>
-                        </li>
+              {/* Sidebar */}
+              <div className="space-y-8">
+                {/* Categories */}
+                <div className="bg-white rounded-lg shadow-lg p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    Categories
+                  </h3>
+                  <ul className="space-y-2">
+                    {categories?.map((item: any, index: number) => (
+                      <li key={index}>
+                        <Link
+                          href={`/category/${item.slug}`}
+                          className="flex items-center justify-between text-gray-600 hover:text-red-600 transition-colors duration-200"
+                        >
+                          <span>{item?.name}</span>
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </svg>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* Contact */}
+                {contact && contact.enable && <Contact data={contact} />}
+
+                {/* Recent Posts */}
+                <div className="bg-white rounded-lg shadow-lg p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    Recent News
+                  </h3>
+                  <div className="space-y-4">
+                    {recentBlogs?.recentNews?.edges
+                      ?.slice(0, 3)
+                      .map((item: any, index: number) => (
+                        <RecentCard data={item?.node} key={index} />
                       ))}
-                    </ul>
                   </div>
+                </div>
 
-                  {contact && contact.enable && <Contact data={contact} />}
-
-                  <div className="widget recent-post-widget mb-40 wow fadeInUp">
-                    <h4 className="widget-title">Recent News</h4>
-                    <ul className="recent-post-list">
-                      {recentBlogs?.recentNews?.edges
-                        ?.slice(0, 3)
-                        .map((item: any, index: number) => (
-                          <RecentCard data={item?.node} key={index} />
-                        ))}
-                    </ul>
-                  </div>
-
-                  <div className="widget tag-cloud-widget mb-40 wow fadeInUp">
-                    <h4 className="widget-title">Popular Tags</h4>
+                {/* Popular Tags */}
+                <div className="bg-white rounded-lg shadow-lg p-6">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
+                    Popular Tags
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
                     {tags?.map((item: any, index: number) => (
-                      <Link href={`/tag/${item.slug}`} key={index}>
+                      <Link
+                        key={index}
+                        href={`/tag/${item.slug}`}
+                        className="inline-flex items-center px-3 py-1 bg-gray-100 hover:bg-red-100 text-gray-700 hover:text-red-700 rounded-full text-sm font-medium transition-colors duration-200"
+                      >
                         {item?.name}
                       </Link>
                     ))}
@@ -485,6 +474,9 @@ const ServicesPage = async ({ params }: any) => {
         </section>
       </>
     );
+  } catch (error) {
+    console.error("Error loading page:", error);
+    notFound();
   }
 };
 

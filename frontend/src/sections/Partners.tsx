@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
@@ -38,12 +39,12 @@ const Partners = ({ data }: PartnersProps) => {
   );
 
   return (
-    <section className="relative z-10 pb-12 bg-gray-50">
-      <div className="container mx-auto px-4 py-10">
-        <div className="border-t border-gray-200 pt-12">
+    <section className="relative z-10 py-10 md:py-16 bg-gray-50">
+      <div className="container mx-auto px-5">
+        <div className="border-t border-gray-200 pt-10 md:pt-12">
           <div className="embla overflow-hidden" ref={emblaRef}>
             <div className="embla__container flex">
-              {data?.partners.map((item, index) => (
+              {data?.partners.map((item: any, index: number) => (
                 <div className="flex-[0_0_20%] min-w-0 px-2" key={index}>
                   <div className="flex items-center justify-center h-24 w-full max-w-62">
                     <div className="flex items-center justify-center cursor-pointer">

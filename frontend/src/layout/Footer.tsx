@@ -194,7 +194,7 @@ export default function Footer({ footer, posts }: FooterProps) {
                           <CalendarIcon cls="h-4 w-4" />
                           <a className="font-bold text-sm sm:text-base">
                             {" "}
-                            {dayjs(blog.modifiedAt || "").format(
+                            {dayjs(blog?.publishedAt || "").format(
                               "DD MMMM YYYY"
                             )}{" "}
                           </a>

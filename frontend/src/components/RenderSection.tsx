@@ -8,6 +8,8 @@ import Testimonials from "../sections/Testimonials";
 import ImageContent from "@/components/common/imageContent";
 import ContentSection from "@/sections/ContentSection";
 import ListingSection from "@/sections/ListingSection";
+import SplitContent from "@/sections/SplitContent";
+import StepsSection from "@/sections/StepsSec";
 
 export const _renderSection = (
   item: any,
@@ -59,11 +61,13 @@ export const _renderSection = (
       );
 
     case "listingSec":
-      return (
-        item.enable && (
-          <ListingSection key={key} data={item} noPadding={noPadding} />
-        )
-      );
+      return item.enable && <ListingSection key={key} data={item} />;
+
+    case "splitContent":
+      return item.enable && <SplitContent key={key} data={item} />;
+
+    case "stepsSec":
+      return item.enable && <StepsSection key={key} data={item} />;
 
     default:
       return null;

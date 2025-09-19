@@ -5,13 +5,7 @@ import React from "react";
 import Button from "@/components/common/Button";
 import Image from "next/image";
 
-const ListingSection = ({
-  data,
-  noPadding,
-}: {
-  data: any;
-  noPadding: boolean;
-}) => {
+const ListingSection = ({ data }: { data: any }) => {
   return (
     <>
       <section className="pt-[50px]">

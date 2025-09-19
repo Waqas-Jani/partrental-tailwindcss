@@ -41,7 +41,7 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
 
   return (
     <section
-      className="contact-section pt-[130] pb-[80px]"
+      className="contact-section pt-10 md:pt-[130] pb-10 md:pb-[80px]"
       style={{
         backgroundColor: "#f8f6ef",
       }}
@@ -119,7 +119,7 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
             <div className="w-full h-full overflow-hidden">
               <iframe
                 src={data?.mapUrl}
-                style={{ marginTop: isHome ? "-120px" : "-60px" }}
+                style={{ marginTop: isHome ? "-120px" : "0px" }}
                 title="google-map"
                 className="w-full h-full"
               />
