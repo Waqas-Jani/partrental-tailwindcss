@@ -370,7 +370,7 @@ export default function LandingPageForm({
         <div className="w-full">
           <div className="shadow-none w-full">
             <div className="text-left mb-8">
-              <h2 className="mb-8 text-2xl">{data?.heading}</h2>
+              <h2 className="mb-8 text-2xl font-bold">{data?.heading}</h2>
             </div>
             {formContent}
           </div>
