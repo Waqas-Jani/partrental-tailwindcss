@@ -51,7 +51,7 @@ export default function PowerGenSlideout({ data }: { data: any }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-end p-4">
+    <div className="fixed bottom-0 right-0  z-50 flex items-end justify-end p-4">
       {/* Popup */}
       <aside
         className="relative bg-white overflow-hidden rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-300 ease-out"
