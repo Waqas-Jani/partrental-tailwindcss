@@ -7,6 +7,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import ExitIntentPopup from "@/components/common/ExitIntentPopup";
 import { BlogPost, SiteSettings } from "@/types/siteSettings";
+import LandingHeader from "@/components/landingpage/LandingHeader";
 
 interface LayoutWrapperProps {
   children: React.ReactNode;
@@ -30,7 +31,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({
   return (
     <div className="min-h-screen flex flex-col">
       {isLandingPage ? (
-        <div />
+        <LandingHeader data={siteSettings?.header} />
       ) : (
         <Header
           header={siteSettings?.header ?? null}

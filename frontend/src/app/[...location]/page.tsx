@@ -16,6 +16,7 @@ import {
 import { getAllLandingPages, getLandingPageBySlug } from "@/lib/getLandingPage";
 import { sanityClient } from "@/lib/sanity";
 import BlogContent from "@/components/blog";
+import LandingPage from "@/components/landingpage";
 import { CircleArrowRightIcon } from "@/components/common/SocialIcons";
 
 interface MetadataProps {
@@ -98,7 +99,7 @@ export async function generateMetadata({ params }: MetadataProps) {
 
     // Check for blog post
     const blog = await getBlogBySlug(locationParams.location[0]);
-    console.log("===blog===", blog);
+    
     if (!blog) {
       return { title: "Page not found" };
     }
@@ -143,8 +144,10 @@ const ServicesPage = async ({ params }: ServicesPageProps) => {
     );
 
     if (isLandingPage) {
-      // TODO: Implement LandingPage component
-      return <div>Landing Page - Coming Soon</div>;
+      const data = await getLandingPageBySlug(
+        locationParams.location.join("/")
+      );
+      return <LandingPage data={data} />;
     }
 
     // Check for location page
