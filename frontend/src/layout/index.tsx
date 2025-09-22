@@ -46,7 +46,12 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({
       )}
 
       {/* Footer */}
-      <Footer posts={recentBlogs} footer={siteSettings?.footer ?? undefined} />
+      {!isLandingPage && (
+        <Footer
+          posts={recentBlogs}
+          footer={siteSettings?.footer ?? undefined}
+        />
+      )}
     </div>
   );
 };
