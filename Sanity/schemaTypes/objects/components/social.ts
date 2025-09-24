@@ -13,9 +13,10 @@ export default defineType({
             options: {
                 list: [
                     { title: 'Facebook', value: 'fa-facebook-f' },
-                    { title: 'Twitter', value: 'fa-twitter' },
+                    { title: 'X', value: 'fa-x' },
                     { title: 'Youtube', value: 'fa-youtube' },
                     { title: 'LinkedIn', value: 'fa-linkedin' },
+                    { title: 'Instagram', value: 'fa-instagram' },
                 ],
             },
         }),

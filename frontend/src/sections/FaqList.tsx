@@ -8,7 +8,7 @@ export default function FaqList({ data }: any) {
       <div className="container mx-auto px-5">
         <div className="flex justify-center">
           <div className="text-center">
-            <span className="sub-title ml-12">{data?.subheading}</span>
+            <span className="sub-title">{data?.subheading}</span>
             <h2 className="h1-type mt-5">{data?.heading}</h2>
           </div>
         </div>

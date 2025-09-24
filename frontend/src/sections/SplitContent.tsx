@@ -11,9 +11,9 @@ const SplitContent = ({ data }: any) => {
         <div className="max-w-[1080px] w-full grid lg:grid-cols-2 gap-10">
           {/* Left Side */}
           <div>
-            <div className="mb-8">
+            <div className="mb-8 text-center md:text-left">
               {data.subheadingLeft && (
-                <span className="sub-title ml-12">{data.subheadingLeft}</span>
+                <span className="sub-title md:ml-12">{data.subheadingLeft}</span>
               )}
               <h2 className="h1-type">{data.headingLeft}</h2>
             </div>

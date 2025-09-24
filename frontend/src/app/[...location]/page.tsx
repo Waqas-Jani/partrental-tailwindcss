@@ -99,7 +99,7 @@ export async function generateMetadata({ params }: MetadataProps) {
 
     // Check for blog post
     const blog = await getBlogBySlug(locationParams.location[0]);
-    
+
     if (!blog) {
       return { title: "Page not found" };
     }
@@ -187,10 +187,10 @@ const ServicesPage = async ({ params }: ServicesPageProps) => {
                           key={index}
                           className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6"
                         >
-                          <h4 className="text-xl md:text-2xl font-bold text-secondary mb-4">
+                          <h4 className="text-xl md:text-2xl sm:text-left text-center font-bold text-secondary mb-4">
                             {service.title}
                           </h4>
-                          <div className="flex">
+                          <div className="flex sm:justify-start justify-center">
                             <Link
                               href={`/${data.sanityLocation.slug?.current}/${service.slug?.current}`}
                               className="main-btn primary-btn"

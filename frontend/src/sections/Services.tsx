@@ -22,7 +22,7 @@ const Services = ({ data }: any) => {
       >
         <div className="max-w-[1200px] mx-auto px-4  bg-[#F8F6EF] py-10 md:py-16">
           <div className="text-center mb-14">
-            <span className="sub-title ml-12">{data.subheading}</span>
+            <span className="sub-title md:ml-12">{data.subheading}</span>
             <h2 className="h1-type mt-5">{data.heading}</h2>
           </div>
 

@@ -2,9 +2,9 @@ import React from "react";
 import {
   FacebookIcon,
   InstagramIcon,
-  TwitterIcon,
   YoutubeIcon,
   LinkedinIcon,
+  XIcon,
 } from "./SocialIcons";
 
 export default function RenderSocial({ icon }: { icon: string }) {
@@ -21,8 +21,8 @@ export default function RenderSocial({ icon }: { icon: string }) {
     case "fa-instagram":
       return <InstagramIcon />;
 
-    case "fa-twitter":
-      return <TwitterIcon />;
+    case "fa-x":
+      return <XIcon />;
 
     default:
       return null;

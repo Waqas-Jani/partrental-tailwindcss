@@ -22,8 +22,8 @@ const About = ({ data }: { data: any }) => {
           </div>
           <div className="lg:w-[55%]">
             <div className="w-full h-full lg:pl-[60px] pt-[70px] pb-[40px] pt-[70px">
-              <div className="mb-8">
-                <span className="sub-title ml-12">{data.subheading}</span>
+              <div className="mb-8 text-center md:text-left">
+                <span className="sub-title md:ml-12">{data.subheading}</span>
                 <h2 className="h1-type mt-5">{data.heading}</h2>
                 <div className="text-lg text-secondary mt-8">
                   <PortableText value={data.description} />

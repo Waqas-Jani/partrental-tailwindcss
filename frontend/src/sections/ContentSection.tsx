@@ -43,7 +43,7 @@ const ContentSection = ({
                   </div>
                 ))}
               </div>
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row  sm:justify-start items-center gap-4">
                 {data?.button?.title && (
                   <Button
                     title={data.button.title}

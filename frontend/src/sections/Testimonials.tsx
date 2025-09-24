@@ -48,7 +48,7 @@ const Testimonials = ({ data }: TestimonialsProps) => {
     <section className="testimonial-section py-10 md:py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <span className="sub-title ml-12">{data.subheading}</span>
+          <span className="sub-title">{data.subheading}</span>
           <h2 className="h1-type mt-4">{data?.heading}</h2>
         </div>
 

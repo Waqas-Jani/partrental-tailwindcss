@@ -5,6 +5,7 @@ export const landingPageBySlugQuery = `
     description,
     keywords
   },
+  topBanner,
   landingHero {
     heading,
     description,

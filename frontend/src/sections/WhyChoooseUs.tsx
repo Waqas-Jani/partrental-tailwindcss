@@ -21,8 +21,8 @@ const WhyChooseUs = ({ data }: any) => {
 
           {/* Content Column - Flexible */}
           <div className="wow fadeInRight flex flex-col">
-            <div className="">
-              <span className="sub-title ml-12">{data.subheading}</span>
+            <div className="text-center">
+              <span className="sub-title md:ml-12">{data.subheading}</span>
               <h2 className="h1-type mt-5">{data.heading}</h2>
             </div>
 
@@ -31,7 +31,7 @@ const WhyChooseUs = ({ data }: any) => {
               <Accordion items={data.points} />
             )}
 
-            <div className="mt-10 flex">
+            <div className="mt-10 flex md:justify-start justify-center">
               {data?.button?.title && (
                 <Button
                   title={data.button.title}

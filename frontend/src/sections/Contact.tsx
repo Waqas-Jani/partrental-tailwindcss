@@ -49,8 +49,8 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-20">
           <div className="md:col-span-5">
-            <div className="">
-              <span className="sub-title ml-12">{homeForm.subheading}</span>
+            <div className="text-center md:text-left">
+              <span className="sub-title md:ml-12">{homeForm.subheading}</span>
               <h2 className="h1-type mt-5">{homeForm.heading}</h2>
             </div>
             <div className="mt-12">
@@ -100,7 +100,7 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
                     </span>
                   )}
                 </div>
-                <div className="mt-5">
+                <div className="mt-5 flex md:justify-start justify-center">
                   {homeForm?.button?.title && (
                     <Button
                       title={homeForm?.button?.title}

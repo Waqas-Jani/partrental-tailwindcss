@@ -13,7 +13,7 @@ const Blogs = ({ data }: any) => {
           <h2 className="h1-type mt-5">{data.heading}</h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-20">
           {data?.list?.map((item: any, index: number) => (
             <BlogCard key={index} item={item} index={index} isHome={true} />
           ))}

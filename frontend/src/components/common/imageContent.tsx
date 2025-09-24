@@ -46,9 +46,9 @@ const ImageContent = ({
             <div
               className={`${index % 2 === 0 ? "lg:pr-[50px]" : "lg:pl-[50px]"}`}
             >
-              <div className="mb-[35px]">
+              <div className="mb-[35px] text-center md:text-left">
                 {data.subheading && (
-                  <span className="sub-title ml-12 mb-5">
+                  <span className="sub-title md:ml-12 mb-5">
                     {data.subheading}
                   </span>
                 )}
@@ -78,7 +78,7 @@ const ImageContent = ({
                     </li>
                   ))}
               </ul>
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row  sm:justify-start items-center gap-4">
                 {data?.button?.title && (
                   <Button
                     title={data.button.title}
