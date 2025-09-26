@@ -82,6 +82,53 @@ export default function BlogContent({ data }: { data: any }) {
                           )}
                         </div>
                       ),
+                      table: ({ value }) => (
+                        <div className="border border-gray-200 rounded-lg overflow-hidden my-8">
+                          <table className="w-full !mt-0 !mb-0">
+                            {value?.rows && value.rows.length > 0 && (
+                              <>
+                                <thead className="bg-primary">
+                                  <tr>
+                                    {value.rows[0]?.cells?.map(
+                                      (cell: any, index: number) => (
+                                        <th
+                                          key={index}
+                                          className="!px-6 py-3 text-left text-sm font-extrabold text-white uppercase tracking-wider"
+                                        >
+                                          {cell}
+                                        </th>
+                                      )
+                                    )}
+                                  </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                  {value.rows
+                                    .slice(1)
+                                    ?.map((row: any, rowIndex: number) => (
+                                      <tr
+                                        key={rowIndex}
+                                        className={`hover:bg-gray-50 ${
+                                          rowIndex % 2 === 0 ? "bg-gray-50" : ""
+                                        }`}
+                                      >
+                                        {row?.cells?.map(
+                                          (cell: any, cellIndex: number) => (
+                                            <td
+                                              key={cellIndex}
+                                              className="!px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                                            >
+                                              {cell}
+                                            </td>
+                                          )
+                                        )}
+                                      </tr>
+                                    ))}
+                                </tbody>
+                              </>
+                            )}
+                          </table>
+                        </div>
+                      ),
                       faqSec: ({ value }) =>
                         value?.enable && <FaqList data={value} />,
                     },
@@ -93,7 +140,9 @@ export default function BlogContent({ data }: { data: any }) {
               {blog?.tags?.length > 0 && (
                 <div className="mt-8 pt-6 border-t border-gray-200">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-gray-600 text-lg font-extrabold">Tags:</span>
+                    <span className="text-gray-600 text-lg font-extrabold">
+                      Tags:
+                    </span>
                     {blog?.tags?.map((item: any, index: number) => (
                       <Link
                         key={index}

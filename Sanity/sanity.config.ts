@@ -4,8 +4,9 @@ import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemaTypes'
 import { structure } from './deskStructure'
 import { media } from 'sanity-plugin-media'
-// import { dashboardTool, projectInfoWidget } from '@sanity/dashboard'
-// import { netlifyWidget } from 'sanity-plugin-dashboard-widget-netlify'
+import { table } from '@sanity/table'
+import { dashboardTool, projectInfoWidget } from '@sanity/dashboard'
+import { netlifyWidget } from 'sanity-plugin-dashboard-widget-netlify'
 import { colorInput } from '@sanity/color-input'
 // import { netlifyTool } from '@akcybex/sanity-netlify-tool'
 // import '@akcybex/sanity-netlify-tool/dist/style.css'
@@ -24,7 +25,26 @@ const sharedConfig = definePlugin({
         structureTool({ structure }),
         visionTool(),
         media(),
-        colorInput()
+        colorInput(),
+        table(),
+        dashboardTool({
+            widgets: [
+                netlifyWidget({
+                    title: 'PR Tailwindcss',
+                    sites: [
+                        {
+                            title: 'PR Tailwindcss',
+                            apiId: '76b1e904-19b0-435f-bd95-6042ef58f007',
+                            buildHookId: '68d514496159474d3e62fabf',
+                            name: 'template-tailwind',
+                            url: 'https://template-tailwind.netlify.app/',
+                            branch: 'main',
+                        },
+                    ],
+                }),
+                projectInfoWidget(),
+            ]
+        })
 
     ],
 })

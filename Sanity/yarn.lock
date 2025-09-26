@@ -2895,6 +2895,15 @@
     rxjs "^7.8.2"
     zustand "^5.0.4"
 
+"@sanity/table@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sanity/table/-/table-2.0.0.tgz#c0331d8654c5e131c7abf7067f479c0683ce81b3"
+  integrity sha512-JTkMhJUO04Yu2oD0RMMag7MymUufw0J+iA4/TyQ/LA5NExUvlXCk6vFhbDmg5Sc1X6THJAO7y3b4DgzWaa0FXw==
+  dependencies:
+    "@sanity/icons" "^3.5.3"
+    "@sanity/incompatible-plugin" "^1.0.5"
+    "@sanity/ui" "^3.1.0"
+
 "@sanity/telemetry@^0.8.0":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@sanity/telemetry/-/telemetry-0.8.1.tgz#bfabacaacc1474117186c6e68d5d8c7777787a1b"
@@ -2967,6 +2976,21 @@
     "@sanity/icons" "^3.7.4"
     csstype "^3.1.3"
     framer-motion "^12.23.12"
+    react-compiler-runtime "19.1.0-rc.3"
+    react-refractor "^4.0.0"
+    use-effect-event "^2.0.3"
+
+"@sanity/ui@^3.1.0":
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/@sanity/ui/-/ui-3.1.6.tgz#9593ee729e9a5b0398354e37fd859496112f3c59"
+  integrity sha512-QnMAZ8U5gBKp4S7XsbuW2E3W+PNkYjE8u18ZNMturM0Lf3qnCVTnhv+G3fbIZBNLw3tOD/g2owbqYgmzpYWbyw==
+  dependencies:
+    "@floating-ui/react-dom" "^2.1.6"
+    "@juggle/resize-observer" "^3.4.0"
+    "@sanity/color" "^3.0.6"
+    "@sanity/icons" "^3.7.4"
+    csstype "^3.1.3"
+    framer-motion "^12.23.19"
     react-compiler-runtime "19.1.0-rc.3"
     react-refractor "^4.0.0"
     use-effect-event "^2.0.3"
@@ -5778,6 +5802,15 @@ framer-motion@^12.23.12:
     motion-utils "^12.23.6"
     tslib "^2.4.0"
 
+framer-motion@^12.23.19:
+  version "12.23.21"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-12.23.21.tgz#8e82b381c79fb843c844121455feba19847c0978"
+  integrity sha512-UWDtzzPdRA3UpSNGril5HjUtPF1Uo/BCt5VKG/YQ8tVpSkAZ22+q8o+hYO0C1uDAZuotQjcfzsTsDtQxD46E/Q==
+  dependencies:
+    motion-dom "^12.23.21"
+    motion-utils "^12.23.6"
+    tslib "^2.4.0"
+
 from2@^2.1.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/from2/-/from2-2.3.0.tgz#8bfb5502bde4a4d36cfdeea007fcca21d7e382af"
@@ -7504,6 +7537,13 @@ motion-dom@^12.23.12:
   version "12.23.12"
   resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-12.23.12.tgz#87974046e7e61bc4932f36d35e8eab6bb6f3e434"
   integrity sha512-RcR4fvMCTESQBD/uKQe49D5RUeDOokkGRmz4ceaJKDBgHYtZtntC/s2vLvY38gqGaytinij/yi3hMcWVcEF5Kw==
+  dependencies:
+    motion-utils "^12.23.6"
+
+motion-dom@^12.23.21:
+  version "12.23.21"
+  resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-12.23.21.tgz#1efe2d1bdda31875f0ee56d06f02be7b562a0bdd"
+  integrity sha512-5xDXx/AbhrfgsQmSE7YESMn4Dpo6x5/DTZ4Iyy4xqDvVHWvFVoV+V2Ri2S/ksx+D40wrZ7gPYiMWshkdoqNgNQ==
   dependencies:
     motion-utils "^12.23.6"
 

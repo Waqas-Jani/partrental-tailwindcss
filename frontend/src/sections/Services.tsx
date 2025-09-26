@@ -26,7 +26,7 @@ const Services = ({ data }: any) => {
             <h2 className="h1-type mt-5">{data.heading}</h2>
           </div>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 px-14">
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 px-5 md:px-10 lg:px-14">
             {data?.list?.map((item: any, index: number) => (
               <div key={index} className="group">
                 <Link

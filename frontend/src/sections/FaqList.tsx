@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-import Accordion from "@/components/common/Accordion";
+import AccordionTwo from "@/components/common/AccordionTwo";
 
 export default function FaqList({ data }: any) {
   return (
@@ -16,7 +16,7 @@ export default function FaqList({ data }: any) {
         <div className="mt-10">
           <div className="">
             {data?.list && data?.list.length > 0 && (
-              <Accordion items={data?.list} />
+              <AccordionTwo items={data?.list} />
             )}
           </div>
         </div>

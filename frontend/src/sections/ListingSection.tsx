@@ -22,7 +22,7 @@ const ListingSection = ({ data }: { data: any }) => {
               </div>
             </div>
             <div className="max-w-[1200px] mx-auto px-4  bg-[#F8F6EF] pt-[80px] pb-12">
-              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 px-14">
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 px-5 md:px-10 lg:px-14">
                 {data?.list?.map((item: any, index: number) => (
                   <div key={index} className="group">
                     <Link
