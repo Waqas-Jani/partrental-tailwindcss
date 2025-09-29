@@ -44,7 +44,7 @@ const AccordionItem = ({
       <div
         id={`accordion-content-${index}`}
         className={`overflow-hidden px-5 shadow-lg transition-all duration-500 ease-in-out ${
-          isOpen ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0"
+          isOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
         }`}
       >
         <div className="pb-6 pt-2">
