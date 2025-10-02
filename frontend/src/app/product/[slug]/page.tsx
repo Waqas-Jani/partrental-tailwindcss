@@ -77,16 +77,20 @@ async function ProductPage({ params }: { params: any }) {
         {/* Tags Section */}
         {product.tags?.length > 0 && (
           <div className="mt-5">
-            <div className="">
-              <span className="text-sm font-bold text-gray-800 mb-2">Tags:</span>
-              {product.tags.map((tag: any, index: number) => (
-                <React.Fragment key={tag.slug.current}>
-                  <a href={`/tag/${tag.slug.current}`} className="text-sm text-gray-600">{tag.title}</a>
-                  {index < product.tags.length - 1 && ", "}
-                  <span className="text-sm text-gray-600">{tag.title}</span>
-                </React.Fragment>
-              ))}
-            </div>
+            <span className="text-sm font-bold text-gray-800 mb-2 mr-2">
+              Tags:
+            </span>
+            {product.tags.map((tag: any, index: number) => (
+              <React.Fragment key={tag.slug.current}>
+                <a
+                  href={`/tag/${tag.slug.current}`}
+                  className="text-sm hover:underline text-gray-600 mr-2"
+                >
+                  {tag.title}
+                </a>
+                {index < product.tags.length - 1 && ", "}
+              </React.Fragment>
+            ))}
           </div>
         )}
       </div>
