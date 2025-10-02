@@ -25,3 +25,10 @@ export interface SanityButton {
     locations?: any;
     borderCls?: string;
 }
+
+export type SearchParams = Promise<{
+    page: string;
+    sort: string;
+    search: string;
+    category: string;
+}>;
