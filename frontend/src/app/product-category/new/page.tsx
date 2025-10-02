@@ -44,7 +44,7 @@ export default async function NewProductsPage({
   const category = params.category || "";
 
   // Items per page
-  const limit = 10;
+  const limit = 20;
 
   // Fetch products with server-side filtering
   const { products, totalCount } = await getEquipments({
