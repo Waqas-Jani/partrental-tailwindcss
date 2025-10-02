@@ -16,3 +16,18 @@ const builder = imageUrlBuilder(sanityClient)
 export function urlFor(source: any) {
     return builder.image(source)
 }
+
+/**
+ * Helper function to parse an image reference URL
+ * @param {string} ref - The Sanity image reference
+ * @returns {string} - The full image URL
+ */
+export const parseImageUrl = (ref: string) => {
+    if (!ref) return "";
+
+    const split = ref.split("-");
+    if (split.length === 4) {
+        return `https://cdn.sanity.io/images/${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}/${process.env.NEXT_PUBLIC_SANITY_DATASET}/${split[1]}-${split[2]}.${split[3]}`;
+    }
+    return "";
+};

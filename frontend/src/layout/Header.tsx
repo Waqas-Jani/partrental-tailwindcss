@@ -141,7 +141,7 @@ export default function Header({ topBanner, header }: Props) {
                             <MyLink
                               key={childIndex}
                               text={child.label}
-                              linkType="internal"
+                              linkType={child.type}
                               link={child.link}
                               cls="block px-4 py-3 text-secondary hover:bg-primary hover:text-white transition-all duration-200 font-extrabold"
                             />
@@ -151,7 +151,7 @@ export default function Header({ topBanner, header }: Props) {
                     ) : (
                       <MyLink
                         text={item.parent.label}
-                        linkType="internal"
+                        linkType={item.parent.type}
                         link={item.parent.link}
                         cls="text-secondary hover:text-primary transition-colors font-extrabold"
                       />

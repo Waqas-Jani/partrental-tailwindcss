@@ -11,6 +11,7 @@ import { locationQuery, locationQueryBySlug, locationServiceQuery } from "@/groq
 import { blogFullQueryBySlug, blogShortQueryBySlug, blogCategoryListQuery, blogTagListQuery, recentBlogsQuery, categoryBySlugQuery, categoryPageQuery, tagBySlugQuery, tagPageQuery } from "@/groq/blog";
 import { servicePageQuery } from "@/groq/service";
 import { faqPageQuery } from "@/groq/faq";
+import { accountAccessQuery } from "@/groq/ac";
 /**
  * Fetches home page data from Sanity with Next.js caching
  * @returns {Promise<Object>} - A promise that resolves to the home page data
@@ -255,6 +256,20 @@ export const getFaqPage = unstable_cache(
         }
         catch (error) {
             console.error("Error fetching Faq Page:", error);
+            return null;
+        }
+    }
+);
+
+// account access page
+export const getAccountAccessPage = unstable_cache(
+    async () => {
+        try {
+            const accountAccessPage = await sanityClient.fetch(accountAccessQuery, {}, { next: { revalidate: 120 } }); // 2 minutes
+            return accountAccessPage;
+        }
+        catch (error) {
+            console.error("Error fetching Account Access Page:", error);
             return null;
         }
     }
