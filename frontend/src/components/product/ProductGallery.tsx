@@ -129,14 +129,14 @@ const ProductGallery = ({
         {allImages.length > 1 && (
           <>
             <button
-              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-primary rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
               onClick={scrollPrev}
               disabled={!mainEmbla?.canScrollPrev()}
             >
               <ChevronLeftIcon cls="w-5 h-5 text-gray-700" />
             </button>
             <button
-              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-primary rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
               onClick={scrollNext}
               disabled={!mainEmbla?.canScrollNext()}
             >
@@ -153,7 +153,7 @@ const ProductGallery = ({
             {allImages.map((image: any, index: number) => (
               <div
                 key={`thumb-${index}`}
-                className={`flex-[0_0_20%] min-w-0 cursor-pointer transition-all duration-200 ${
+                className={`flex-[0_0_15%] min-w-0 cursor-pointer transition-all duration-200 ${
                   selectedIndex === index
                     ? "ring-2 ring-primary ring-offset-2"
                     : "opacity-60 hover:opacity-100"
