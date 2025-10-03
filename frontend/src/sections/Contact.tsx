@@ -36,7 +36,7 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
     completedSheetId: 85,
     abandonedSheetId: 89,
     formType: "home_contact_form",
-    trackingFields: ["name", "email"],
+    trackingFields: ["name", "email", "message"],
   });
 
   return (
