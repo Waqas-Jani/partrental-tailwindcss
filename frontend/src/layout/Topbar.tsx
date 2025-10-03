@@ -32,6 +32,7 @@ const Topbar = ({ data }: { data: TopBanner }) => {
                   className="hover:text-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={"social media"}
                 >
                   <RenderSocial icon={social.icon} />
                 </a>

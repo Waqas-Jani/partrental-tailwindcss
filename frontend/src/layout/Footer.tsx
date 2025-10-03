@@ -89,7 +89,7 @@ export default function Footer({ footer, posts }: FooterProps) {
             {footer?.businessAddress && (
               <div className="mb-4">
                 <h4 className="h4-type mb-3">Address</h4>
-                <p className="text-gray-300 leading-relaxed text-base">
+                <p className="text-gray-300 leading-relaxed text-base whitespace-pre">
                   {footer.businessAddress}
                 </p>
               </div>
@@ -99,7 +99,7 @@ export default function Footer({ footer, posts }: FooterProps) {
             {footer?.businessHours && (
               <div className="mb-4">
                 <h4 className="h4-type mb-3">Business Hours</h4>
-                <p className="text-gray-300 text-base">
+                <p className="text-gray-300 text-base whitespace-pre">
                   {footer.businessHours}
                 </p>
               </div>
@@ -117,6 +117,7 @@ export default function Footer({ footer, posts }: FooterProps) {
                       className="text-gray-400 hover:text-primary transition-colors"
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={"social media"}
                     >
                       <span className="text-lg">
                         <RenderSocial icon={social.icon} />
