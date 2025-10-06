@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Button from "../common/Button";
-import { PhoneIcon } from "../common/SocialIcons";
+import { PhoneIcon } from "../common/Icons";
 
 export default function ContactCard({ data }: any) {
   return (

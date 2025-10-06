@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
-import { ChevronLeftIcon, ChevronRightIcon } from "../common/SocialIcons";
+import { ChevronLeftIcon, ChevronRightIcon } from "../common/Icons";
 import ReservationForm from "./ReservationForm";
 import Image from "next/image";
 
 const ProductHeader = ({ data, locations }: any) => {
-    console.log('===locations===', locations);
-    
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isReservationFormOpen, setIsReservationFormOpen] = useState(false);
 

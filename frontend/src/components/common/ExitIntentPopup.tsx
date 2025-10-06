@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { PortableText } from "@portabletext/react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { CircleArrowRightIcon } from "./SocialIcons";
+import { CircleArrowRightIcon } from "./Icons";
 import { ExitIntentPopup as ExitIntentPopupType } from "@/types/siteSettings";
 
 interface FormData {

@@ -2,7 +2,7 @@
 
 import React from "react";
 import RenderSocial from "@/components/common/RenderSocial";
-import { PhoneIcon } from "@/components/common/SocialIcons";
+import { PhoneIcon } from "@/components/common/Icons";
 import { TopBanner } from "@/types/siteSettings";
 
 const Topbar = ({ data }: { data: TopBanner }) => {

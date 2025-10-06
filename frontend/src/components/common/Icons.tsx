@@ -87,6 +87,7 @@ export const InstagramIcon = ({ cls }: Props) => {
   );
 };
 
+// Twitter Icon
 export const TwitterIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -108,6 +109,7 @@ export const TwitterIcon = ({ cls }: Props) => {
   );
 };
 
+// Map Pin Icon
 export const MapPinIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -129,6 +131,7 @@ export const MapPinIcon = ({ cls }: Props) => {
   );
 };
 
+// Menu Icon
 export const MenuIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -151,6 +154,7 @@ export const MenuIcon = ({ cls }: Props) => {
   );
 };
 
+// X Icon
 export const XIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -172,6 +176,7 @@ export const XIcon = ({ cls }: Props) => {
   );
 };
 
+// Chevron Down Icon
 export const ChevronDownIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -192,6 +197,7 @@ export const ChevronDownIcon = ({ cls }: Props) => {
   );
 };
 
+// Chevron Right Icon
 export const ChevronRightIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -212,6 +218,7 @@ export const ChevronRightIcon = ({ cls }: Props) => {
   );
 };
 
+// Chevron Left Icon
 export const ChevronLeftIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -232,6 +239,7 @@ export const ChevronLeftIcon = ({ cls }: Props) => {
   );
 };
 
+// Arrow Left Icon
 export const ArrowLeftIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -254,6 +262,7 @@ export const ArrowLeftIcon = ({ cls }: Props) => {
   );
 };
 
+// Arrow Right Icon
 export const ArrowRightIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -276,6 +285,7 @@ export const ArrowRightIcon = ({ cls }: Props) => {
   );
 };
 
+// Youtube Icon
 export const YoutubeIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -297,6 +307,7 @@ export const YoutubeIcon = ({ cls }: Props) => {
   );
 };
 
+// Linkedin Icon
 export const LinkedinIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -321,6 +332,7 @@ export const LinkedinIcon = ({ cls }: Props) => {
   );
 };
 
+// Calendar Icon
 export const CalendarIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -351,6 +363,7 @@ export const CalendarIcon = ({ cls }: Props) => {
   );
 };
 
+// Circle Arrow Right Icon
 export const CircleArrowRightIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -374,6 +387,7 @@ export const CircleArrowRightIcon = ({ cls }: Props) => {
   );
 };
 
+// Play Icon
 export const PlayIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -390,6 +404,7 @@ export const PlayIcon = ({ cls }: Props) => {
   );
 };
 
+// Check Mark Icon
 export const CheckMarkIcon = ({ cls }: Props) => {
   return (
     <svg
@@ -406,6 +421,119 @@ export const CheckMarkIcon = ({ cls }: Props) => {
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M5 12l5 5l10 -10" />
+    </svg>
+  );
+};
+
+// User Icon
+export const UserIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+      <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+    </svg>
+  );
+};
+
+// Truck Icon
+export const TruckIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+      <path d="M5 17h-2v-11a1 1 0 0 1 1 -1h9v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
+    </svg>
+  );
+};
+
+export const StoreIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M3 21l18 0" />
+      <path d="M3 7v1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1m0 1a3 3 0 0 0 6 0v-1h-18l2 -4h14l2 4" />
+      <path d="M5 21l0 -10.15" />
+      <path d="M19 21l0 -10.15" />
+      <path d="M9 21v-4a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v4" />
+    </svg>
+  );
+};
+
+export const CloseIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M18 6l-12 12" />
+      <path d="M6 6l12 12" />
+    </svg>
+  );
+};
+
+export const CheckListIcon = ({ cls }: Props) => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={cls}
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M9.615 20h-2.615a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8" />
+      <path d="M14 19l2 2l4 -4" />
+      <path d="M9 8h4" />
+      <path d="M9 12h2" />
     </svg>
   );
 };

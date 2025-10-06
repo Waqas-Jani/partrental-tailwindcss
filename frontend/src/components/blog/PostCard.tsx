@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import dayjs from "dayjs";
-import { CalendarIcon } from "../common/SocialIcons";
+import { CalendarIcon } from "../common/Icons";
 
 export default function PostCard({ data }: any) {
   return (

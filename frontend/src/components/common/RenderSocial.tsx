@@ -5,7 +5,7 @@ import {
   YoutubeIcon,
   LinkedinIcon,
   XIcon,
-} from "./SocialIcons";
+} from "./Icons";
 
 export default function RenderSocial({ icon }: { icon: string }) {
   switch (icon) {

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { ChevronDownIcon } from "@/components/common/SocialIcons";
+import { ChevronDownIcon } from "@/components/common/Icons";
 
 type Props = {
   question: string;

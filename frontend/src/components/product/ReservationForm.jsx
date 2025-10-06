@@ -1,20 +1,21 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
+
 import {
-  X,
-  Calendar,
-  User,
-  Mail,
-  Phone,
-  ArrowLeft,
-  ArrowRight,
-  MapPin,
-  Truck,
-  Store,
-  ChevronDown,
-  CheckCircle,
-} from "lucide-react";
+  CloseIcon,
+  MapPinIcon,
+  ChevronDownIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  MailIcon,
+  PhoneIcon,
+  UserIcon,
+  CalendarIcon,
+  TruckIcon,
+  StoreIcon,
+  CheckListIcon,
+} from "@/components/common/Icons";
 import toast from "react-hot-toast";
 import styles from "./ReservationForm.module.css";
 
@@ -469,7 +470,7 @@ const ReservationForm = ({
           <div className={styles.step}>
             <div className={styles.formGroup}>
               <label className={styles.label}>
-                <Mail size={16} />
+                <MailIcon cls={"w-4 h-4"} />
                 Email Address *
               </label>
               <input
@@ -488,7 +489,7 @@ const ReservationForm = ({
 
             <div className={styles.formGroup}>
               <label className={styles.label}>
-                <User size={16} />
+                <UserIcon cls={"w-4 h-4"} />
                 Full Name *
               </label>
               <input
@@ -507,7 +508,7 @@ const ReservationForm = ({
 
             <div className={styles.formGroup}>
               <label className={styles.label}>
-                <Phone size={16} />
+                <PhoneIcon cls={"w-4 h-4"} />
                 Phone Number *
               </label>
               <input
@@ -553,7 +554,7 @@ const ReservationForm = ({
           <div className={styles.step}>
             <div className={styles.dateSection}>
               <h3 className={styles.sectionTitle}>
-                <Calendar size={20} />
+                <CalendarIcon cls={"w-4 h-4"} />
                 Select Rental Dates
               </h3>
 
@@ -572,7 +573,7 @@ const ReservationForm = ({
                 </div>
 
                 <div className={styles.dateSeparator}>
-                  <ArrowRight size={20} />
+                  <ArrowRightIcon cls={"w-4 h-4"} />
                 </div>
 
                 <div className={styles.formGroup}>
@@ -600,7 +601,7 @@ const ReservationForm = ({
           <div className={styles.step}>
             <div className={styles.deliveryMethodSection}>
               <h3 className={styles.sectionTitle}>
-                <Truck size={20} />
+                <TruckIcon cls={"w-4 h-4"} />
                 Choose Delivery Method
               </h3>
               <div className={styles.deliveryOptions}>
@@ -613,7 +614,7 @@ const ReservationForm = ({
                     handleInputChange("deliveryMethod", "delivery")
                   }
                 >
-                  <Truck size={32} />
+                  <TruckIcon cls={"w-4 h-4"} />
                   <span>Delivery Service</span>
                 </button>
                 <button
@@ -623,7 +624,7 @@ const ReservationForm = ({
                   }`}
                   onClick={() => handleInputChange("deliveryMethod", "pickup")}
                 >
-                  <Store size={32} />
+                  <StoreIcon cls={"w-4 h-4"} />
                   <span>Store Pickup</span>
                 </button>
               </div>
@@ -638,7 +639,7 @@ const ReservationForm = ({
                 <div className={styles.deliveryDetails}>
                   <div className={styles.formGroup}>
                     <div className={styles.locationIcon}>
-                      <MapPin size={16} />
+                      <MapPinIcon cls={"w-4 h-4"} />
                       <label className={styles.label}>State</label>
                     </div>
                     <div className={styles.selectWrapper}>
@@ -663,7 +664,7 @@ const ReservationForm = ({
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className={styles.selectIcon} size={18} />
+                      <ChevronDownIcon cls={styles.selectIcon} />
                     </div>
                     {errors.deliveryState && (
                       <span className={styles.errorText}>
@@ -688,7 +689,7 @@ const ReservationForm = ({
                   {formData.deliveryState && formData.deliveryState !== "" && (
                     <div className={styles.formGroup}>
                       <div className={styles.locationIcon}>
-                        <MapPin size={16} />
+                        <MapPinIcon cls={"w-4 h-4"} />
                         <label className={styles.label}>City</label>
                       </div>
                       <input
@@ -716,7 +717,7 @@ const ReservationForm = ({
                 <div className={styles.pickupSection}>
                   <div className={styles.locationSelect}>
                     <div className={styles.locationIcon}>
-                      <MapPin size={16} />
+                      <MapPinIcon cls={"w-4 h-4"} />
                       <label className={styles.label}>Pickup Location</label>
                     </div>
                     <div className={styles.selectWrapper}>
@@ -736,7 +737,7 @@ const ReservationForm = ({
                           </option>
                         ))}
                       </select>
-                      <ChevronDown className={styles.selectIcon} size={18} />
+                      <ChevronDownIcon cls={styles.selectIcon} />
                     </div>
                     {errors.pickupCity && (
                       <span className={styles.errorText}>
@@ -765,7 +766,7 @@ const ReservationForm = ({
             onClick={handleClose}
             className={styles.closeButton}
           >
-            <X size={24} />
+            <CloseIcon cls="w-5 h-5" />
           </button>
         </div>
 
@@ -804,7 +805,7 @@ const ReservationForm = ({
                 onClick={handleBack}
                 className={styles.secondaryButton}
               >
-                <ArrowLeft size={16} />
+                <ArrowLeftIcon cls={"w-4 h-4"} />
                 Back
               </button>
             )}
@@ -820,7 +821,7 @@ const ReservationForm = ({
                 }
               >
                 Next Step
-                <ArrowRight size={16} />
+                <ArrowRightIcon cls={"w-4 h-4"} />
               </button>
             ) : (
               <form onSubmit={handleFormSubmit} style={{ margin: 0 }}>
@@ -838,7 +839,7 @@ const ReservationForm = ({
 
         {showSuccess && (
           <div className={styles.successOverlay}>
-            <CheckCircle className={styles.successIcon} />
+            <CheckListIcon cls={styles.successIcon} />
 
             <p className={styles.successMessage}>
               Thanks for submitting your reservation request, someone from our

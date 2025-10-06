@@ -7,7 +7,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-} from "@/components/common/SocialIcons";
+} from "@/components/common/Icons";
 
 const ProductGallery = ({
   mainImage,

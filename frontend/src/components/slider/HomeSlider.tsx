@@ -5,7 +5,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Fade from "embla-carousel-fade";
 import Image from "next/image";
-import { ArrowLeftIcon, ArrowRightIcon } from "@/components/common/SocialIcons";
+import { ArrowLeftIcon, ArrowRightIcon } from "@/components/common/Icons";
 import { SanityButton } from "@/types/common";
 import Button from "@/components/common/Button";
 

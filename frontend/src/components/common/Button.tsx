@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import ReservationForm from "../product/ReservationForm";
 import { SanityButton } from "@/types/common";
-import { CircleArrowRightIcon } from "./SocialIcons";
+import { CircleArrowRightIcon } from "./Icons";
 
 const Button = ({
   title,

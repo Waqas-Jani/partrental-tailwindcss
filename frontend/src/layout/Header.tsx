@@ -13,7 +13,7 @@ import {
   MenuIcon,
   XIcon,
   ArrowRightIcon,
-} from "@/components/common/SocialIcons";
+} from "@/components/common/Icons";
 
 import TopBanner from "./Topbar";
 import Button from "@/components/common/Button";

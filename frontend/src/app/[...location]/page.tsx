@@ -17,7 +17,7 @@ import { getAllLandingPages, getLandingPageBySlug } from "@/lib/getLandingPage";
 import { sanityClient } from "@/lib/sanity";
 import BlogContent from "@/components/blog";
 import LandingPage from "@/components/landingpage";
-import { CircleArrowRightIcon } from "@/components/common/SocialIcons";
+import { CircleArrowRightIcon } from "@/components/common/Icons";
 
 interface MetadataProps {
   params: Promise<{ location: string[] }>;

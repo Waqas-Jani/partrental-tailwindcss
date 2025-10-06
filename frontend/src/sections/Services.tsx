@@ -4,7 +4,7 @@ import { slug } from "@/utils/index";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import { PlayIcon } from "@/components/common/SocialIcons";
+import { PlayIcon } from "@/components/common/Icons";
 import VideoPopup from "@/components/common/VideoPopup";
 
 const Services = ({ data }: any) => {

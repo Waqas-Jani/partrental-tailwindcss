@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { ArrowRightIcon } from "../common/SocialIcons";
+import { ArrowRightIcon } from "../common/Icons";
 
 type ItemProps = {
   name: string;

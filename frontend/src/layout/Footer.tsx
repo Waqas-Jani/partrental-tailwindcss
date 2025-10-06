@@ -12,7 +12,7 @@ import {
   ChevronRightIcon,
   CalendarIcon,
   CircleArrowRightIcon,
-} from "@/components/common/SocialIcons";
+} from "@/components/common/Icons";
 import RenderSocial from "@/components/common/RenderSocial";
 import Newsletter from "@/components/forms/Newsletter";
 import Link from "next/link";

@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import Button from "./Button";
-import { ChevronRightIcon } from "./SocialIcons";
+import { ChevronRightIcon } from "./Icons";
 
 const PageBanner = ({
   pageName,

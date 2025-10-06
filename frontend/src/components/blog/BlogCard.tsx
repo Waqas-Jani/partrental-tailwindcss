@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React from "react";
 import Image from "next/image";
-import { CircleArrowRightIcon } from "@/components/common/SocialIcons";
+import { CircleArrowRightIcon } from "@/components/common/Icons";
 
 const BlogCard = ({ item, index, isHome = false }: any) => {
   const truncate = (str: string, n: number) => {
