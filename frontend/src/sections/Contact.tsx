@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Button from "@/components/common/Button";
 import { useFormSubmission } from "@/hooks/useFormSubmission";
 
@@ -22,6 +22,8 @@ interface ContactProps {
 
 const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
   const { homeForm } = data;
+  const [shouldLoadMap, setShouldLoadMap] = useState(false);
+  const mapContainerRef = useRef<HTMLDivElement>(null);
 
   // Use the reusable form submission hook
   const {
@@ -38,6 +40,37 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
     formType: "home_contact_form",
     trackingFields: ["name", "email", "message"],
   });
+
+  // Intersection Observer to detect when map container is visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !shouldLoadMap) {
+            // Add a delay before loading the map
+            setTimeout(() => {
+              setShouldLoadMap(true);
+            }, 2000); // 2 second delay
+          }
+        });
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of the element is visible
+        rootMargin: "50px", // Start loading 50px before the element comes into view
+      }
+    );
+
+    const currentRef = mapContainerRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [shouldLoadMap]);
 
   return (
     <section
@@ -116,13 +149,26 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
           </div>
 
           <div className="md:col-span-7">
-            <div className="w-full h-full overflow-hidden">
-              <iframe
-                src={data?.mapUrl}
-                style={{ marginTop: isHome ? "-120px" : "0px" }}
-                title="google-map"
-                className="w-full h-full"
-              />
+            <div 
+              ref={mapContainerRef}
+              className="w-full h-full overflow-hidden relative"
+            >
+              {!shouldLoadMap ? (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-600 mx-auto mb-2"></div>
+                    <p className="text-gray-600">Loading map...</p>
+                  </div>
+                </div>
+              ) : (
+                <iframe
+                  src={data?.mapUrl}
+                  style={{ marginTop: isHome ? "-120px" : "0px" }}
+                  title="google-map"
+                  className="w-full h-full"
+                  loading="lazy"
+                />
+              )}
             </div>
           </div>
         </div>
