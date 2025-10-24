@@ -48,6 +48,7 @@ const TeamSection = ({ data }: { data: any }) => {
                         href={social.url}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`Follow on social`}
                       >
                         <RenderSocial icon={social.icon} />
                       </a>

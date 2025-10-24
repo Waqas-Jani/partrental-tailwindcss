@@ -66,7 +66,7 @@ const HeroSlider = ({ data }: HomeHeroProps) => {
                   fill
                   className="object-cover"
                   sizes="100vw"
-                  fetchPriority={index === 0 ? "high" : "auto"}
+                  fetchPriority={"high"}
                 />
               </div>
 

@@ -177,6 +177,7 @@ export default function Header({ topBanner, header }: Props) {
             <button
               className="lg:hidden p-2 text-secondary hover:text-primary transition-colors relative z-50"
               onClick={toggleMobileMenu}
+              aria-label="Toggle mobile menu"
             >
               <div className="relative w-6 h-6">
                 <MenuIcon

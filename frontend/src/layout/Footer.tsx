@@ -117,7 +117,7 @@ export default function Footer({ footer, posts }: FooterProps) {
                       className="text-gray-400 hover:text-primary transition-colors"
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label={"social media"}
+                      aria-label={`Follow on social`}
                     >
                       <span className="text-lg">
                         <RenderSocial icon={social.icon} />
