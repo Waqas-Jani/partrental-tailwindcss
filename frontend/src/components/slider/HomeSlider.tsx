@@ -65,8 +65,8 @@ const HeroSlider = ({ data }: HomeHeroProps) => {
                   alt={slide.bg.alt || slide.heading}
                   fill
                   className="object-cover"
-                  priority={index === 0}
                   sizes="100vw"
+                  fetchPriority={index === 0 ? "high" : "auto"}
                 />
               </div>
 
