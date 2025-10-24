@@ -30,10 +30,29 @@ export default defineType({
             validation: (rule) => rule.required(),
         }),
         defineField({
-            name: 'topBanner',
-            type: 'string',
-            title: 'Top Banner Phone Number',
-            validation: (rule) => rule.required(),
+            name: 'phoneBanner',
+            type: 'object',
+            title: 'Phone Banner',
+            fields: [
+                defineField({
+                    name: 'phoneNumber',
+                    type: 'string',
+                    title: 'Phone Number',
+                    description: 'This will be displayed in the landing page top banner',
+                    validation: (rule) => rule.required(),
+                }),
+                defineField({
+                    name: 'phoneLink',
+                    type: 'string',
+                    title: 'Phone Dial Link',
+                    description: 'This will be used to dial the phone number when the button is clicked. Example: +10000000000, 0000000000 etc',
+                    validation: (rule) => rule.required(),
+                }),
+            ],
+            options: {
+                collapsed: true,
+                collapsible: true,
+            },
         }),
         defineField({
             name: 'landingHero',

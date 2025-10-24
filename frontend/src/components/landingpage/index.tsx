@@ -27,14 +27,14 @@ const LandingPage = ({ data }: any) => {
 
   return (
     <>
-      {data?.topBanner && (
+      {data?.phoneBanner && (
         <div className="fixed top-0 left-0 right-0 z-50 p-1 flex items-center justify-center px-[20px] md:px-10 bg-primary text-white">
           <div>
             <a
               className="text-base font-bold"
-              href={`tel:${data.topBanner.replace(/-/g, "")}`}
+              href={`tel:${data?.phoneBanner?.phoneLink}`}
             >
-              {data?.topBanner || ""}
+              {data?.phoneBanner.phoneNumber || ""}
             </a>
           </div>
         </div>
