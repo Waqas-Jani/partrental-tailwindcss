@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
-// import Image from "next/image";
 import PageBanner from "@/components/common/PageBanner";
-// import Button from "@/components/common/Button";
-import { getAboutPage } from "@/lib";
 import AboutTwo from "@/sections/AboutTwo";
+import TeamSection from "@/sections/TeamSection";
+import { getAboutPage } from "@/lib";
+import Partners from "@/sections/Partners";
+import Testimonials from "@/sections/TestimonialsTwo";
+import Statistics from "@/sections/Statistics";
 
 export async function generateMetadata() {
   const { sanityAboutPage } = await getAboutPage();
@@ -25,36 +27,35 @@ export async function generateMetadata() {
 export default async function About() {
   const { sanityAboutPage, sanitySitesettings } = await getAboutPage();
 
-  let clientSec;
-  let teamSec;
-  let partnerSec;
-  let choose;
-  let aboutus;
   const statistic = sanitySitesettings?.statistic;
   const hero = sanityAboutPage?.hero;
 
-  sanityAboutPage?.pageBuilder?.forEach((element: any) => {
-    if (element?._type === "clientSec") {
-      clientSec = element;
-    } else if (element?._type === "teamSec") {
-      teamSec = element;
-    } else if (element?._type === "partnerSec") {
-      partnerSec = element;
-    } else if (element?._type === "choose") {
-      choose = element;
-    } else if (element?._type === "aboutus") {
-      aboutus = element;
+  function _renderSection(element: any, idx: number) {
+    switch (element?._type) {
+      case "aboutus":
+        return <AboutTwo key={idx} data={element} />;
+      case "teamSec":
+        return <TeamSection key={idx} data={element} />;
+      case "partnerSec":
+        return <Partners key={idx} data={element} />;
+      case "clientSec":
+        return <Testimonials key={idx} data={element} />;
+
+      // Add more cases for other sections when you have corresponding components
+      default:
+        return null;
     }
-  });
+  }
 
   //   console.log('==aboutus', sanityAboutPage);
 
   return (
     <>
       <PageBanner pageName={hero?.heading} data={hero} />
-      {aboutus && (aboutus as any)?.enable && (
-        <AboutTwo data={aboutus as any} />
+      {sanityAboutPage?.pageBuilder?.map((element: any, idx: number) =>
+        _renderSection(element, idx)
       )}
+      {statistic && statistic.enable && <Statistics data={statistic} />}
     </>
   );
 }

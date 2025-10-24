@@ -46,15 +46,17 @@ export const aboutPageQuery = `
         }
       },
       
-      _type == "partnerSec" => {
+    _type == "partnerSec" => {
         _type,
         enable,
         heading,
-        "partners": partners[]->{
+        partners[]->{
           org,
-          "imgBlack": {
-            "alt": imgBlack.alt,
-            "url": imgBlack.asset->url
+          imgBlack {
+            alt,
+            asset-> {
+              url
+            }
           }
         }
       },

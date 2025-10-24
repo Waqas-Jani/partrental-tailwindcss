@@ -11,6 +11,7 @@ const Contact = dynamic(() => import("@/sections/Contact"));
 const Testimonials = dynamic(() => import("@/sections/Testimonials"));
 const Blogs = dynamic(() => import("@/sections/Blogs"));
 const Partners = dynamic(() => import("@/sections/Partners"));
+const TeamSection = dynamic(() => import("@/sections/TeamSection"));
 
 export async function generateMetadata() {
   const data = await getHomePage();
@@ -31,19 +32,16 @@ export default async function Home() {
   const homePage = data.sanityHomePage || {};
   const hero = homePage.homeHero || {};
   const pageBuilder = homePage.pageBuilder || {};
-//   const statistics = data.sanitySitesettings.statistic || {};
+  //   const statistic = data.sanitySitesettings?.statistic;
 
   let partnerSec,
     clientSec,
     aboutHome,
     offers,
     homeContact,
-    contactBanner,
-    portfolioSec,
     blogSec,
     serviceSecOne,
     teamSec,
-    productSec,
     promotionalBanner;
 
   pageBuilder?.forEach((element: any) => {
@@ -57,18 +55,12 @@ export default async function Home() {
       offers = element;
     } else if (element?._type === "homeContact") {
       homeContact = element;
-    } else if (element?._type === "contactBanner") {
-      contactBanner = element;
-    } else if (element?._type === "portfolioSec") {
-      portfolioSec = element;
     } else if (element?._type === "blogSec") {
       blogSec = element;
     } else if (element?._type === "serviceSecOne") {
       serviceSecOne = element;
     } else if (element?._type === "teamSec") {
       teamSec = element;
-    } else if (element?._type === "productSec") {
-      productSec = element;
     } else if (element?._type === "promotionalBanner") {
       promotionalBanner = element;
     }
@@ -88,6 +80,9 @@ export default async function Home() {
       )}
       {offers && (offers as any)?.enable && (
         <WhyChooseUs data={offers as any} />
+      )}
+      {teamSec && (teamSec as any)?.enable && (
+        <TeamSection data={teamSec as any} />
       )}
 
       {homeContact && (homeContact as any)?.enable && (

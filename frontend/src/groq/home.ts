@@ -203,11 +203,9 @@ export const homePageQuery = `
         list[]->{
           name,
           designation,
-          photo {
-            alt,
-            asset-> {
-              url
-            }
+         "photo": {
+            "alt": photo.alt,
+            "url": photo.asset->url
           },
           social[] {
             url,

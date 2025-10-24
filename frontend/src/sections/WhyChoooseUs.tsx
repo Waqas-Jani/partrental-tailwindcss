@@ -21,7 +21,7 @@ const WhyChooseUs = ({ data }: any) => {
 
           {/* Content Column - Flexible */}
           <div className="wow fadeInRight flex flex-col">
-            <div className="text-center">
+            <div className="text-left">
               <span className="sub-title md:ml-12">{data.subheading}</span>
               <h2 className="h1-type mt-5">{data.heading}</h2>
             </div>
