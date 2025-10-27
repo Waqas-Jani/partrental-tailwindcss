@@ -65,7 +65,7 @@ export const blogTagListQuery = `*[_type == "tag"][0...10]{
 // recent blogs
 export const recentBlogsQuery = `{
     "recentNews": {
-      "edges": *[_type == "blog"] | order(_createdAt desc)[0...3]{
+      "edges": *[_type == "blog"] | order(_createdAt desc)[0...3] {
         "node": {
           title,
           slug {
@@ -73,14 +73,24 @@ export const recentBlogsQuery = `{
           },
           featuredImage {
             alt,
+            crop,
+            hotspot,
             asset->{
-              url
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
             }
           }
         }
       }
     }
   }`;
+
 
 // category by slug
 export const categoryBySlugQuery = `*[_type == "category" && slug.current == $slug][0]{

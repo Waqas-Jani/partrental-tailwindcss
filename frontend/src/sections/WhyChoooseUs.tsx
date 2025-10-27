@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import Button from "@/components/common/Button";
 import Accordion from "@/components/common/Accordion";
+import SanityImage from "@/components/common/SanityImage";
 
 const WhyChooseUs = ({ data }: any) => {
   return (
@@ -11,10 +12,9 @@ const WhyChooseUs = ({ data }: any) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           {/* Image Column - Fixed dimensions */}
           <div className="w-full h-[600px] relative md:sticky md:top-8">
-            <Image
-              src={data.image.asset.url}
-              alt={data.image.alt || data.heading}
-              fill
+            <SanityImage
+              image={data.image}
+              fill={true}
               className="w-full h-full object-cover rounded-lg"
             />
           </div>

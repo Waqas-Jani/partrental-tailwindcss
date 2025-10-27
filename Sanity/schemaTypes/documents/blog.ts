@@ -39,6 +39,9 @@ export default defineType({
             type: 'image',
             title: 'Featured Image',
             description: 'Main image for the blog post',
+            options: {
+                hotspot: true,
+            },
             fields: [
                 {
                     name: 'alt',

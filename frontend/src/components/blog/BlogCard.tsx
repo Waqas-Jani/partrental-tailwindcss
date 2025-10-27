@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";
 import React from "react";
-import Image from "next/image";
 import { CircleArrowRightIcon } from "@/components/common/Icons";
+import SanityImage from "@/components/common/SanityImage";
 
 const BlogCard = ({ item, index, isHome = false }: any) => {
   const truncate = (str: string, n: number) => {
@@ -20,8 +20,8 @@ const BlogCard = ({ item, index, isHome = false }: any) => {
         className="mb-3 group h-full flex flex-col"
       >
         <div className="relative aspect-video w-full">
-          <Image
-            src={item?.featuredImage?.asset?.url}
+          <SanityImage
+            image={item?.featuredImage}
             alt="Post Image"
             fill
             className="object-cover"

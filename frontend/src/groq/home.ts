@@ -40,9 +40,18 @@ export const homePageQuery = `
         description,
         image {
           alt,
-          asset-> {
-            url
-          }
+        crop,
+        hotspot,
+        asset->{
+            _id,
+            url,
+            metadata {
+            dimensions {
+                width,
+                height
+            }
+            }
+        }
         },
         button {
           btnType,
@@ -60,10 +69,19 @@ export const homePageQuery = `
           description
         },
         image {
-          alt,
-          asset-> {
-            url
-          }
+           alt,
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
+            }
         },
         button {
           btnType,
@@ -169,10 +187,20 @@ export const homePageQuery = `
           },
           title,
           featuredImage {
-            asset-> {
-              url
+            alt,
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
             }
-          }
+          },
         }
       },
       _type == "serviceSecOne" => {
@@ -203,9 +231,20 @@ export const homePageQuery = `
         list[]->{
           name,
           designation,
-         "photo": {
-            "alt": photo.alt,
-            "url": photo.asset->url
+         photo {
+            alt,
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
+            }
           },
           social[] {
             url,

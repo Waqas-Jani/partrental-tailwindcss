@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import PageBanner from "@/components/common/PageBanner";
 import Button from "@/components/common/Button";
 import { getDownloadsPage } from "@/lib";
+import SanityImage from "@/components/common/SanityImage";
 
 export async function generateMetadata() {
   const { sanityDownloadsPage: data } = await getDownloadsPage();
@@ -41,15 +41,14 @@ const DownloadCard = ({
   return (
     <div className="bg-white rounded-[10px] shadow-[0_5px_30px_rgba(0,0,0,0.05)] mb-[30px] transition-all duration-300 ease-in-out overflow-hidden h-full flex flex-col hover:transform hover:-translate-y-[5px] hover:shadow-[0_15px_30px_rgba(0,0,0,0.1)]">
       <div className="relative w-full pt-[125%] overflow-hidden rounded-t-[10px]">
-        <Image
-          src={image}
-          alt={title}
-          fill
+        <SanityImage
+          image={image as any}
+          fill={true}
           className="absolute top-0 left-0 w-full h-full object-cover transition-transform duration-300 ease-in-out hover:scale-105"
         />
       </div>
-      <Link 
-        href={link} 
+      <Link
+        href={link}
         className="block bg-[#e31e24] text-white text-center py-[15px] font-semibold uppercase tracking-[1px] transition-all duration-300 ease-in-out mt-auto hover:bg-black hover:text-white"
       >
         {title}
@@ -85,7 +84,7 @@ const DownloadsPage = async () => {
               >
                 <DownloadCard
                   title={item?.title}
-                  image={item?.image?.asset?.url}
+                  image={item?.image as any}
                   link={item?.file?.asset?.url}
                 />
               </div>

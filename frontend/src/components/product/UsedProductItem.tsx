@@ -3,8 +3,8 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import QuoteRequestForm from "./QuoteRequestForm";
+import SanityImage from "@/components/common/SanityImage";
 
 const UsedProductItem = ({ product }: any) => {
   const [isQuoteFormOpen, setIsQuoteFormOpen] = useState(false);
@@ -26,14 +26,13 @@ const UsedProductItem = ({ product }: any) => {
         <div className="flex-1 flex flex-col">
           <Link href={`/product/${product.slug}`}>
             <div className="bg-gray-50 aspect-[4/3] w-full relative group-hover:scale-105 transition-all duration-300">
-              <Image
-                src={product.featuredImage?.asset?.url || placeholderImage}
-                alt={product.featuredImage?.alt || product.name}
-                fill
+              <SanityImage
+                image={product.featuredImage}
+                fill={true}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="h-full w-full object-cover"
               />
-              {!product.featuredImage?.asset?.url && (
+              {!product.featuredImage && (
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span>No Image Available</span>
                 </div>
@@ -70,7 +69,9 @@ const UsedProductItem = ({ product }: any) => {
                   <span className="">
                     ${product.salePrice.toLocaleString()}
                   </span>
-                  <span className="line-through text-gray-400 ml-2">${product.price.toLocaleString()}</span>
+                  <span className="line-through text-gray-400 ml-2">
+                    ${product.price.toLocaleString()}
+                  </span>
                 </>
               ) : (
                 <span className="">${product.price.toLocaleString()}</span>

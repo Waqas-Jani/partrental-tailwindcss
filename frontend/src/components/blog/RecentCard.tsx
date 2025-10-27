@@ -2,6 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import SanityImage from "@/components/common/SanityImage";
 
 export default function RecentCard({ data }: any) {
   return (
@@ -11,11 +12,10 @@ export default function RecentCard({ data }: any) {
         className="flex flex-row gap-x-4 mb-8 group"
       >
         {data?.featuredImage?.asset ? (
-          <Image
-            src={data?.featuredImage?.asset?.url}
+          <SanityImage
+            image={data?.featuredImage}
             width={100}
             height={100}
-            alt="post image"
             className="rounded-lg object-cover h-[100px] w-[100px]"
           />
         ) : (
@@ -28,12 +28,9 @@ export default function RecentCard({ data }: any) {
           {data?.author?.name && (
             <span className="text-secondary text-sm font-extrabold">
               By{" "}
-              <a
-                href="#"
-                className="group-hover:text-primary transition-all duration-300"
-              >
+              <span className="group-hover:text-primary transition-all duration-300">
                 {data?.author?.name}
-              </a>
+              </span>
             </span>
           )}
         </div>

@@ -97,19 +97,30 @@ export const siteSettingsQuery = `
       }
     }
   },
-  "latestBlogs": *[_type == "blog"] | order(_createdAt desc)[0...2] {
+
+  "latestBlogs": *[_type == "blog"] | order(_createdAt desc)[0...2]{
     title,
     slug {
       current
     },
     featuredImage {
       alt,
+      crop,
+      hotspot,
       asset->{
-        url
+        _id,
+        url,
+        metadata {
+          dimensions {
+            width,
+            height
+          }
+        }
       }
     },
-    publishedAt,
+    publishedAt
   }
 }
 `;
+
 

@@ -82,10 +82,19 @@ export async function getEquipments({
       salePrice,
       onSale,
       featuredImage {
-        asset-> {
-          url
-        },
-        alt
+        alt,
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
+            }
       },
       "categories": categories[]->name
     },
@@ -153,14 +162,32 @@ export async function getEquipmentBySlug(slug: string) {
         onSale,
         featuredImage {
             alt,
-            asset ->{
-                url
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
             }
         },
         galleryImages []{
-            alt,
-            asset ->{
-                url
+           alt,
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
             }
         },
         description,

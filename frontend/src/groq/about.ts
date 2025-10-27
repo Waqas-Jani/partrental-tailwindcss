@@ -69,9 +69,20 @@ export const aboutPageQuery = `
         "list": list[]->{
           name,
           designation,
-          "photo": {
-            "alt": photo.alt,
-            "url": photo.asset->url
+          photo {
+             alt,
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
+            }
           },
           "social": social[]{
             url,

@@ -4,6 +4,7 @@
 import React from "react";
 import Image from "next/image";
 import dayjs from "dayjs";
+import Link from "next/link";
 import MyLink from "@/components/common/Link";
 import { Footer as FooterType } from "@/types/siteSettings";
 import {
@@ -15,7 +16,7 @@ import {
 } from "@/components/common/Icons";
 import RenderSocial from "@/components/common/RenderSocial";
 import Newsletter from "@/components/forms/Newsletter";
-import Link from "next/link";
+import SanityImage from "@/components/common/SanityImage";
 
 interface FooterProps {
   footer?: FooterType;
@@ -173,36 +174,39 @@ export default function Footer({ footer, posts }: FooterProps) {
               <ul className="space-y-3 text-gray-300 mb-3">
                 {posts &&
                   posts.length > 0 &&
-                  posts.map((blog: any, index: number) => (
-                    <li className="flex flex-row gap-x-2" key={index}>
-                      <Image
-                        width={100}
-                        height={100}
-                        src={blog.featuredImage?.asset?.url || ""}
-                        alt="Post Image"
-                        className="object-cover rounded-lg"
-                      />
-                      <div className="ml-4">
-                        <h3 className="font-bold text-sm sm:text-lg mb-2 text-primary-gray">
-                          <MyLink
-                            text={blog.title || ""}
-                            linkType={blog?.linkType || "internal"}
-                            link={blog?.link || ""}
-                            cls="hover:text-primary transition-colors block text-base"
+                  posts.map((blog: any, index: number) => {
+                    return (
+                      <li className="flex flex-row gap-x-2" key={index}>
+                        {blog.featuredImage && (
+                          <SanityImage
+                            image={blog.featuredImage}
+                            width={200}
+                            height={200}
+                            className="rounded-lg h-[100px] w-[100px] object-cover"
                           />
-                        </h3>
-                        <span className="flex items-center gap-x-2 text-white">
-                          <CalendarIcon cls="h-4 w-4" />
-                          <a className="font-bold text-sm sm:text-base">
-                            {" "}
-                            {dayjs(blog?.publishedAt || "").format(
-                              "DD MMMM YYYY"
-                            )}{" "}
-                          </a>
-                        </span>
-                      </div>
-                    </li>
-                  ))}
+                        )}
+                        <div className="ml-4">
+                          <h3 className="font-bold text-sm sm:text-lg mb-2 text-primary-gray">
+                            <MyLink
+                              text={blog.title || ""}
+                              linkType={"internal"}
+                              link={blog?.slug?.current || ""}
+                              cls="hover:text-primary transition-colors block text-base"
+                            />
+                          </h3>
+                          <span className="flex items-center gap-x-2 text-white">
+                            <CalendarIcon cls="h-4 w-4" />
+                            <a className="font-bold text-sm sm:text-base">
+                              {" "}
+                              {dayjs(blog?.publishedAt || "").format(
+                                "DD MMMM YYYY"
+                              )}{" "}
+                            </a>
+                          </span>
+                        </div>
+                      </li>
+                    );
+                  })}
               </ul>
             </div>
             <Link

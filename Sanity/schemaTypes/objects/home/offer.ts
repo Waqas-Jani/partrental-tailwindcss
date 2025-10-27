@@ -42,6 +42,7 @@ export default defineType({
       options: {
         collapsible: true,
         collapsed: true,
+        hotspot: true,
       },
       validation: (rule) => rule.required(),
     }),

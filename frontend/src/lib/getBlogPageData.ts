@@ -11,113 +11,133 @@ export async function getBlogPageData(page = 1, limit = 6) {
 
     return sanityClient.fetch(
         `
-    {
-      "sanityBlogPage": *[_type == "blogPage"][0] {
-        seo {
-            title,
-            ldSchema,
-            keywords,
-            description
-        },
-        hero {
-            heading,
-            description,
-            "bg": {
-              "asset": {
-                "url": bg.asset->url
-              }
-            },
-            isBreadcrumb,
-            button {
-              btnType,
-              link,
-              linkType,
-              title
-            },
-            button2 {
-              btnType,
-              link,
-              linkType,
-              title
-            }
-        },
-        contact {
-          enable,
-          phone,
-          email,
-          button {
-                btnType,
-                link,
-                linkType,
-                title
-          },
-          "bg": {
-            "url": contact.bg.asset->url
-          }
-        }
+  {
+    "sanityBlogPage": *[_type == "blogPage"][0] {
+      seo {
+        title,
+        ldSchema,
+        keywords,
+        description
       },
-      "allSanityBlog": {
-        "edges": *[_type == "blog"] | order(modifiedAt desc) [${skip}...${skip + limit
-        }] {
-          "node": {
-            "title": title,
-            "slug": {
-              "current": slug.current
-            },
-            "featuredImage": {
-              "alt": featuredImage.alt,
-              "asset": {
-                "url": featuredImage.asset->url
-              }
-            },
-            "publishedAt": publishedAt,
-            "modifiedAt": modifiedAt,
-            "category": category->{
-              "name": name
-            }
+      hero {
+        heading,
+        description,
+        "bg": {
+          "asset": {
+            "url": bg.asset->url
           }
         },
-        "totalCount": count(*[_type == "blog"])
-      },
-      "recentNews": {
-        "edges": *[_type == "blog"] | order(modifiedAt desc) [0...3] {
-          "node": {
-            "title": title,
-            "slug": {
-              "current": slug.current
-            },
-            "featuredImage": {
-              "alt": featuredImage.alt,
-              "asset": {
-                "url": featuredImage.asset->url
-              }
-            },
-            "author": author->{
-              "name": name
-            }
-          }
+        isBreadcrumb,
+        button {
+          btnType,
+          link,
+          linkType,
+          title
+        },
+        button2 {
+          btnType,
+          link,
+          linkType,
+          title
         }
       },
-      "categories": *[_type == "category"] {
-        "name": name,
-        "slug": {
-          "current": slug.current
-        }
-      },
-      "tags": *[_type == "tag"][0...10] {
-        "name": name,
-        "slug": {
-          "current": slug.current
-        }
-      },
-      "sanitySitesettings": *[_type == "sitesettings"][0] {
-        "favicon": {
-          "url": favicon.asset->url
+      contact {
+        enable,
+        phone,
+        email,
+        button {
+          btnType,
+          link,
+          linkType,
+          title
+        },
+        "bg": {
+          "url": contact.bg.asset->url
         }
       }
+    },
+  
+    "allSanityBlog": {
+      "edges": *[_type == "blog"] | order(modifiedAt desc)[${skip}...${skip + limit}] {
+        "node": {
+          title,
+          slug {
+            current
+          },
+          featuredImage {
+            alt,
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
+            }
+          },
+          publishedAt,
+          modifiedAt,
+          category->{
+            name
+          }
+        }
+      },
+      "totalCount": count(*[_type == "blog"])
+    },
+  
+    "recentNews": {
+      "edges": *[_type == "blog"] | order(modifiedAt desc)[0...3] {
+        "node": {
+          title,
+          slug {
+            current
+          },
+          "featuredImage": {
+            "alt": featuredImage.alt,
+            "crop": featuredImage.crop,
+            "hotspot": featuredImage.hotspot,
+            "asset": {
+              "_id": featuredImage.asset->_id,
+              "url": featuredImage.asset->url,
+              "metadata": {
+                "dimensions": featuredImage.asset->metadata.dimensions
+              }
+            }
+          },
+          author->{
+            name
+          }
+        }
+      }
+    },
+  
+    "categories": *[_type == "category"] {
+      name,
+      slug {
+        current
+      }
+    },
+  
+    "tags": *[_type == "tag"][0...10] {
+      name,
+      slug {
+        current
+      }
+    },
+  
+    "sanitySitesettings": *[_type == "sitesettings"][0] {
+      "favicon": {
+        "url": favicon.asset->url
+      }
     }
+  }
   `,
         {},
         { cache: "no-store" }
     );
 }
+

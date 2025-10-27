@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Button from "@/components/common/Button";
-import Image from "next/image";
 import RenderSocial from "@/components/common/RenderSocial";
+import SanityImage from "@/components/common/SanityImage";
 
 const TeamSection = ({ data }: { data: any }) => {
   return (
@@ -30,9 +30,8 @@ const TeamSection = ({ data }: { data: any }) => {
               }`}
             >
               <div className="mb-4 w-[80%] mx-auto relative z-10">
-                <Image
-                  src={item.photo.url}
-                  alt={item.photo.alt || item.name}
+                <SanityImage
+                  image={item.photo}
                   width={500}
                   height={500}
                   className="w-full h-full object-cover"

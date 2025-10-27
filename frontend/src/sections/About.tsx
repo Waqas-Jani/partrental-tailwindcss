@@ -2,7 +2,8 @@
 import React from "react";
 import Button from "../components/common/Button";
 import { PortableText } from "@portabletext/react";
-import Image from "next/image";
+
+import SanityImage from "@/components/common/SanityImage";
 
 const About = ({ data }: { data: any }) => {
   return (
@@ -11,12 +12,11 @@ const About = ({ data }: { data: any }) => {
         <div className="flex flex-col lg:flex-row lg:space-x-10">
           <div className="lg:w-[45%]">
             <div className="w-full h-full">
-              <Image
-                src={data.image.asset.url}
+              <SanityImage
+                image={data.image}
+                className="w-full h-full object-cover"
                 width={500}
-                height={500}
-                alt="About Image"
-                className="w-full h-full"
+                height={650}
               />
             </div>
           </div>

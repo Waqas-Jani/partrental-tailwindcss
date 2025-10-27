@@ -4,11 +4,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "@/components/common/Icons";
-
+import { ChevronLeftIcon, ChevronRightIcon } from "@/components/common/Icons";
+import SanityImage from "@/components/common/SanityImage";
 const ProductGallery = ({
   mainImage,
   images = [],
@@ -98,7 +95,7 @@ const ProductGallery = ({
       </div>
     );
   }
-
+console.log("allImages", allImages);
   return (
     <div className="w-full mx-auto">
       {/* Main Gallery */}
@@ -111,10 +108,9 @@ const ProductGallery = ({
             {allImages.map((image: any, index: number) => (
               <div key={`main-${index}`} className="flex-[0_0_100%] min-w-0">
                 <div className="aspect-square relative h-full w-full">
-                  <Image
-                    src={image.asset.url}
-                    alt={image.alt || `${productName} - Image ${index + 1}`}
-                    fill
+                  <SanityImage
+                    image={image}
+                    fill={true}
                     className="object-contain h-full w-full"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     priority={index === 0}

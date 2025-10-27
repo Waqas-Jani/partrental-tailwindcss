@@ -35,9 +35,19 @@ export const downloadsPageQuery = `
       downloads[]->{
         title,
         image {
-          asset-> {
-            url
-          }
+          alt,
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
+            }
         },
         file {
           asset-> {
