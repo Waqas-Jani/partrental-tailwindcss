@@ -57,6 +57,12 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
 
     // Submit abandoned form function
     const submitAbandonedForm = useCallback(() => {
+        // Honeypot validation - if honeypot field is filled, it's likely a bot
+        if (formState.current.fieldValues.honeypot && formState.current.fieldValues.honeypot.trim() !== "") {
+            logDebug("Bot detected in abandoned form - honeypot field filled, skipping submission");
+            return;
+        }
+
         const hasData = trackingFields.some(
             field => formState.current.fieldValues[field]?.trim()
         );
@@ -67,9 +73,13 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
         }
 
         try {
+            // Remove honeypot field from abandoned form data
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { honeypot, ...cleanFieldValues } = formState.current.fieldValues;
+
             const abandonData = {
                 data: {
-                    ...formState.current.fieldValues,
+                    ...cleanFieldValues,
                     form_status: "abandoned",
                     page_url: window.location.href,
                     date: new Date().toUTCString(),
@@ -190,7 +200,7 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
 
     // Enhanced register function to track field values
     const registerWithTracking = useCallback(
-        (name: string, options: any) => {
+        (name: string, options?: any) => {
             return {
                 ...register(name, options),
                 onChange: (e: any) => {
@@ -222,6 +232,27 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
 
     // Submit completed form
     const submitCompletedForm = useCallback(async (data: any) => {
+        // Honeypot validation - if honeypot field is filled, it's likely a bot
+        if (data.honeypot && data.honeypot.trim() !== "") {
+            logDebug("Bot detected - honeypot field filled");
+            
+            // Show success toast to trick the bot
+            toast.success("Request has been submitted successfully");
+            
+            // Reset form without actually submitting
+            formState.current = {
+                started: false,
+                lastFieldChanged: null,
+                fieldValues: {},
+                debugMessages: "",
+                abandonTimer: null,
+            };
+            setFormStarted(false);
+            reset();
+            
+            return; // Exit early, don't submit to server
+        }
+
         const toastId = toast.loading("Submitting...");
 
         // Clear any pending abandon form submissions
@@ -231,9 +262,13 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
             logDebug("Cleared abandon timer during form submission");
         }
 
+        // Remove honeypot field from actual submission data
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { honeypot, ...cleanData } = data;
+
         const formData = {
             data: {
-                ...data,
+                ...cleanData,
                 form_status: "completed",
                 date: new Date().toUTCString(),
                 page_url: window.location.href,

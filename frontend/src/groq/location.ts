@@ -46,8 +46,17 @@ export const locationServiceQuery = `{
           description,
           image {
             alt,
+            crop,
+            hotspot,
             asset->{
-              url
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
             }
           },
           points[] {
@@ -288,10 +297,19 @@ export const locationQueryBySlug = `{
           heading,
           subheading,
           description,
-          "image": {
+          image {
             alt,
-            "asset": {
-              "url": image.asset->url
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
             }
           },
           "points": points[] {

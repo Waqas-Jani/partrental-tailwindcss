@@ -27,7 +27,6 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
 
   // Use the reusable form submission hook
   const {
-    register,
     registerWithTracking,
     handleSubmit,
     errors,
@@ -38,7 +37,7 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
     completedSheetId: 85,
     abandonedSheetId: 89,
     formType: "home_contact_form",
-    trackingFields: ["name", "email", "message"],
+    trackingFields: ["name", "email", "message", "honeypot"],
   });
 
   // Intersection Observer to detect when map container is visible
@@ -123,7 +122,7 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
                     className="input-field-primary"
                     placeholder="Write Message"
                     rows={4}
-                    {...register("message", {
+                    {...registerWithTracking("message", {
                       required: "Message is required",
                     })}
                   />
@@ -133,6 +132,22 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
                     </span>
                   )}
                 </div>
+                {/* Honeypot field (hidden from real users) */}
+                <input
+                  type="text"
+                  {...registerWithTracking("honeypot")}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  style={{
+                    position: "absolute",
+                    left: "-9999px",
+                    width: "1px",
+                    height: "1px",
+                    opacity: 0,
+                    pointerEvents: "none",
+                  }}
+                  aria-hidden="true"
+                />
                 <div className="mt-5 flex md:justify-start justify-center">
                   {homeForm?.button?.title && (
                     <Button
@@ -149,7 +164,7 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
           </div>
 
           <div className="md:col-span-7">
-            <div 
+            <div
               ref={mapContainerRef}
               className="w-full h-full overflow-hidden relative"
             >

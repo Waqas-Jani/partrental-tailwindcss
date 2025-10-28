@@ -55,6 +55,7 @@ const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
   // Add formStarted state
   const [formStarted, setFormStarted] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -76,6 +77,12 @@ const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
 
   // Add submit abandoned form function
   const submitAbandonedForm = useCallback(() => {
+    if (honeypot && honeypot.trim() !== "") {
+      toast.success("Request has been submitted successfully");
+      setHoneypot("");
+      setIsSubmitting(false);
+      return;
+    }
     // Only submit if we have at least name or email
     if (
       !formState.current.started ||
@@ -243,8 +250,14 @@ const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
     if (!validateForm()) {
       return;
     }
-
     setIsSubmitting(true);
+    if (honeypot && honeypot.trim() !== "") {
+      toast.success("Request has been submitted successfully");
+      setHoneypot("");
+      setIsSubmitting(false);
+      return;
+    }
+
     const toastId = toast.loading("Submitting...");
 
     // Clear any pending abandon form submissions
@@ -499,6 +512,24 @@ const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
               rows={4}
             />
           </div>
+          {/* Honeypot field (hidden from real users) */}
+          <input
+            type="text"
+            name="honeypot"
+            tabIndex={-1}
+            autoComplete="off"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            style={{
+              position: "absolute",
+              left: "-9999px",
+              width: "1px",
+              height: "1px",
+              opacity: 0,
+              pointerEvents: "none",
+            }}
+            aria-hidden="true"
+          />
           <button
             type="submit"
             className="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-red-700 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"

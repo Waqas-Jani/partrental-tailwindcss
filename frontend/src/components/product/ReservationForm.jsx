@@ -31,6 +31,7 @@ const ReservationForm = ({
   const [currentStep, setCurrentStep] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     name: "",
@@ -75,6 +76,12 @@ const ReservationForm = ({
 
   // Add submit abandoned form function
   const submitAbandonedForm = useCallback(() => {
+    if (honeypot && honeypot.trim() !== "") {
+      toast.success("Request has been submitted successfully");
+      setHoneypot("");
+      setIsSubmitting(false);
+      return;
+    }
     // Only submit if we have at least name or email
     if (
       !formState.current.started ||
@@ -334,6 +341,13 @@ const ReservationForm = ({
   const handleFormSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission
 
+    if (honeypot && honeypot.trim() !== "") {
+      toast.success("Request has been submitted successfully");
+      setHoneypot("");
+      setIsSubmitting(false);
+      return;
+    }
+
     // Final validation before submission
     if (!validateDeliveryMethod()) {
       return;
@@ -344,7 +358,6 @@ const ReservationForm = ({
     }
 
     setIsSubmitting(true);
-    console.log("Form submitted:");
 
     // Here you would typically send the data to your backend
     const toastId = toast.loading("Submitting...");
@@ -524,6 +537,24 @@ const ReservationForm = ({
                 <span className={styles.errorText}>{errors.phone}</span>
               )}
             </div>
+            {/* Honeypot field (hidden from real users) */}
+            <input
+              type="text"
+              name="honeypot"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+              style={{
+                position: "absolute",
+                left: "-9999px",
+                width: "1px",
+                height: "1px",
+                opacity: 0,
+                pointerEvents: "none",
+              }}
+              aria-hidden="true"
+            />
           </div>
         );
 

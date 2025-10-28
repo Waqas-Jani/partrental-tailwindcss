@@ -2,8 +2,8 @@
 import React from "react";
 import Button from "@/components/common/Button";
 import { PortableText } from "@portabletext/react";
-import Image from "next/image";
 import { PortableTextComponent } from "@/components/PortableTextComponent";
+import SanityImage from "@/components/common/SanityImage";
 
 const ImageContent = ({
   data,
@@ -33,12 +33,11 @@ const ImageContent = ({
         >
           <div className="w-full lg:w-1/2">
             <div className="mt-0">
-              <Image
-                src={data.image.asset.url}
-                alt="About Image"
+              <SanityImage
+                image={data.image}
                 className="w-full h-full"
-                width={500}
-                height={500}
+                height={800}
+                width={800}
               />
             </div>
           </div>

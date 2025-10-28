@@ -38,17 +38,17 @@ export async function generateMetadata({ params }: any) {
     const data = await getRentCategory(rentParams.slug[0]);
 
     return {
-      title: data.sanityRentCategory.seo.title,
-      description: data.sanityRentCategory.seo.description,
-      keywords: data.sanityRentCategory.seo.keywords,
+      title: data?.sanityRentCategory?.seo?.title,
+      description: data?.sanityRentCategory?.seo?.description,
+      keywords: data?.sanityRentCategory?.seo?.keywords,
       openGraph: {
         title:
-          data.sanityRentCategory.seo.title ??
-          data.sanityRentCategory?.hero?.heading,
-        description: data.sanityRentCategory.seo.description,
+          data?.sanityRentCategory?.seo?.title ??
+          data?.sanityRentCategory?.hero?.heading,
+        description: data?.sanityRentCategory?.seo?.description,
         images: [
           {
-            url: data.sanityRentCategory?.hero?.bg?.asset?.url,
+            url: data?.sanityRentCategory?.hero?.bg?.asset?.url,
             width: 1200,
             height: 630,
           },

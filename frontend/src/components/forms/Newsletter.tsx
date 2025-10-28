@@ -9,10 +9,23 @@ export default function Newsletter({ data }: any) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+    // Honeypot validation - if honeypot field is filled, it's likely a bot
+    if (honeypot && honeypot.trim() !== "") {
+      // Show success toast to trick the bot
+      toast.success("Request has been submitted successfully");
+
+      setName("");
+      setEmail("");
+      setHoneypot("");
+      setLoading(false);
+      return; // Exit early, don't submit to server
+    }
+
     const toastId = toast.loading("Submitting...");
     const d = {
       data: {
@@ -77,6 +90,24 @@ export default function Newsletter({ data }: any) {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+          {/* Honeypot field (hidden from real users) */}
+          <input
+            type="text"
+            name="honeypot"
+            tabIndex={-1}
+            autoComplete="off"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+            style={{
+              position: "absolute",
+              left: "-9999px",
+              width: "1px",
+              height: "1px",
+              opacity: 0,
+              pointerEvents: "none",
+            }}
+            aria-hidden="true"
+          />
 
           <div className="">
             {data?.button?.title && (

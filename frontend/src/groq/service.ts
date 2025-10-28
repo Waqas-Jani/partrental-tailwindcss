@@ -38,9 +38,18 @@ export const servicePageQuery = `{
           subheading,
           description,
           image {
-            alt,
+             alt,
+            crop,
+            hotspot,
             asset->{
-              url
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
             }
           },
           points[]{

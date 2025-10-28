@@ -18,7 +18,7 @@ export default function Form({ data }: any) {
     completedSheetId: 85,
     abandonedSheetId: 89,
     formType: "contact_form",
-    trackingFields: ["name", "email", "subject", "message"],
+    trackingFields: ["name", "email", "subject", "message", "honeypot"],
   });
 
   return (
@@ -89,6 +89,22 @@ export default function Form({ data }: any) {
                 </span>
               )}
             </div>
+            {/* Honeypot field (hidden from real users) */}
+            <input
+              type="text"
+              {...registerWithTracking("honeypot")}
+              tabIndex={-1}
+              autoComplete="off"
+              style={{
+                position: "absolute",
+                left: "-9999px",
+                width: "1px",
+                height: "1px",
+                opacity: 0,
+                pointerEvents: "none",
+              }}
+              aria-hidden="true"
+            />
             <div className="mt-4">
               {data?.button?.title && (
                 <Button

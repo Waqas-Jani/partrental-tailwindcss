@@ -37,11 +37,20 @@ export const rentPageQuery = `
         heading,
         subheading,
         description,
-        "image": {
-          alt,
-          "asset": {
-            "url": image.asset->url
-          }
+        image {
+           alt,
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
+            }
         },
         "points": points[]{
           title,
@@ -280,11 +289,20 @@ export const rentCategoryQuery = /* groq */ `
         heading,
         subheading,
         description,
-        "image": {
+        image {
           alt,
-          "asset": {
-            "url": image.asset->url
-          }
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
+            }
         },
         "points": points[]{
           title,
@@ -462,11 +480,20 @@ export const rentSubCategoryQuery = `
         heading,
         subheading,
         description,
-        "image": {
-          alt,
-          "asset": {
-            "url": image.asset->url
-          }
+        image {
+           alt,
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
+            }
         },
         "points": points[]{
           title,

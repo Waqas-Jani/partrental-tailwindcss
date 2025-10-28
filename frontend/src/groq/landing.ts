@@ -53,11 +53,20 @@ export const landingPageBySlugQuery = `
     heading,
     subheading,
     description,
-    "image": {
-      alt,
-      "asset": {
-        "url": image.asset->url
-      }
+    image {
+       alt,
+            crop,
+            hotspot,
+            asset->{
+              _id,
+              url,
+              metadata {
+                dimensions {
+                  width,
+                  height
+                }
+              }
+            }
     },
     "points": points[] {
       title,
