@@ -28,16 +28,17 @@ export default function Footer({ footer, posts }: FooterProps) {
     <footer className="bg-black text-primary-gray pb-8">
       <div className="tp-container">
         {/* Logo & Location */}
-        <div className="flex lg:flex-row flex-col justify-between border-b border-gray-800 border-l border-r">
+        {/* Logo & Location */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 border-b border-gray-800 border-l border-r">
           {/* Logo */}
-          <div className="w-full p-16">
+          <div className="w-full p-16 flex justify-start lg:justify-center items-center">
             {footer?.logo?.asset?.url && (
               <Image
                 src={footer?.logo?.asset?.url}
                 alt={footer.logo.alt || "Partner Rentals"}
                 width={200}
                 height={60}
-                className="h-12 w-auto mb-4"
+                className="h-16 w-auto mb-4"
               />
             )}
           </div>
