@@ -51,7 +51,7 @@ export default async function About() {
 
   return (
     <>
-      <PageBanner pageName={hero?.heading} data={hero} />
+      {hero && <PageBanner pageName={hero?.heading} data={hero as any} />}
       {sanityAboutPage?.pageBuilder?.map((element: any, idx: number) =>
         _renderSection(element, idx)
       )}

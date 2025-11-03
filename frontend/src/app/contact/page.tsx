@@ -27,12 +27,14 @@ const Contact = async () => {
   // Fetch data for the page
   const data = await getContactPage();
   const { sanityContactPage } = data;
-  const { hero, contactForm, contactSec } = sanityContactPage;
+  const hero = sanityContactPage?.hero;
+  const contactSec = sanityContactPage?.contactSec;
+  const contactForm = sanityContactPage?.contactForm;
 
   return (
     <>
       {/* Page Banner */}
-      <PageBanner pageName={hero?.heading} data={hero} />
+      {hero && <PageBanner pageName={hero?.heading} data={hero as any} />}
 
       {/* Contact Form & Information Section */}
       {contactSec && contactSec.enable && (

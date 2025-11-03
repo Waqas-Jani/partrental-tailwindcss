@@ -95,7 +95,7 @@ const ProductGallery = ({
       </div>
     );
   }
-console.log("allImages", allImages);
+
   return (
     <div className="w-full mx-auto">
       {/* Main Gallery */}
@@ -122,7 +122,7 @@ console.log("allImages", allImages);
         </div>
 
         {/* Navigation Buttons */}
-        {allImages.length > 1 && (
+        {allImages?.length > 1 && (
           <>
             <button
               className="absolute left-2 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-primary rounded-full p-2 shadow-lg transition-all duration-200 hover:scale-110"
@@ -143,10 +143,10 @@ console.log("allImages", allImages);
       </div>
 
       {/* Thumbnail Navigation */}
-      {allImages.length > 1 && (
+      {allImages?.length > 1 && (
         <div className="overflow-hidden" ref={thumbViewportRef}>
           <div className="flex space-x-2">
-            {allImages.map((image: any, index: number) => (
+            {allImages?.map((image: any, index: number) => (
               <div
                 key={`thumb-${index}`}
                 className={`flex-[0_0_15%] min-w-0 cursor-pointer transition-all duration-200 ${
@@ -161,7 +161,7 @@ console.log("allImages", allImages);
               >
                 <div className="aspect-square relative rounded-md overflow-hidden bg-gray-100">
                   <Image
-                    src={image.asset.url}
+                    src={image?.asset?.url}
                     alt={image.alt || `${productName} - Thumbnail ${index + 1}`}
                     fill
                     className="object-cover"

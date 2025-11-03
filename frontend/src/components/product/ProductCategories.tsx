@@ -182,7 +182,7 @@ const ProductCategories = ({ categories, page = "used" }: any) => {
 
       {/* Category Checkboxes */}
       <div className="space-y-2">
-        {categories.map((category: any, idx: number) => {
+        {categories?.length > 0 && categories?.map((category: any, idx: number) => {
           const isSelected = selectedCats.includes(category.slug.current);
           return (
             <label

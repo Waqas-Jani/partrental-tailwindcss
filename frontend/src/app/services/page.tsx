@@ -8,15 +8,15 @@ export async function generateMetadata() {
   const data = await getServicePage();
 
   return {
-    title: data.sanityServicesPage.seo.title,
-    description: data.sanityServicesPage.seo.description,
-    keywords: data.sanityServicesPage.seo.keywords,
+    title: data?.sanityServicesPage?.seo?.title,
+    description: data?.sanityServicesPage?.seo?.description,
+    keywords: data?.sanityServicesPage?.seo?.keywords,
     openGraph: {
-      title: data.sanityServicesPage.seo.title,
-      description: data.sanityServicesPage.seo.description,
+      title: data?.sanityServicesPage?.seo?.title,
+      description: data?.sanityServicesPage?.seo?.description,
       images: [
         {
-          url: data.sanityServicesPage?.hero?.bg?.asset?.url,
+          url: data?.sanityServicesPage?.hero?.bg?.asset?.url,
           width: 1200,
           height: 630,
         },
@@ -34,10 +34,12 @@ const ServicesPage = async () => {
 
   return (
     <div>
-      <PageBanner
-        pageName={data?.sanityServicesPage?.hero?.heading}
-        data={data?.sanityServicesPage?.hero}
-      />
+      {data?.sanityServicesPage?.hero && (
+        <PageBanner
+          pageName={data?.sanityServicesPage?.hero?.heading}
+          data={data?.sanityServicesPage?.hero}
+        />
+      )}
       {data?.sanityServicesPage?.pageBuilder?.map((item: any, index: number) =>
         _renderSection(item, index)
       )}

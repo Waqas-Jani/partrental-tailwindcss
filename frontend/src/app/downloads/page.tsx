@@ -62,7 +62,9 @@ const DownloadsPage = async () => {
 
   return (
     <>
-      <PageBanner pageName={data?.hero?.heading} data={data?.hero} />
+      {data?.hero && (
+        <PageBanner pageName={data?.hero?.heading} data={data?.hero as any} />
+      )}
 
       <section className="bg-[#f8f9fa] pt-[120px] pb-[90px]">
         <div className="container mx-auto px-4">
@@ -100,16 +102,17 @@ const DownloadsPage = async () => {
                 <p className="mt-5 font-medium">
                   {data?.downloadCtaSec?.description}
                 </p>
-
-                <div className="flex justify-center">
-                  <Button
-                    btnType={data?.downloadCtaSec?.button?.btnType}
-                    link={data?.downloadCtaSec?.button?.link}
-                    linkType={data?.downloadCtaSec?.button?.linkType}
-                    title={data?.downloadCtaSec?.button?.title}
-                    cls="mt-[15px]"
-                  />
-                </div>
+                {data?.downloadCtaSec?.button?.btnType && (
+                  <div className="flex justify-center">
+                    <Button
+                      btnType={data?.downloadCtaSec?.button?.btnType}
+                      link={data?.downloadCtaSec?.button?.link}
+                      linkType={data?.downloadCtaSec?.button?.linkType}
+                      title={data?.downloadCtaSec?.button?.title}
+                      cls="mt-[15px]"
+                    />
+                  </div>
+                )}
               </div>
             </div>
           </div>

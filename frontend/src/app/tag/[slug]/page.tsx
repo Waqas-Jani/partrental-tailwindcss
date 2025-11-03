@@ -39,7 +39,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
   return (
     <>
-      <PageBanner pageName={"Tag"} data={hero} heading={tag?.name} />
+      {hero && <PageBanner pageName={"Tag"} data={hero} heading={tag?.name} />}
       <section className="py-10 md:py-16">
         <div className="container mx-auto px-5">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">

@@ -73,10 +73,12 @@ const RentPage = async ({ params }: any) => {
 
     return (
       <div>
-        <ProductHeader
-          data={data?.sanityRentSubCategory}
-          locations={locations}
-        />
+        {data?.sanityRentSubCategory && (
+          <ProductHeader
+            data={data?.sanityRentSubCategory}
+            locations={locations}
+          />
+        )}
         <div className="pt-[60px] pb-[60px]">
           <h2 className="text-2xl container mx-auto px-5 font-bold">
             Description

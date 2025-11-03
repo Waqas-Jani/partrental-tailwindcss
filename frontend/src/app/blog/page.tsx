@@ -52,7 +52,7 @@ export default async function Blog({ searchParams }: PageProps) {
 
   return (
     <>
-      <PageBanner pageName={hero?.heading} data={hero} />
+      {hero && <PageBanner pageName={hero?.heading} data={hero as any} />}
       <section className="py-10 md:py-16">
         <div className="lg:container mx-auto px-5">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8">

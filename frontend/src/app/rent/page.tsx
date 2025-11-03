@@ -35,7 +35,9 @@ const RentPage = async () => {
 
   return (
     <div>
-      <PageBanner pageName={data?.hero?.heading} data={data?.hero} />
+      {data?.hero && (
+        <PageBanner pageName={data?.hero?.heading} data={data?.hero} />
+      )}
 
       {data?.pageBuilder?.map((item: any, index: number) =>
         _renderSection(item, index)

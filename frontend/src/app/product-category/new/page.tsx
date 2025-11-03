@@ -6,21 +6,20 @@ import ProductCategories from "@/components/product/ProductCategories";
 import ProductGrid from "@/components/product/ProductGrid";
 import { SearchParams } from "@/types/common";
 
-
 export async function generateMetadata() {
   const { sanityNewProductsPage } = await getNewProductsPageData();
   return {
-    title: sanityNewProductsPage.seo.title,
-    description: sanityNewProductsPage.seo.description,
+    title: sanityNewProductsPage?.seo?.title,
+    description: sanityNewProductsPage?.seo?.description,
     openGraph: {
-      title: sanityNewProductsPage.seo.title,
-      description: sanityNewProductsPage.seo.description,
+      title: sanityNewProductsPage?.seo?.title,
+      description: sanityNewProductsPage?.seo?.description,
       images: [
         {
-          url: sanityNewProductsPage.hero.bg.asset.url || "",
+          url: sanityNewProductsPage?.hero?.bg?.asset?.url || "",
           width: 1200,
           height: 630,
-          alt: sanityNewProductsPage.hero.heading,
+          alt: sanityNewProductsPage?.hero?.heading,
         },
       ],
     },
@@ -64,10 +63,12 @@ export default async function NewProductsPage({
 
   return (
     <>
-      <PageBanner
-        pageName={sanityNewProductsPage.hero.heading}
-        data={sanityNewProductsPage.hero}
-      />
+      {sanityNewProductsPage?.hero && (
+        <PageBanner
+          pageName={sanityNewProductsPage?.hero?.heading}
+          data={sanityNewProductsPage?.hero}
+        />
+      )}
 
       <section className="pt-10 md:pt-16 pb-40 container mx-auto px-5">
         <div className="grid grid-cols-12 gap-5">

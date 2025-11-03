@@ -37,7 +37,7 @@ export default async function AccountAccess() {
 
   return (
     <>
-      <PageBanner pageName={hero?.heading} data={hero} />
+      {hero && <PageBanner pageName={hero?.heading} data={hero as any} />}
       <section className="container py-10 mx-auto px-5">
         <div className="prose max-w-none">
           {sanityAccountAccess?.content && (

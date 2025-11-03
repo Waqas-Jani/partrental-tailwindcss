@@ -9,11 +9,11 @@ import { SearchParams } from "@/types/common";
 export async function generateMetadata() {
   const { sanityUsedProductsPage } = await getUsedProductsPageData();
   return {
-    title: sanityUsedProductsPage?.seo.title,
-    description: sanityUsedProductsPage?.seo.description,
+    title: sanityUsedProductsPage?.seo?.title,
+    description: sanityUsedProductsPage?.seo?.description,
     openGraph: {
-      title: sanityUsedProductsPage?.seo.title,
-      description: sanityUsedProductsPage?.seo.description,
+      title: sanityUsedProductsPage?.seo?.title,
+      description: sanityUsedProductsPage?.seo?.description,
       images: [
         {
           url: sanityUsedProductsPage?.hero?.bg?.asset?.url || "",
@@ -63,10 +63,12 @@ export default async function UsedProductsPage({
 
   return (
     <>
-      <PageBanner
-        pageName={sanityUsedProductsPage?.hero?.heading}
-        data={sanityUsedProductsPage?.hero}
-      />
+      {sanityUsedProductsPage?.hero && (
+        <PageBanner
+          pageName={sanityUsedProductsPage?.hero?.heading}
+          data={sanityUsedProductsPage?.hero}
+        />
+      )}
       <section className="pt-10 md:pt-16 pb-40 container mx-auto px-5">
         <div className="grid grid-cols-12 gap-5">
           {/* Sidebar */}

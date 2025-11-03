@@ -18,9 +18,9 @@ export async function generateMetadata() {
   const homePage = data.sanityHomePage || {};
 
   return {
-    title: homePage.seo.title,
-    description: homePage.seo.description,
-    keywords: homePage.seo.keywords,
+    title: homePage?.seo?.title,
+    description: homePage?.seo?.description,
+    keywords: homePage?.seo?.keywords,
 
     alternates: {
       canonical: "https://partnerrentals.com",
@@ -29,9 +29,9 @@ export async function generateMetadata() {
 }
 export default async function Home() {
   const data = await getHomePage();
-  const homePage = data.sanityHomePage || {};
-  const hero = homePage.homeHero || {};
-  const pageBuilder = homePage.pageBuilder || {};
+  const homePage = data?.sanityHomePage || {};
+  const hero = homePage?.homeHero || {};
+  const pageBuilder = homePage?.pageBuilder || [];
   //   const statistic = data.sanitySitesettings?.statistic;
 
   let partnerSec,

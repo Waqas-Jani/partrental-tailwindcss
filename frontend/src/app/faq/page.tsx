@@ -27,7 +27,7 @@ export default async function Faqs() {
 
   return (
     <>
-      <PageBanner pageName={hero?.heading} data={hero} />
+      {hero && <PageBanner pageName={hero?.heading} data={hero} />}
 
       {sanityFaqPage?.faqSec && sanityFaqPage.faqSec.enable && (
         <FaqList data={sanityFaqPage.faqSec} />

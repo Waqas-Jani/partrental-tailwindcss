@@ -56,7 +56,7 @@ const HeroSlider = ({ data }: HomeHeroProps) => {
       {/* Embla Carousel Container */}
       <div className="embla h-full" ref={emblaRef}>
         <div className="embla__container h-full">
-          {slider.map((slide, index) => (
+          {slider?.map((slide, index) => (
             <div key={index} className="embla__slide relative h-full">
               {/* Background Image */}
               <div className="absolute inset-0">

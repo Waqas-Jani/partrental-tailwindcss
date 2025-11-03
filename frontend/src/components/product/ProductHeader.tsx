@@ -37,15 +37,15 @@ const ProductHeader = ({ data, locations }: any) => {
           <div className="relative">
             <div className="aspect-[4/3] bg-gray-100 rounded-lg overflow-hidden relative shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
               <Image
-                src={data.gallery[currentImageIndex].asset.url}
-                alt={data.title}
+                src={data?.gallery[currentImageIndex]?.asset?.url}
+                alt={data?.title}
                 className="w-full h-full object-cover object-center"
                 width={1000}
                 height={1000}
               />
 
               {/* Navigation Arrows */}
-              {data.gallery.length > 1 && (
+              {data?.gallery?.length > 1 && (
                 <>
                   <button
                     onClick={prevImage}
@@ -64,9 +64,9 @@ const ProductHeader = ({ data, locations }: any) => {
             </div>
 
             {/* Image Indicators */}
-            {data.gallery.length > 1 && (
+            {data?.gallery?.length > 1 && (
               <div className="flex justify-center mt-4 gap-2">
-                {data.gallery.map((_: any, index: any) => (
+                {data?.gallery?.map((_: any, index: any) => (
                   <button
                     key={index}
                     onClick={() => setCurrentImageIndex(index)}
@@ -83,7 +83,7 @@ const ProductHeader = ({ data, locations }: any) => {
           <div className="flex flex-col gap-6">
             {/* Product Title */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight m-0">
-              {data.title}
+              {data?.title}
             </h1>
 
             {/* Location and Rental Dates */}
@@ -93,15 +93,15 @@ const ProductHeader = ({ data, locations }: any) => {
                 <div className="pt-6 border-t border-gray-200">
                   {/* Specifications */}
                   <div className="mb-6 last:mb-0">
-                    <div className="gap-4 text-sm">{data.description}</div>
+                    <div className="gap-4 text-sm">{data?.description}</div>
                     {/* Product Variants */}
-                    {data.productVariants?.length > 0 && (
+                    {data?.productVariants?.length > 0 && (
                       <div className="mt-4">
                         <h4 className="text-lg font-semibold text-gray-900">
                           Variants
                         </h4>
                         <ul className="list-disc list-inside p-0 m-0">
-                          {data.productVariants.map((variant: any) => (
+                          {data?.productVariants?.map((variant: any) => (
                             <li key={variant} className="mb-1">
                               {variant}
                             </li>

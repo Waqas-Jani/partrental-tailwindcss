@@ -16,21 +16,21 @@ export async function generateMetadata({ params }: { params: any }) {
   }
 
   return {
-    title: product.seo?.title || `${product.name} | Partner Rentals`,
+    title: product?.seo?.title || `${product?.name} | Partner Rentals`,
     description:
-      product.seo?.description ||
-      product.shortDescription ||
-      `View details and request a quote for ${product.name}`,
-    keywords: product.seo?.keywords || "",
+      product?.seo?.description ||
+      product?.shortDescription ||
+      `View details and request a quote for ${product?.name}`,
+    keywords: product?.seo?.keywords || "",
     openGraph: {
-      title: product.name,
-      description: product.seo?.description || product.shortDescription,
+      title: product?.name,
+      description: product?.seo?.description || product?.shortDescription,
       images: [
         {
-          url: product.featuredImage?.asset?.url || "",
+          url: product?.featuredImage?.asset?.url || "",
           width: 1200,
           height: 630,
-          alt: product.featuredImage?.alt || product.name,
+          alt: product?.featuredImage?.alt || product?.name,
         },
       ],
     },
@@ -65,22 +65,22 @@ async function ProductPage({ params }: { params: any }) {
         </div>
 
         {/* Specifications Section */}
-        {product.additionalInfo?.length > 0 && (
+        {product?.additionalInfo?.length > 0 && (
           <div className="py-5 md:py-8">
             <h2 className="text-2xl font-bold text-black mb-4">
               Specifications
             </h2>
-            <ProductSpecifications specifications={product.additionalInfo} />
+            <ProductSpecifications specifications={product?.additionalInfo} />
           </div>
         )}
 
         {/* Tags Section */}
-        {product.tags?.length > 0 && (
+        {product?.tags?.length > 0 && (
           <div className="mt-5">
             <span className="text-sm font-bold text-gray-800 mb-2 mr-2">
               Tags:
             </span>
-            {product.tags.map((tag: any, index: number) => (
+            {product?.tags?.map((tag: any, index: number) => (
               <React.Fragment key={tag.slug.current}>
                 <a
                   href={`/tag/${tag.slug.current}`}
