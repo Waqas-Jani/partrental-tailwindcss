@@ -25,9 +25,9 @@ const ImageContent = ({
       : null;
   return (
     <section className={`pt-[50px] ${noPadding ? "" : "pb-[50px]"}`}>
-      <div className="container mx-auto px-5">
+      <div className="tp-container">
         <div
-          className={`flex flex-col lg:flex-row items-center gap-5 lg:gap-0 ${
+          className={`flex flex-col lg:flex-row items-center gap-5 lg:gap-10 ${
             index % 2 === 0 ? "lg:flex-row-reverse" : ""
           }`}
         >
@@ -36,8 +36,8 @@ const ImageContent = ({
               <SanityImage
                 image={data.image}
                 className="w-full h-full"
-                height={800}
-                width={800}
+                // height={800}
+                // width={800}
               />
             </div>
           </div>

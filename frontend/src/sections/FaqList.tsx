@@ -5,7 +5,7 @@ import AccordionTwo from "@/components/common/AccordionTwo";
 export default function FaqList({ data }: any) {
   return (
     <section className="py-[70px]">
-      <div className="container mx-auto px-5">
+      <div className="tp-container">
         <div className="flex justify-center">
           <div className="text-center">
             <span className="sub-title">{data?.subheading}</span>

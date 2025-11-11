@@ -7,7 +7,7 @@ import Image from "next/image";
 export default function AboutTwo({ data }: { data: any }) {
   return (
     <section className="pt-[100px] pb-[80px]">
-      <div className="container mx-auto px-4">
+      <div className="tp-container">
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-10">
           <div className="">
             <div className="mb-5">

@@ -21,7 +21,7 @@ const Statistics = ({ data }: { data: any }) => {
         ></div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="tp-container">
         {/* Header Section */}
         <div className="text-center mb-16 lg:mb-20">
           <div className="inline-block relative">

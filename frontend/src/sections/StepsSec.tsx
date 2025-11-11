@@ -4,7 +4,7 @@ import Button from "@/components/common/Button";
 export default function StepsSection({ data }: any) {
   return (
     <section className="bg-white py-10 md:py-16">
-      <div className="container mx-auto px-5">
+      <div className="tp-container">
         <div className="mb-12 text-center">
           {data.subheading && (
             <span className="sub-title">{data.subheading}</span>

@@ -40,7 +40,7 @@ export const PromotionalBanner = ({ data }: { data: any }) => {
 
   return (
     <section className="py-10 md:py-16 bg-gray-50">
-      <div className="container mx-auto px-5">
+      <div className="tp-container">
         <div className="text-center max-w-4xl mx-auto">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold uppercase tracking-wide text-gray-900">
             {title}

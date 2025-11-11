@@ -34,7 +34,7 @@ body {
 
 /* Global Container Class */
 .tp-container {
-  @apply mx-auto w-full container px-4;
+  @apply mx-auto w-full container px-5;
 }
 
 .h1-type {
@@ -63,7 +63,7 @@ body {
 }
 
 .sub-title {
-  @apply relative text-xl underline underline-offset-3 text-secondary font-extrabold tracking-wider
+  @apply relative text-lg sm:text-xl underline underline-offset-3 text-secondary font-extrabold tracking-wider
     before:content-[''] before:absolute before:-left-12 before:top-1/2 before:-translate-y-1/2 
     before:w-8 before:h-8 before:bg-[url('/img/sub-title.png')] before:bg-contain before:bg-no-repeat
     after:content-[''] after:absolute after:-right-12 after:top-1/2 after:-translate-y-1/2 

@@ -48,7 +48,7 @@ async function ProductPage({ params }: { params: any }) {
   return (
     <div className="container mx-auto px-5">
       <div className="py-10 lg:py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 border-b border-gray-200 pb-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-b border-gray-200 pb-10">
           {/* Product Gallery Section */}
           <div className="lg:col-span-7">
             <ProductGallery

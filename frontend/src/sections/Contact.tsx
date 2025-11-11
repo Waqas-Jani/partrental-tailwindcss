@@ -78,7 +78,7 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
         backgroundColor: "#f8f6ef",
       }}
     >
-      <div className="container mx-auto px-4">
+      <div className="tp-container">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-20">
           <div className="md:col-span-5">
             <div className="text-center md:text-left">

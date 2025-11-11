@@ -8,20 +8,20 @@ import SanityImage from "@/components/common/SanityImage";
 const About = ({ data }: { data: any }) => {
   return (
     <section className="mt-10">
-      <div className="lg:max-w-[1100px] mx-auto px-5 sm:px-[100px] lg:px-4">
-        <div className="flex flex-col lg:flex-row lg:space-x-10">
-          <div className="lg:w-[45%]">
+      <div className="tp-container">
+        <div className="flex flex-col lg:flex-row lg:space-x-10 lg:px-[100px]">
+          <div className="lg:w-[40%]">
             <div className="w-full h-full">
               <SanityImage
                 image={data.image}
-                className="w-full h-full object-cover"
-                width={500}
-                height={650}
+                className="w-full h-full object-cover rounded-lg"
+                width={600}
+                height={800}
               />
             </div>
           </div>
           <div className="lg:w-[55%]">
-            <div className="w-full h-full lg:pl-[60px] pt-[70px] pb-[40px] pt-[70px">
+            <div className="w-full h-full lg:pl-[60px] mt-10 lg:mt-5 pb-[40px] pt-[70px">
               <div className="mb-8 text-center md:text-left">
                 <span className="sub-title md:ml-12">{data.subheading}</span>
                 <h2 className="h1-type mt-5">{data.heading}</h2>

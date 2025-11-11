@@ -7,8 +7,8 @@ import { PortableTextComponent } from "@/components/PortableTextComponent";
 const SplitContent = ({ data }: any) => {
   return (
     <section className="py-10 md:py-16 bg-slate-100">
-      <div className="container mx-auto px-5">
-        <div className="max-w-[1080px] w-full grid lg:grid-cols-2 gap-10">
+      <div className="tp-container">
+        <div className="max-w-[1080px] mx-auto w-full grid lg:grid-cols-2 gap-10">
           {/* Left Side */}
           <div>
             <div className="mb-8 text-center md:text-left">

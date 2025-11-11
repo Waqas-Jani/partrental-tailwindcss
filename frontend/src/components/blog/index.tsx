@@ -25,7 +25,7 @@ export default function BlogContent({ data }: { data: any }) {
 
   return (
     <section className="py-10 md:py-16">
-      <div className="md:container mx-auto px-5">
+      <div className="tp-container">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2">

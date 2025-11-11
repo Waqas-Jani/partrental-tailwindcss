@@ -8,7 +8,7 @@ import SanityImage from "@/components/common/SanityImage";
 const WhyChooseUs = ({ data }: any) => {
   return (
     <section className="pt-[100px] pb-[80px]">
-      <div className="container mx-auto px-4">
+      <div className="tp-container">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           {/* Image Column - Fixed dimensions */}
           <div className="w-full h-[600px] relative md:sticky md:top-8">

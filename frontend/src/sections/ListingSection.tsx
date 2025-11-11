@@ -9,7 +9,7 @@ const ListingSection = ({ data }: { data: any }) => {
   return (
     <>
       <section className="pt-[50px]">
-        <div className="container mx-auto px-5">
+        <div className="tp-container">
           <div className="bg-white">
             <div className="flex justify-center">
               <div className="w-full">
@@ -21,7 +21,7 @@ const ListingSection = ({ data }: { data: any }) => {
                 </div>
               </div>
             </div>
-            <div className="max-w-[1200px] mx-auto px-4  bg-[#F8F6EF] pt-[80px] pb-12">
+            <div className="bg-[#F8F6EF] pt-[80px] pb-12 rounded-lg">
               <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-7 px-5 md:px-10 lg:px-14">
                 {data?.list?.map((item: any, index: number) => (
                   <div key={index} className="group">

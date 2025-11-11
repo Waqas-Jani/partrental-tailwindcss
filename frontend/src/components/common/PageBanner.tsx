@@ -23,7 +23,7 @@ const PageBanner = ({
 
       {/* Content */}
 
-      <div className="max-w-6xl relative z-10 mx-auto px-4">
+      <div className="tp-container relative z-10">
         <div className="space-y-6">
           {/* Breadcrumb Navigation */}
           <nav className="flex items-center space-x-2 text-base -mb-1">

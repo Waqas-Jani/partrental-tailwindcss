@@ -52,7 +52,7 @@ const HeroSlider = ({ data }: HomeHeroProps) => {
   );
 
   return (
-    <div className="relative h-[100vh] min-h-[700px]">
+    <div className="relative h-[80vh] md:h-[75vh] min-h-[600px] md:min-h-[550px]">
       {/* Embla Carousel Container */}
       <div className="embla h-full" ref={emblaRef}>
         <div className="embla__container h-full">
@@ -75,40 +75,38 @@ const HeroSlider = ({ data }: HomeHeroProps) => {
 
               {/* Content - Most Top Layer */}
               <div className="absolute inset-0 flex items-center z-20 tp-container">
-                <div className="container mx-auto px-4">
-                  <div className="max-w-4xl text-white">
-                    <h2 className="text-2xl underline ring-offset-4 ring-white tracking-wide text-white mb-2 font-extrabold">
-                      {slide.subheading}
-                    </h2>
-                    <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 leading-tight">
-                      {slide.heading}
-                    </h1>
-                    {slide.description && (
-                      <p className="text-lg md:text-xl mb-8 leading-relaxed opacity-90 max-w-2xl">
-                        {slide.description}
-                      </p>
+                <div className="max-w-5xl text-white">
+                  <h2 className="text-2xl underline ring-offset-4 ring-white tracking-wide text-white mb-2 font-extrabold">
+                    {slide.subheading}
+                  </h2>
+                  <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                    {slide.heading}
+                  </h1>
+                  {slide.description && (
+                    <p className="text-lg md:text-xl mb-8 leading-relaxed opacity-90 max-w-2xl">
+                      {slide.description}
+                    </p>
+                  )}
+                  <div className="flex flex-col sm:flex-row gap-4">
+                    {button && (
+                      <Button
+                        title={button?.title}
+                        btnType={button?.btnType}
+                        link={button?.link}
+                        linkType={button?.linkType}
+                        disabled={false}
+                      />
                     )}
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      {button && (
-                        <Button
-                          title={button?.title}
-                          btnType={button?.btnType}
-                          link={button?.link}
-                          linkType={button?.linkType}
-                          disabled={false}
-                        />
-                      )}
 
-                      {button2 && (
-                        <Button
-                          title={button2?.title}
-                          btnType={button2.btnType}
-                          link={button2?.link}
-                          linkType={button2?.linkType}
-                          disabled={false}
-                        />
-                      )}
-                    </div>
+                    {button2 && (
+                      <Button
+                        title={button2?.title}
+                        btnType={button2.btnType}
+                        link={button2?.link}
+                        linkType={button2?.linkType}
+                        disabled={false}
+                      />
+                    )}
                   </div>
                 </div>
               </div>

@@ -40,7 +40,7 @@ const Partners = ({ data }: PartnersProps) => {
 
   return (
     <section className="relative z-10 py-10 md:py-16 bg-gray-50">
-      <div className="container mx-auto px-5">
+      <div className="tp-container">
         <p className="text-center h1-type mb-5">{data?.heading}</p>
         <div className="border-t border-gray-200 pt-10 md:pt-12">
           <div className="embla overflow-hidden" ref={emblaRef}>

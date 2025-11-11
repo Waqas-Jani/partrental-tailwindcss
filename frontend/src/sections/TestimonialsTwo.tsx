@@ -158,7 +158,7 @@ const TestimonialsTwo = ({ data }: TestimonialsProps) => {
         />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="tp-container relative z-10">
         {/* Header */}
         <div className="text-center mb-16">
           <span className="sub-title">{data.subheading}</span>

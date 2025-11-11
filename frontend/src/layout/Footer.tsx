@@ -38,7 +38,7 @@ export default function Footer({ footer, posts }: FooterProps) {
                 alt={footer.logo.alt || "Partner Rentals"}
                 width={200}
                 height={60}
-                className="h-16 w-auto mb-4"
+                className="h-16 w-auto mb-4 object-contain"
               />
             )}
           </div>

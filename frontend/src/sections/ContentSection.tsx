@@ -17,7 +17,7 @@ const ContentSection = ({
 }) => {
   return (
     <section className={`pt-[50px] ${noPadding ? "" : "pb-[50px]"}`}>
-      <div className="container mx-auto px-5">
+      <div className="tp-container">
         <div className={`flex items-baseline`}>
           <div className="w-full">
             <div>
