@@ -18,6 +18,7 @@ import {
 import TopBanner from "./Topbar";
 import Button from "@/components/common/Button";
 import MyLink from "@/components/common/Link";
+import { slug } from "@/utils";
 
 interface Props {
   topBanner: TopBannerType | null;
@@ -261,28 +262,28 @@ export default function Header({ topBanner, header }: Props) {
                         >
                           <div className="pl-4 space-y-1 pt-2">
                             {item.childMenu.map((child, childIndex) => (
-                              <a
+                              <Link
                                 key={childIndex}
-                                href={child.link}
+                                href={slug(child.link)}
                                 className="flex items-center justify-between py-2 px-3 text-gray-600 hover:bg-red-50 hover:text-red-600 rounded-md transition-all duration-200 group"
                                 onClick={() => setIsMobileMenuOpen(false)}
                               >
                                 <span>{child.label}</span>
                                 <ArrowRightIcon cls="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                              </a>
+                              </Link>
                             ))}
                           </div>
                         </div>
                       </>
                     ) : (
-                      <a
-                        href={item.parent.link}
+                      <Link
+                        href={slug(item.parent.link)}
                         className="flex items-center justify-between py-3 text-gray-800 hover:text-red-600 transition-colors font-extrabold group"
                         onClick={() => setIsMobileMenuOpen(false)}
                       >
                         <span className="text-lg">{item.parent.label}</span>
                         <ArrowRightIcon cls="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </a>
+                      </Link>
                     )}
                   </div>
                 ))}
