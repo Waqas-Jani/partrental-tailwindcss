@@ -32,5 +32,6 @@ export default defineType({
         { type: 'banner' },
         { type: 'faqSec' },
         { type: 'table' },
+        { type: 'button2' }
     ],
 })
