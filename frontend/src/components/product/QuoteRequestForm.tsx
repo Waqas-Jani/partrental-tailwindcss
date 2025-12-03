@@ -37,7 +37,7 @@ type FormState = {
 
 declare global {
   interface Window {
-    dataLayer?: Record<string, unknown>[] | undefined;
+    dataLayer?: Object[] | undefined;
   }
 }
 

@@ -6,7 +6,7 @@ import Button from "../common/Button";
 // Extend Window interface for analytics
 declare global {
   interface Window {
-    dataLayer?: Record<string, unknown>[];
+    dataLayer?: Object[] | undefined;
     gtag?: (
       command: string,
       targetId: string,
