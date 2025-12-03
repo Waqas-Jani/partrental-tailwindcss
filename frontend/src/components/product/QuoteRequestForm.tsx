@@ -118,11 +118,8 @@ const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
       // Track the abandoned form in analytics
       if (typeof window !== "undefined" && window.dataLayer) {
         window.dataLayer.push({
-          event: "form_abandon",
+          event: "abandoned_lead",
           form_type: "quote_request_form",
-          has_name: !!formState.current.nameValue,
-          has_email: !!formState.current.emailValue,
-          last_field_completed: formState.current.lastFieldChanged,
         });
         logDebug("GTM event pushed");
       }
@@ -312,6 +309,7 @@ const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
       if (typeof window !== "undefined" && window.dataLayer) {
         window.dataLayer.push({
           event: "generate_lead",
+          form_type: "quote_request_form",
         });
       }
       toast.success("Quote request has been submitted successfully");

@@ -104,13 +104,9 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
             // Track the abandoned form in analytics
             if (typeof window !== "undefined" && (window as any).dataLayer) {
                 (window as any).dataLayer.push({
-                    event: "form_abandon",
+                    event: "abandoned_lead",
                     form_type: formType,
-                    ...trackingFields.reduce((acc, field) => {
-                        acc[`has_${field}`] = !!formState.current.fieldValues[field];
-                        return acc;
-                    }, {} as Record<string, boolean>),
-                    last_field_completed: formState.current.lastFieldChanged,
+
                 });
                 logDebug("GTM event pushed");
             }
@@ -235,10 +231,10 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
         // Honeypot validation - if honeypot field is filled, it's likely a bot
         if (data.honeypot && data.honeypot.trim() !== "") {
             logDebug("Bot detected - honeypot field filled");
-            
+
             // Show success toast to trick the bot
             toast.success("Request has been submitted successfully");
-            
+
             // Reset form without actually submitting
             formState.current = {
                 started: false,
@@ -249,7 +245,7 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
             };
             setFormStarted(false);
             reset();
-            
+
             return; // Exit early, don't submit to server
         }
 
@@ -309,6 +305,7 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
             if (typeof window !== "undefined" && (window as any).dataLayer) {
                 (window as any).dataLayer.push({
                     event: "generate_lead",
+                    form_type: formType,
                 });
             }
 
