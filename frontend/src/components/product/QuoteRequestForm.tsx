@@ -35,12 +35,6 @@ type FormState = {
   abandonTimer: ReturnType<typeof setTimeout> | null;
 };
 
-declare global {
-  interface Window {
-    dataLayer?: Object[] | undefined;
-  }
-}
-
 const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
   // Add formState ref to track form data without re-renders
   const formState = useRef<FormState>({

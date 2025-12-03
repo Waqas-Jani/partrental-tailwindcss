@@ -1,19 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useCallback, useRef } from "react";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import Button from "../common/Button";
-
-// Extend Window interface for analytics
-declare global {
-  interface Window {
-    dataLayer?: Object[] | undefined;
-    gtag?: (
-      command: string,
-      targetId: string,
-      config?: Record<string, unknown>
-    ) => void;
-  }
-}
 
 interface FormData {
   name: string;
