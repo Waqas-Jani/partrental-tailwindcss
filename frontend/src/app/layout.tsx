@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Manrope } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 // import Script from "next/script";
-// import { GoogleTagManager } from "@next/third-parties/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "@/styles/globals.css";
 import LayoutWrapper from "@/layout";
 import { getSiteSettings } from "@/lib/getSiteSettings";
@@ -36,7 +36,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      {/* <GoogleTagManager gtmId="GTM-TSW5M3QJ" />
+      {/*
       <Script
         strategy="afterInteractive"
         id="signals-script"
@@ -75,6 +75,7 @@ export default async function RootLayout({
           )}
         <Toaster />
       </body>
+      <GoogleTagManager gtmId="GTM-P4GRHMCD" />
     </html>
   );
 }
