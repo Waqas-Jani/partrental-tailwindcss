@@ -46,11 +46,12 @@ export default function Newsletter({ data }: any) {
     })
       .then((res) => res.json())
       .then(() => {
-        // if (typeof window !== "undefined" && window.dataLayer) {
-        //   window.dataLayer.push({
-        //     event: "generate_lead",
-        //   });
-        // }
+        if (typeof window !== "undefined" && window.dataLayer) {
+          window.dataLayer.push({
+            event: "generate_lead",
+            form_type: "newsletter",
+          });
+        }
         toast.dismiss(toastId);
         toast.success("Request has been submitted successfully");
         setLoading(false);

@@ -130,15 +130,6 @@ const ExitIntentPopup = ({
         );
       }
 
-      // Enhanced analytics tracking
-      if (typeof window !== "undefined" && (window as any).gtag) {
-        (window as any).gtag("event", "conversion", {
-          event_category: "exit_intent",
-          event_label: "email_subscription",
-          value: 1,
-        });
-      }
-
       // DataLayer tracking
       if (typeof window !== "undefined" && (window as any).dataLayer) {
         (window as any).dataLayer.push({

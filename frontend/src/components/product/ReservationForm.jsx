@@ -123,11 +123,11 @@ const ReservationForm = ({
       // Track the abandoned form in analytics
       if (typeof window !== "undefined" && window.dataLayer) {
         window.dataLayer.push({
-          event: "form_abandon",
+          event: "abandoned_lead",
           form_type: "reservation_form",
-          has_name: !!formState.current.nameValue,
-          has_email: !!formState.current.emailValue,
-          last_field_completed: formState.current.lastFieldChanged,
+        //   has_name: !!formState.current.nameValue,
+        //   has_email: !!formState.current.emailValue,
+        //   last_field_completed: formState.current.lastFieldChanged,
         });
         logDebug("GTM event pushed");
       }
@@ -397,6 +397,7 @@ const ReservationForm = ({
         if (typeof window !== "undefined" && window.dataLayer) {
           window.dataLayer.push({
             event: "generate_lead",
+            form_type: "reservation_form",
           });
         }
         toast.success("Request has been submitted successfully");

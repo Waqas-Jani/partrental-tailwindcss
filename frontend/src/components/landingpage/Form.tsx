@@ -90,10 +90,10 @@ export default function LandingPageForm({
     // Track in analytics
     if (typeof window !== "undefined" && window.dataLayer) {
       window.dataLayer.push({
-        event: "form_abandon",
+        event: "abandoned_lead",
         form_type: "landing_page_form",
-        has_name: !!formData.current.name,
-        has_email: !!formData.current.email,
+        // has_name: !!formData.current.name,
+        // has_email: !!formData.current.email,
       });
     }
   }, []);
@@ -230,20 +230,21 @@ export default function LandingPageForm({
       if (typeof window !== "undefined" && window.dataLayer) {
         window.dataLayer.push({
           event: "generate_lead",
+          form_type: "landing_page_form",
         });
       }
 
-      if (typeof window !== "undefined" && window.gtag) {
-        const utmData = JSON.parse(sessionStorage.getItem("utm_data") || "{}");
-        window.gtag("event", "conversion", {
-          send_to: "G-LQK0SSBDY6",
-          utm_source: utmData.source || "(direct)",
-          utm_medium: utmData.medium || "(none)",
-          utm_campaign: utmData.campaign || "(not set)",
-          value: 1.0,
-          currency: "USD",
-        });
-      }
+    //   if (typeof window !== "undefined" && window.gtag) {
+    //     const utmData = JSON.parse(sessionStorage.getItem("utm_data") || "{}");
+    //     window.gtag("event", "conversion", {
+    //       send_to: "G-LQK0SSBDY6",
+    //       utm_source: utmData.source || "(direct)",
+    //       utm_medium: utmData.medium || "(none)",
+    //       utm_campaign: utmData.campaign || "(not set)",
+    //       value: 1.0,
+    //       currency: "USD",
+    //     });
+    //   }
 
       toast.success("Request has been submitted successfully");
     } catch (error) {

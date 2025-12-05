@@ -17,6 +17,7 @@ interface FormState {
     fieldValues: Record<string, string>;
     debugMessages: string;
     abandonTimer: NodeJS.Timeout | null;
+    abandonedSubmitted: boolean;
 }
 
 export const useFormSubmission = (config: FormSubmissionConfig) => {
@@ -35,6 +36,7 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
         fieldValues: {},
         debugMessages: "",
         abandonTimer: null,
+        abandonedSubmitted: false,
     });
 
     const [formStarted, setFormStarted] = useState(false);
@@ -57,6 +59,12 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
 
     // Submit abandoned form function
     const submitAbandonedForm = useCallback(() => {
+        // Prevent duplicate submissions
+        if (formState.current.abandonedSubmitted) {
+            logDebug("Abandoned form already submitted, skipping duplicate submission");
+            return;
+        }
+
         // Honeypot validation - if honeypot field is filled, it's likely a bot
         if (formState.current.fieldValues.honeypot && formState.current.fieldValues.honeypot.trim() !== "") {
             logDebug("Bot detected in abandoned form - honeypot field filled, skipping submission");
@@ -71,6 +79,9 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
             logDebug("Abandoned form not submitted - no data or not started");
             return;
         }
+
+        // Mark as submitted to prevent duplicates
+        formState.current.abandonedSubmitted = true;
 
         try {
             // Remove honeypot field from abandoned form data
@@ -149,6 +160,8 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
             );
 
             if (formState.current.started && !isSubmitSuccessful && hasData) {
+                // Clear any pending scheduled submission since we're submitting immediately
+                cancelScheduledSubmission();
                 logDebug("Submitting abandoned form immediately (beforeunload)");
                 submitAbandonedForm();
                 e.preventDefault();
@@ -172,6 +185,8 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
             } else if (document.visibilityState === "visible") {
                 logDebug(`Visibility changed to: visible`);
                 cancelScheduledSubmission();
+                // Reset abandoned flag since user came back (didn't actually abandon)
+                formState.current.abandonedSubmitted = false;
             }
         };
 
@@ -242,6 +257,7 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
                 fieldValues: {},
                 debugMessages: "",
                 abandonTimer: null,
+                abandonedSubmitted: false,
             };
             setFormStarted(false);
             reset();
@@ -295,6 +311,7 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
                 fieldValues: {},
                 debugMessages: "",
                 abandonTimer: null,
+                abandonedSubmitted: false,
             };
             setFormStarted(false);
             reset();
@@ -314,7 +331,7 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
             console.error("Form submission error:", error);
             toast.error("Something went wrong! Please try again");
         }
-    }, [endpoint, completedSheetId, reset, logDebug]);
+    }, [endpoint, completedSheetId, reset, logDebug, formType]);
 
     // Add autofill detection CSS
     useEffect(() => {
