@@ -25,15 +25,28 @@ const LandingPage = ({ data }: any) => {
     return () => clearTimeout(timer);
   }, []);
 
+  const handlePhoneClick = () => {
+    if (typeof window !== "undefined") {
+      window.open(
+        `tel:${data?.phoneBanner?.phoneLink}`,
+        "_self",
+        "noopener,noreferrer"
+      );
+    }
+    if (typeof window !== "undefined" && window.dataLayer) {
+      window.dataLayer.push({
+        event: "landing_phone_click",
+        phone_number: data?.phoneBanner?.phoneNumber,
+      });
+    }
+  };
+
   return (
     <>
       {data?.phoneBanner && (
-        <div className="fixed top-0 left-0 right-0 z-50 p-1 flex items-center justify-center px-[20px] md:px-10 bg-primary text-white">
+        <div className="fixed cursor-pointer top-0 left-0 right-0 z-50 p-1 flex items-center justify-center px-[20px] md:px-10 bg-primary text-white">
           <div>
-            <a
-              className="text-base font-bold"
-              href={`tel:${data?.phoneBanner?.phoneLink}`}
-            >
+            <a className="text-base font-bold" onClick={handlePhoneClick}>
               {data?.phoneBanner.phoneNumber || ""}
             </a>
           </div>
