@@ -64,6 +64,7 @@ export const homePageQuery = `
         enable,
         heading,
         subheading,
+        description,
         points[] {
           title,
           description
@@ -299,6 +300,3 @@ export const homePageQuery = `
   }
 }
 `;
-
-
-

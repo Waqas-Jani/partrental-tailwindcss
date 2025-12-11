@@ -4,6 +4,7 @@ import React from "react";
 import Button from "@/components/common/Button";
 import Accordion from "@/components/common/Accordion";
 import SanityImage from "@/components/common/SanityImage";
+import { PortableText } from "@portabletext/react";
 
 const WhyChooseUs = ({ data }: any) => {
   return (
@@ -24,6 +25,9 @@ const WhyChooseUs = ({ data }: any) => {
             <div className="text-left">
               <span className="sub-title md:ml-12">{data.subheading}</span>
               <h2 className="h1-type mt-5">{data.heading}</h2>
+            </div>
+            <div className="text-left">
+              <PortableText value={data.description} />
             </div>
 
             {/* Accordion for Points */}
