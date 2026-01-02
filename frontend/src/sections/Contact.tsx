@@ -79,8 +79,8 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
       }}
     >
       <div className="tp-container">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-20">
-          <div className="md:col-span-5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20">
+          <div className="lg:col-span-5">
             <div className="text-center md:text-left">
               <span className="sub-title md:ml-12">{homeForm.subheading}</span>
               <h2 className="h1-type mt-5">{homeForm.heading}</h2>
@@ -163,7 +163,7 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
             </div>
           </div>
 
-          <div className="md:col-span-7">
+          <div className="lg:col-span-7">
             <div
               ref={mapContainerRef}
               className="w-full h-full overflow-hidden relative"
@@ -178,9 +178,12 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
               ) : (
                 <iframe
                   src={data?.mapUrl}
-                  style={{ marginTop: isHome ? "-120px" : "0px" }}
+                  width="100%"
+                  height="500px"
+                  style={{ border: "0" }}
+                  allowFullScreen
                   title="google-map"
-                  className="w-full h-full"
+                  referrerPolicy="no-referrer-when-downgrade"
                   loading="lazy"
                 />
               )}

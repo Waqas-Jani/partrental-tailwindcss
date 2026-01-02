@@ -16,7 +16,7 @@ const BlogCard = ({ item, index, isHome = false }: any) => {
       key={index}
     >
       <Link
-        href={`/${item?.slug?.current}`}
+        href={`/blog/${item?.slug?.current}`}
         className="mb-3 group h-full flex flex-col"
       >
         <div className="relative aspect-video w-full">

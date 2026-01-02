@@ -13,6 +13,7 @@ export interface TopBanner {
     enable: boolean
     welcome: string
     phone: string
+    phoneLink?: string
     social: SocialLink[]
 }
 
@@ -60,14 +61,25 @@ export interface FooterNewsletter {
 }
 
 export interface Footer {
-    logo: SanityImage
-    about: string
-    email: string
-    location: FooterLocation[]
-    menu: FooterMenuItem[]
-    businessAddress: string
-    businessHours: string
-    newsletter: FooterNewsletter
+    logo: SanityImage,
+    aboutSection: {
+        heading: string
+        about: string
+    },
+    email: string,
+    location: FooterLocation[],
+    menu: FooterMenuItem[],
+    businessAddressSection: {
+        heading: string
+        address: string
+    },
+    businessHoursSection: {
+        heading: string
+        hours: string
+    }
+    recentNewsHeading?: string,
+    menuHeading?: string,
+    newsletter: FooterNewsletter,
     social: SocialLink[]
 }
 

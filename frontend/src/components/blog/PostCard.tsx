@@ -27,7 +27,7 @@ export default function PostCard({ data }: any) {
           {data?.category?.name}
         </a> */}
         <h3 className="text-3xl font-extrabold hover:text-primary transition-all duration-300">
-          <Link href={`/${data?.slug?.current}`}>{data?.title}</Link>
+          <Link href={`/blog/${data?.slug?.current}`}>{data?.title}</Link>
         </h3>
         <div className="mt-5">
           <span className="flex items-center gap-x-2">

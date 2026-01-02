@@ -28,7 +28,6 @@ export default function Footer({ footer, posts }: FooterProps) {
     <footer className="bg-black text-primary-gray pb-8">
       <div className="tp-container">
         {/* Logo & Location */}
-        {/* Logo & Location */}
         <div className="grid grid-cols-1 lg:grid-cols-3 border-b border-gray-800 border-l border-r">
           {/* Logo */}
           <div className="w-full p-16 flex justify-start lg:justify-center items-center">
@@ -82,27 +81,31 @@ export default function Footer({ footer, posts }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
           {/* Contact Info & Recent Posts */}
           <div>
-            <h3 className="h4-type mb-5">About Us</h3>
+            <h3 className="h4-type mb-5">{footer?.aboutSection?.heading}</h3>
             <p className="text-gray-300 mb-4 leading-relaxed text-base">
-              {footer?.about}
+              {footer?.aboutSection?.about}
             </p>
 
             {/* Address */}
-            {footer?.businessAddress && (
+            {footer?.businessAddressSection && (
               <div className="mb-4">
-                <h4 className="h4-type mb-3">Address</h4>
+                <h4 className="h4-type mb-3">
+                  {footer?.businessAddressSection?.heading}
+                </h4>
                 <p className="text-gray-300 leading-relaxed text-base whitespace-pre">
-                  {footer.businessAddress}
+                  {footer?.businessAddressSection?.address}
                 </p>
               </div>
             )}
 
             {/* Business Hours */}
-            {footer?.businessHours && (
+            {footer?.businessHoursSection && (
               <div className="mb-4">
-                <h4 className="h4-type mb-3">Business Hours</h4>
+                <h4 className="h4-type mb-3">
+                  {footer?.businessHoursSection?.heading}
+                </h4>
                 <p className="text-gray-300 text-base whitespace-pre">
-                  {footer.businessHours}
+                  {footer?.businessHoursSection?.hours}
                 </p>
               </div>
             )}
@@ -133,7 +136,9 @@ export default function Footer({ footer, posts }: FooterProps) {
 
           {/* Services */}
           <div>
-            <h3 className="h4-type mb-5">Services</h3>
+            <h3 className="h4-type mb-5">
+              {footer?.menuHeading || "Services"}
+            </h3>
             <div className="flex flex-row gap-5">
               <ul className="space-y-3 text-gray-300 mb-3">
                 {footer?.menu &&
@@ -170,7 +175,9 @@ export default function Footer({ footer, posts }: FooterProps) {
 
           {/* Posts */}
           <div>
-            <h3 className="h4-type mb-5">Recent News</h3>
+            <h3 className="h4-type mb-5">
+              {footer?.recentNewsHeading || "Recent News"}
+            </h3>
             <div className="flex flex-row gap-5 mb-8">
               <ul className="space-y-3 text-gray-300 mb-3">
                 {posts &&
@@ -191,7 +198,7 @@ export default function Footer({ footer, posts }: FooterProps) {
                             <MyLink
                               text={blog.title || ""}
                               linkType={"internal"}
-                              link={blog?.slug?.current || ""}
+                              link={`/blog/${blog?.slug?.current}`}
                               cls="hover:text-primary transition-colors block text-base"
                             />
                           </h3>

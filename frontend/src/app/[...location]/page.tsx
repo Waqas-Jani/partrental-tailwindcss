@@ -4,18 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { _renderSection } from "@/components/RenderSection";
 import PageBanner from "@/components/common/PageBanner";
-import {
-  getLocationBySlug,
-  getAllLocation,
-  getBlogBySlug,
-  getBlogFullBySlug,
-  getBlogCategoryList,
-  getBlogTagList,
-  getRecentBlogs,
-} from "@/lib";
+import { getLocationBySlug, getAllLocation } from "@/lib";
 import { getAllLandingPages, getLandingPageBySlug } from "@/lib/getLandingPage";
-import { sanityClient } from "@/lib/sanity";
-import BlogContent from "@/components/blog";
 import LandingPage from "@/components/landingpage";
 import { CircleArrowRightIcon } from "@/components/common/Icons";
 
@@ -43,6 +33,13 @@ export async function generateMetadata({ params }: MetadataProps) {
 
     if (isLandingPage) {
       const data = await getLandingPageBySlug(slug);
+
+      if (!data) {
+        return {
+          title: "Page Not Found | Partner Rentals",
+          description: "The page you are looking for could not be found.",
+        };
+      }
 
       return {
         title: data.seo?.title || data.title,
@@ -76,6 +73,13 @@ export async function generateMetadata({ params }: MetadataProps) {
         locationParams.location.length > 1 ? locationParams.location[1] : null
       );
 
+      if (!data?.sanityLocation) {
+        return {
+          title: "Page Not Found | Partner Rentals",
+          description: "The page you are looking for could not be found.",
+        };
+      }
+
       return {
         title: data.sanityLocation?.seo?.title || data.sanityLocation?.title,
         description: data.sanityLocation?.seo?.description,
@@ -97,35 +101,17 @@ export async function generateMetadata({ params }: MetadataProps) {
       };
     }
 
-    // Check for blog post
-    const blog = await getBlogBySlug(locationParams.location[0]);
-
-    if (!blog) {
-      return { title: "Page not found" };
-    }
-
+    // Return 404 metadata if no page type matches
     return {
-      title: blog.title,
-      description: blog.seo?.description || "",
-      keywords: blog.seo?.keywords || "",
-      openGraph: {
-        title: blog.title,
-        description: blog.seo?.description || "",
-        images: [
-          {
-            url: blog.featuredImage?.asset?.url,
-            width: 1200,
-            height: 630,
-          },
-        ],
-      },
-      alternates: {
-        canonical: `https://partnerrentals.com/${locationParams.location[0]}`,
-      },
+      title: "Page Not Found | Partner Rentals",
+      description: "The page you are looking for could not be found.",
     };
   } catch (error) {
     console.error("Error generating metadata:", error);
-    return { title: "Error" };
+    return {
+      title: "Page Not Found | Partner Rentals",
+      description: "The page you are looking for could not be found.",
+    };
   }
 }
 
@@ -147,6 +133,12 @@ const ServicesPage = async ({ params }: ServicesPageProps) => {
       const data = await getLandingPageBySlug(
         locationParams.location.join("/")
       );
+      
+      // Validate data exists before rendering
+      if (!data) {
+        notFound();
+      }
+      
       return <LandingPage data={data} />;
     }
 
@@ -161,18 +153,23 @@ const ServicesPage = async ({ params }: ServicesPageProps) => {
         locationParams.location.length > 1 ? locationParams.location[1] : null
       );
 
+      // Validate data exists before rendering
+      if (!data?.sanityLocation) {
+        notFound();
+      }
+
       return (
         <div>
           <PageBanner
-            pageName={data?.sanityLocation?.hero?.heading}
-            data={data?.sanityLocation?.hero}
+            pageName={data.sanityLocation.hero?.heading}
+            data={data.sanityLocation.hero}
           />
-          {data?.sanityLocation?.pageBuilder?.map((item: any, index: number) =>
+          {data.sanityLocation.pageBuilder?.map((item: any, index: number) =>
             _renderSection(item, index)
           )}
 
           {/* Service Area Section - Only shown on location pages */}
-          {data?.sanityLocation?.locationServices &&
+          {data.sanityLocation.locationServices &&
             data.sanityLocation.locationServices.length > 0 && (
               <section className="py-5 md:py-16">
                 <div className="container mx-auto px-5">
@@ -181,7 +178,7 @@ const ServicesPage = async ({ params }: ServicesPageProps) => {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {data?.sanityLocation?.locationServices?.map(
+                    {data.sanityLocation.locationServices.map(
                       (service: any, index: number) => (
                         <div
                           key={index}
@@ -210,22 +207,8 @@ const ServicesPage = async ({ params }: ServicesPageProps) => {
       );
     }
 
-    // Handle blog post - fetch all data in parallel
-    const [blog, categories, tags, recentBlogs, contact] = await Promise.all([
-      getBlogFullBySlug(locationParams.location[0]),
-      getBlogCategoryList(),
-      getBlogTagList(),
-      getRecentBlogs(),
-      sanityClient.fetch(`*[_type == "blogPage"][0].contact`),
-    ]);
-
-    if (!blog) {
-      notFound();
-    }
-
-    return (
-      <BlogContent data={{ blog, categories, tags, recentBlogs, contact }} />
-    );
+    // No matching page found - trigger 404
+    notFound();
   } catch (error) {
     console.error("Error loading page:", error);
     notFound();

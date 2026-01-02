@@ -7,6 +7,7 @@ export const siteSettingsQuery = `
       enable,
       welcome,
       phone,
+      phoneLink,
       social[] {
         icon,
         url
@@ -45,7 +46,10 @@ export const siteSettingsQuery = `
           url
         }
       },
-      about,
+      aboutSection {
+        heading,
+        about
+      },
       email,
       location[] {
         label,
@@ -53,13 +57,21 @@ export const siteSettingsQuery = `
         type
       },
       cc,
+      menuHeading,
       menu[] {
         label,
         link,
         type
       },
-      businessAddress,
-      businessHours,
+      businessAddressSection {
+        heading,
+        address
+      },
+      businessHoursSection {
+        heading,
+        hours
+      },
+      recentNewsHeading,
       newsletter {
         enable,
         heading,

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createClient } from '@sanity/client'
-import imageUrlBuilder from '@sanity/image-url'
+import { createImageUrlBuilder } from '@sanity/image-url'
 
 // Sanity client configuration
 export const sanityClient = createClient({
@@ -11,7 +11,7 @@ export const sanityClient = createClient({
 })
 
 // Image URL builder
-const builder = imageUrlBuilder(sanityClient)
+const builder = createImageUrlBuilder(sanityClient)
 
 export function urlFor(source: any) {
     return builder.image(source)

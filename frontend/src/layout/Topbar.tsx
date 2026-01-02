@@ -18,7 +18,7 @@ const Topbar = ({ data }: { data: TopBanner }) => {
           <div className="flex items-center space-x-4">
             <div className="text-base leading-7 font-bold ">
               <a
-                href={`tel:${data?.phone.replace(/\s/g, "")}`}
+                href={`tel:${data?.phoneLink}`}
                 className="text flex items-center border-r-3 border-gray-300 pr-4"
               >
                 <PhoneIcon cls="w-5 h-5 mr-1" /> {data?.phone}

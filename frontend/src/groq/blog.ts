@@ -53,13 +53,17 @@ export const blogFullQueryBySlug = `*[_type == "blog" && slug.current == $slug][
 // blog category list
 export const blogCategoryListQuery = `*[_type == "category"] {
   name,
-  "slug": slug.current
+  slug {
+    current
+  }
 }`;
 
 // blog tag list
 export const blogTagListQuery = `*[_type == "tag"][0...10]{
     name,
-    "slug": slug.current
+    slug {
+      current
+    }
 }`;
 
 // recent blogs
@@ -95,13 +99,17 @@ export const recentBlogsQuery = `{
 // category by slug
 export const categoryBySlugQuery = `*[_type == "category" && slug.current == $slug][0]{
   name,
-  "slug": slug.current
+  slug {
+    current
+  }
 }`;
 
 // tag by slug
 export const tagBySlugQuery = `*[_type == "tag" && slug.current == $slug][0]{
   name,
-  "slug": slug.current
+  slug {
+    current
+  }
 }`;
 
 

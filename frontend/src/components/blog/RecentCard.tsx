@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import Link from "next/link";
-import Image from "next/image";
 import SanityImage from "@/components/common/SanityImage";
 
 export default function RecentCard({ data }: any) {
   return (
     <div>
       <Link
-        href={`/${data?.slug.current}`}
+        href={`/blog/${data?.slug.current}`}
         className="flex flex-row gap-x-4 mb-8 group"
       >
         {data?.featuredImage?.asset ? (

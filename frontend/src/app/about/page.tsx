@@ -47,8 +47,6 @@ export default async function About() {
     }
   }
 
-  //   console.log('==aboutus', sanityAboutPage);
-
   return (
     <>
       {hero && <PageBanner pageName={hero?.heading} data={hero as any} />}
