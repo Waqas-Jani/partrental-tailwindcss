@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import React from "react";
 import PageBanner from "@/components/common/PageBanner";
 import ProductCategories from "@/components/product/ProductCategories";
