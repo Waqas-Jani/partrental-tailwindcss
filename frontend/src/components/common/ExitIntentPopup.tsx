@@ -5,6 +5,11 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { CircleArrowRightIcon } from "./Icons";
 import { ExitIntentPopup as ExitIntentPopupType } from "@/types/siteSettings";
+import {
+  readAppDeviceId,
+  getAppDeviceId,
+  deleteAppDeviceId,
+} from "@/utils/idempotency-key";
 
 interface FormData {
   email: string;
@@ -103,31 +108,47 @@ const ExitIntentPopup = ({
     setIsLoading(true);
     const toastId = toast.loading("Submitting...");
 
+    // Always pass an idempotency key: use existing or create new
+    const idemKey =
+      readAppDeviceId("exit-intent-popup") ||
+      getAppDeviceId("exit-intent-popup");
+
     try {
-      const response = await fetch(
-        "https://leads.civsav.com/template/contact",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            data: {
-              email: data.email,
-              date: new Date().toISOString(),
-              website: window.location.origin,
-              source: "exit_intent_popup",
-            },
-            sheetID: 102,
-          }),
-        }
-      );
+      const formData = {
+        name: "Exit Intent Popup",
+        email: data.email,
+        source_url: typeof window !== "undefined" ? window.location.href : "",
+        status: "completed",
+        data: {
+          date: new Date().toUTCString(),
+          source: "exit_intent_popup",
+        },
+        formId: "690a1b79", // Use formId from config or default
+      };
+
+      const response = await fetch("/api/forms-api", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          ...(idemKey ? { "Idempotency-Key": idemKey } : {}),
+        },
+        body: JSON.stringify(formData),
+      });
+
+      console.log(response);
+      const text = await response.text();
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(
-          errorData.message || `HTTP ${response.status}: Submission failed`
-        );
+        throw new Error(text || `HTTP ${response.status}: Submission failed`);
+      }
+
+      // Enhanced analytics tracking
+      if (typeof window !== "undefined" && (window as any).gtag) {
+        (window as any).gtag("event", "conversion", {
+          event_category: "exit_intent",
+          event_label: "email_subscription",
+          value: 1,
+        });
       }
 
       // DataLayer tracking
@@ -142,6 +163,9 @@ const ExitIntentPopup = ({
       setIsSubmitted(true);
       reset();
       toast.success("Thank you for subscribing!");
+
+      // Delete idempotency key on successful completed submission
+      deleteAppDeviceId("exit-intent-popup");
 
       // Auto-close after success
       setTimeout(() => {

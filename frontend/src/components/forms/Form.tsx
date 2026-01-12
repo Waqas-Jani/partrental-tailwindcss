@@ -14,10 +14,8 @@ export default function Form({ data }: any) {
     isSubmitSuccessful,
     submitCompletedForm,
   } = useFormSubmission({
-    endpoint: "https://leads.civsav.com/template/contact",
-    completedSheetId: 85,
-    abandonedSheetId: 89,
-    formType: "contact_form",
+    formId: "690a0abc", // Use formId from CMS or default
+    formName: "contact_form", // Unique name for idempotency tracking
     trackingFields: ["name", "email", "subject", "message", "honeypot"],
   });
 

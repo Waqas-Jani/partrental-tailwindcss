@@ -4,62 +4,84 @@
 import React, { useState } from "react";
 import { toast } from "react-hot-toast";
 import Button from "../common/Button";
+import {
+  readAppDeviceId,
+  getAppDeviceId,
+  deleteAppDeviceId,
+} from "@/utils/idempotency-key";
 
 export default function Newsletter({ data }: any) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [honeypot, setHoneypot] = useState("");
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    // Honeypot validation - if honeypot field is filled, it's likely a bot
-    if (honeypot && honeypot.trim() !== "") {
-      // Show success toast to trick the bot
-      toast.success("Request has been submitted successfully");
-
-      setName("");
-      setEmail("");
-      setHoneypot("");
-      setLoading(false);
-      return; // Exit early, don't submit to server
-    }
-
     const toastId = toast.loading("Submitting...");
-    const d = {
-      data: {
+
+    // Always pass an idempotency key: use existing or create new
+    const idemKey =
+      readAppDeviceId("newsletter-form") || getAppDeviceId("newsletter-form");
+
+    try {
+      const formData = {
         name: name,
         email: email,
-        date: new Date().toUTCString(),
-        website: window.location.origin,
-      },
-      sheetID: 5,
-    };
+        source_url: typeof window !== "undefined" ? window.location.href : "",
+        status: "completed",
+        data: {
+          date: new Date().toUTCString(),
+          website: window.location.origin,
+          source: "newsletter",
+        },
+        formId: data?.formId || "690a1b79",
+      };
 
-    fetch("https://leads.civsav.com/template/contact", {
-      method: "POST",
-      body: JSON.stringify(d),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((res) => res.json())
-      .then(() => {
-        if (typeof window !== "undefined" && window.dataLayer) {
-          window.dataLayer.push({
-            event: "generate_lead",
-            form_type: "newsletter",
-          });
-        }
-        toast.dismiss(toastId);
-        toast.success("Request has been submitted successfully");
-        setLoading(false);
-      })
-      .catch(() => {
-        toast.error("Something went wrong! Please try again");
-        setLoading(false);
+      const response = await fetch("/api/forms-api", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          ...(idemKey ? { "Idempotency-Key": idemKey } : {}),
+        },
+        body: JSON.stringify(formData),
       });
+
+      console.log(response);
+      const text = await response.text();
+
+      if (!response.ok) {
+        throw new Error(text || `HTTP ${response.status}: Submission failed`);
+      }
+
+      // Analytics tracking
+      if (typeof window !== "undefined" && (window as any).dataLayer) {
+        (window as any).dataLayer.push({
+          event: "generate_lead",
+          form_type: "newsletter",
+        });
+      }
+
+      toast.dismiss(toastId);
+      toast.success("Request has been submitted successfully");
+
+      // Delete idempotency key on successful completed submission
+      deleteAppDeviceId("newsletter-form");
+
+      // Reset form
+      setName("");
+      setEmail("");
+      setLoading(false);
+    } catch (error) {
+      console.error("Newsletter submission error:", error);
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Something went wrong! Please try again";
+      toast.dismiss(toastId);
+      toast.error(errorMessage);
+      setLoading(false);
+    }
   };
 
   return (
@@ -91,24 +113,6 @@ export default function Newsletter({ data }: any) {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          {/* Honeypot field (hidden from real users) */}
-          <input
-            type="text"
-            name="honeypot"
-            tabIndex={-1}
-            autoComplete="off"
-            value={honeypot}
-            onChange={(e) => setHoneypot(e.target.value)}
-            style={{
-              position: "absolute",
-              left: "-9999px",
-              width: "1px",
-              height: "1px",
-              opacity: 0,
-              pointerEvents: "none",
-            }}
-            aria-hidden="true"
-          />
 
           <div className="">
             {data?.button?.title && (

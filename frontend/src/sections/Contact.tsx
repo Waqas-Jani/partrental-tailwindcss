@@ -33,10 +33,9 @@ const Contact: React.FC<ContactProps> = ({ data, isHome = false }) => {
     isSubmitSuccessful,
     submitCompletedForm,
   } = useFormSubmission({
-    endpoint: "https://leads.civsav.com/template/contact",
-    completedSheetId: 85,
-    abandonedSheetId: 89,
-    formType: "home_contact_form",
+    formId: "690a0abc", // Use formId from CMS or default
+    formName: "contact-form", // Unique name for idempotency tracking
+
     trackingFields: ["name", "email", "message", "honeypot"],
   });
 

@@ -1,380 +1,55 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React, { useState, useRef, useCallback, useEffect } from "react";
-import toast from "react-hot-toast";
+import React, { useEffect } from "react";
+import { useFormSubmission } from "@/hooks/useFormSubmission";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   productName: string;
+  formId?: string;
 };
 
-type FormData = {
-  name: string;
-  email: string;
-  phone: string;
-  message: string;
-};
-
-type Errors = {
-  name?: string;
-  email?: string;
-  phone?: string;
-  message?: string;
-};
-
-type LastFieldChanged = "name" | "email" | null;
-
-type FormState = {
-  started: boolean;
-  lastFieldChanged: LastFieldChanged;
-  nameValue: string;
-  emailValue: string;
-  debugMessages: string;
-  abandonTimer: ReturnType<typeof setTimeout> | null;
-};
-
-const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
-  // Add formState ref to track form data without re-renders
-  const formState = useRef<FormState>({
-    started: false,
-    lastFieldChanged: null,
-    nameValue: "",
-    emailValue: "",
-    debugMessages: "",
-    abandonTimer: null,
+const QuoteRequestForm = ({
+  isOpen,
+  onClose,
+  productName,
+  formId = "690e32f5",
+}: Props) => {
+  const {
+    register,
+    registerWithTracking,
+    handleSubmit,
+    errors,
+    isSubmitSuccessful,
+    submitCompletedForm,
+  } = useFormSubmission({
+    formId,
+    formName: "quote-request-form",
+    trackingFields: ["name", "email", "phone"],
+    successMessage: "Quote request has been submitted successfully",
+    additionalFields: {
+      product_name: productName,
+    },
   });
 
-  // Add formStarted state
-  const [formStarted, setFormStarted] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [honeypot, setHoneypot] = useState("");
-
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-
-  const [errors, setErrors] = useState<Errors>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Add debug logging function
-  const logDebug = useCallback((message: string) => {
-    const timestamp = new Date().toISOString();
-    formState.current.debugMessages += `\n${timestamp}: ${message}`;
-    // eslint-disable-next-line no-console
-    console.log(`DEBUG: ${message}`);
-  }, []);
-
-  // Add submit abandoned form function
-  const submitAbandonedForm = useCallback(() => {
-    if (honeypot && honeypot.trim() !== "") {
-      toast.success("Request has been submitted successfully");
-      setHoneypot("");
-      setIsSubmitting(false);
-      return;
-    }
-    // Only submit if we have at least name or email
-    if (
-      !formState.current.started ||
-      (!formState.current.nameValue && !formState.current.emailValue)
-    ) {
-      logDebug("Abandoned form not submitted - no data or not started");
-      return;
-    }
-
-    try {
-      // Create object with only name and email
-      const abandonData = {
-        data: {
-          name: formState.current.nameValue,
-          email: formState.current.emailValue,
-          form_status: "abandoned",
-          product_name: productName,
-          page_url: window.location.href,
-          date: new Date().toUTCString(),
-          website: window.location.origin,
-        },
-        sheetID: 90,
-      };
-
-      logDebug(`Sending abandoned form data: ${JSON.stringify(abandonData)}`);
-
-      // Use fetch with keepalive
-      fetch("https://leads.civsav.com/template/contact", {
-        method: "POST",
-        body: JSON.stringify(abandonData),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-        keepalive: true,
-      }).catch((err) => {
-        logDebug(`Fetch error: ${err.message}`);
-      });
-
-      // Track the abandoned form in analytics
-      if (typeof window !== "undefined" && window.dataLayer) {
-        window.dataLayer.push({
-          event: "abandoned_lead",
-          form_type: "quote_request_form",
-        });
-        logDebug("GTM event pushed");
-      }
-    } catch (error: any) {
-      logDebug(`Error in abandoned form: ${error?.message as string}`);
-    }
-  }, [logDebug, productName]);
-
-  // Add form tracking effect
+  // Handle successful submission - close popup after delay
   useEffect(() => {
-    // Function to schedule abandoned form submission with delay
-    const scheduleAbandonedFormSubmission = () => {
-      // Clear any existing timer
-      if (formState.current.abandonTimer) {
-        clearTimeout(formState.current.abandonTimer);
-        logDebug("Cleared existing abandon timer");
-      }
-
-      // Set a new timer (3 seconds delay)
-      logDebug("Scheduling abandoned form submission in 3 seconds");
-      formState.current.abandonTimer = setTimeout(() => {
-        logDebug("Executing delayed abandoned form submission");
-        submitAbandonedForm();
-        formState.current.abandonTimer = null;
-      }, 3000); // 3 second delay
-    };
-
-    // Function to cancel scheduled submission
-    const cancelScheduledSubmission = () => {
-      if (formState.current.abandonTimer) {
-        clearTimeout(formState.current.abandonTimer);
-        formState.current.abandonTimer = null;
-        logDebug("Canceled scheduled abandon form submission");
-      }
-    };
-
-    // Event handler for beforeunload
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      logDebug(
-        `BeforeUnload triggered - Name: ${formState.current.nameValue}, Email: ${formState.current.emailValue}`
-      );
-
-      if (
-        formState.current.started &&
-        !showSuccess &&
-        (formState.current.nameValue || formState.current.emailValue)
-      ) {
-        logDebug("Submitting abandoned form immediately (beforeunload)");
-        // Submit immediately since the page is closing
-        submitAbandonedForm();
-
-        // Standard way to show confirmation dialog (required by some browsers)
-        e.preventDefault();
-        e.returnValue = "Are you sure you want to leave?";
-        return "Are you sure you want to leave?";
-      }
-      return undefined;
-    };
-
-    // Event handler for visibility change
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "hidden") {
-        // User switched away from tab - schedule submission with delay
-        logDebug(`Visibility changed to: hidden`);
-
-        if (
-          formState.current.started &&
-          !showSuccess &&
-          (formState.current.nameValue || formState.current.emailValue)
-        ) {
-          logDebug("Scheduling abandoned form submission (visibility:hidden)");
-          scheduleAbandonedFormSubmission();
-        }
-      } else if (document.visibilityState === "visible") {
-        // User returned to tab - cancel scheduled submission
-        logDebug(`Visibility changed to: visible`);
-        cancelScheduledSubmission();
-      }
-    };
-
-    // Set up event listeners
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    // Return cleanup function
-    return () => {
-      cancelScheduledSubmission();
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-  }, [showSuccess, logDebug, submitAbandonedForm]);
-
-  const validateForm = () => {
-    const newErrors: Errors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
-    }
-
-    if (!formData.phone.trim()) {
-      newErrors.phone = "Phone number is required";
-    } else if (!/^\+?[\d\s-]{10,}$/.test(formData.phone.replace(/\s+/g, ""))) {
-      newErrors.phone = "Please enter a valid phone number";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-    setIsSubmitting(true);
-    if (honeypot && honeypot.trim() !== "") {
-      toast.success("Request has been submitted successfully");
-      setHoneypot("");
-      setIsSubmitting(false);
-      return;
-    }
-
-    const toastId = toast.loading("Submitting...");
-
-    // Clear any pending abandon form submissions
-    if (formState.current.abandonTimer) {
-      clearTimeout(formState.current.abandonTimer);
-      formState.current.abandonTimer = null;
-      logDebug("Cleared abandon timer during form submission");
-    }
-
-    try {
-      const d = {
-        data: {
-          ...formData,
-          form_status: "completed",
-          product_name: productName,
-          page_url: window.location.href,
-          date: new Date().toUTCString(),
-          website: window.location.origin,
-        },
-        sheetID: 91,
-      };
-
-      const response = await fetch(
-        "https://leads.civsav.com/template/contact",
-        {
-          method: "POST",
-          body: JSON.stringify(d),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Form submission failed");
-      }
-
-      await response.json();
-
-      // Reset everything
-      formState.current = {
-        started: false,
-        lastFieldChanged: null,
-        nameValue: "",
-        emailValue: "",
-        debugMessages: "",
-        abandonTimer: null,
-      };
-      setFormStarted(false);
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-      });
-
-      toast.dismiss(toastId);
-      if (typeof window !== "undefined" && window.dataLayer) {
-        window.dataLayer.push({
-          event: "generate_lead",
-          form_type: "quote_request_form",
-        });
-      }
-      toast.success("Quote request has been submitted successfully");
-      setShowSuccess(true);
-
-      // Close popup after a short delay
-      setTimeout(() => {
+    if (isSubmitSuccessful) {
+      const timer = setTimeout(() => {
         onClose();
       }, 2000);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error("Error submitting form:", error);
-      toast.dismiss(toastId);
-      toast.error("Something went wrong! Please try again");
-    } finally {
-      setIsSubmitting(false);
+      return () => clearTimeout(timer);
     }
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target as { name: string; value: string };
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    // Track form data for abandonment
-    if (name === "name") {
-      formState.current.nameValue = value;
-      formState.current.lastFieldChanged = "name";
-    } else if (name === "email") {
-      formState.current.emailValue = value;
-      formState.current.lastFieldChanged = "email";
-    }
-
-    // Mark form as started if not already
-    if (!formState.current.started) {
-      formState.current.started = true;
-      setFormStarted(true);
-      logDebug(`Form started with ${name} field`);
-    }
-
-    // Clear error when user starts typing
-    if (errors[name as keyof Errors]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
-  };
+  }, [isSubmitSuccessful, onClose]);
 
   const handleClose = () => {
-    // Check if form was started and has data before closing
-    if (
-      formState.current.started &&
-      !showSuccess &&
-      (formState.current.nameValue || formState.current.emailValue)
-    ) {
-      logDebug("Submitting abandoned form on popup close");
-      submitAbandonedForm();
-    }
-
     onClose();
+  };
+
+  const onSubmit = async (data: any) => {
+    await submitCompletedForm(data);
   };
 
   if (!isOpen) return null;
@@ -411,7 +86,7 @@ const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
             Fill out the form below and we’ll get back to you soon.
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
             <label
               htmlFor="name"
@@ -422,18 +97,18 @@ const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
             <input
               type="text"
               id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
+              {...registerWithTracking("name", {
+                required: "Name is required",
+              })}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition ${
-                errors.name ? "border-red-500" : "border-gray-300"
+                errors?.name ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Your name"
               autoComplete="name"
             />
-            {errors.name && (
+            {errors?.name && (
               <span className="text-xs text-red-500 mt-1 block">
-                {errors.name}
+                {String(errors.name?.message)}
               </span>
             )}
           </div>
@@ -447,18 +122,22 @@ const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
             <input
               type="email"
               id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
+              {...registerWithTracking("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: "Please enter a valid email",
+                },
+              })}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition ${
-                errors.email ? "border-red-500" : "border-gray-300"
+                errors?.email ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Your email"
               autoComplete="email"
             />
-            {errors.email && (
+            {errors?.email && (
               <span className="text-xs text-red-500 mt-1 block">
-                {errors.email}
+                {String(errors.email?.message)}
               </span>
             )}
           </div>
@@ -472,18 +151,22 @@ const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
             <input
               type="tel"
               id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
+              {...registerWithTracking("phone", {
+                required: "Phone number is required",
+                pattern: {
+                  value: /^\+?[\d\s-]{10,}$/,
+                  message: "Please enter a valid phone number",
+                },
+              })}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition ${
-                errors.phone ? "border-red-500" : "border-gray-300"
+                errors?.phone ? "border-red-500" : "border-gray-300"
               }`}
               placeholder="Your phone number"
               autoComplete="tel"
             />
-            {errors.phone && (
+            {errors?.phone && (
               <span className="text-xs text-red-500 mt-1 block">
-                {errors.phone}
+                {String(errors.phone?.message)}
               </span>
             )}
           </div>
@@ -496,59 +179,33 @@ const QuoteRequestForm = ({ isOpen, onClose, productName }: Props) => {
             </label>
             <textarea
               id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
+              {...register("message")}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition"
               placeholder="Additional details or questions"
               rows={4}
             />
           </div>
-          {/* Honeypot field (hidden from real users) */}
-          <input
-            type="text"
-            name="honeypot"
-            tabIndex={-1}
-            autoComplete="off"
-            value={honeypot}
-            onChange={(e) => setHoneypot(e.target.value)}
-            style={{
-              position: "absolute",
-              left: "-9999px",
-              width: "1px",
-              height: "1px",
-              opacity: 0,
-              pointerEvents: "none",
-            }}
-            aria-hidden="true"
-          />
           <button
             type="submit"
             className="w-full bg-primary text-white font-bold py-3 rounded-lg hover:bg-red-700 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
-            disabled={isSubmitting}
+            disabled={isSubmitSuccessful}
           >
-            {isSubmitting ? (
-              <span>
+            {isSubmitSuccessful ? (
+              <span className="flex items-center justify-center gap-2">
                 <svg
-                  className="inline w-5 h-5 mr-2 animate-spin"
+                  className="w-5 h-5"
                   fill="none"
+                  stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
                   <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8v8z"
-                  ></path>
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
-                Sending...
+                Submitted!
               </span>
             ) : (
               "Submit Quote Request"

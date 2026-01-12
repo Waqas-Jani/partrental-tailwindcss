@@ -2,363 +2,400 @@
 import { useRef, useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import {
+  readAppDeviceId,
+  getAppDeviceId,
+  deleteAppDeviceId,
+} from "@/utils/idempotency-key";
 
 interface FormSubmissionConfig {
-    endpoint: string;
-    completedSheetId: number;
-    abandonedSheetId: number;
-    formType: string;
-    trackingFields?: string[];
+  formId: string; // ID for the form in the CRM system
+  formName: string; // Unique name for idempotency key (e.g., "contact-form")
+  trackingFields?: string[];
+  successMessage?: string; // Custom success message for toast
+  additionalFields?: Record<string, any>; // Additional static fields to include in both completed and abandoned submissions
 }
 
 interface FormState {
-    started: boolean;
-    lastFieldChanged: string | null;
-    fieldValues: Record<string, string>;
-    debugMessages: string;
-    abandonTimer: NodeJS.Timeout | null;
-    abandonedSubmitted: boolean;
+  started: boolean;
+  lastFieldChanged: string | null;
+  fieldValues: Record<string, string>;
+  debugMessages: string;
+  abandonTimer: NodeJS.Timeout | null;
 }
 
 export const useFormSubmission = (config: FormSubmissionConfig) => {
-    const {
-        endpoint,
-        completedSheetId,
-        abandonedSheetId,
-        formType,
-        trackingFields = ["name", "email"]
-    } = config;
+  const {
+    formId,
+    formName,
+    trackingFields = ["name", "email"],
+    successMessage = "Request has been submitted successfully",
+    additionalFields = {},
+  } = config;
 
-    // Form state ref to track data without re-renders
-    const formState = useRef<FormState>({
-        started: false,
-        lastFieldChanged: null,
-        fieldValues: {},
-        debugMessages: "",
-        abandonTimer: null,
-        abandonedSubmitted: false,
-    });
+  // Form state ref to track data without re-renders
+  const formState = useRef<FormState>({
+    started: false,
+    lastFieldChanged: null,
+    fieldValues: {},
+    debugMessages: "",
+    abandonTimer: null,
+  });
 
-    const [formStarted, setFormStarted] = useState(false);
+  const [formStarted, setFormStarted] = useState(false);
 
-    const {
-        register,
-        handleSubmit,
-        reset,
-        formState: { errors, isSubmitSuccessful, isDirty },
-    } = useForm({
-        mode: "onBlur",
-    });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitSuccessful, isDirty },
+  } = useForm({
+    mode: "onBlur",
+  });
 
-    // Debug logging function
-    const logDebug = useCallback((message: any) => {
-        const timestamp = new Date().toISOString();
-        formState.current.debugMessages += `\n${timestamp}: ${message}`;
-        console.log(`DEBUG: ${message}`);
-    }, []);
+  // Debug logging function
+  const logDebug = useCallback((message: any) => {
+    const timestamp = new Date().toISOString();
+    formState.current.debugMessages += `\n${timestamp}: ${message}`;
+    console.log(`DEBUG: ${message}`);
+  }, []);
 
-    // Submit abandoned form function
-    const submitAbandonedForm = useCallback(() => {
-        // Prevent duplicate submissions
-        if (formState.current.abandonedSubmitted) {
-            logDebug("Abandoned form already submitted, skipping duplicate submission");
-            return;
-        }
-
-        // Honeypot validation - if honeypot field is filled, it's likely a bot
-        if (formState.current.fieldValues.honeypot && formState.current.fieldValues.honeypot.trim() !== "") {
-            logDebug("Bot detected in abandoned form - honeypot field filled, skipping submission");
-            return;
-        }
-
-        const hasData = trackingFields.some(
-            field => formState.current.fieldValues[field]?.trim()
-        );
-
-        if (!formState.current.started || !hasData) {
-            logDebug("Abandoned form not submitted - no data or not started");
-            return;
-        }
-
-        // Mark as submitted to prevent duplicates
-        formState.current.abandonedSubmitted = true;
-
-        try {
-            // Remove honeypot field from abandoned form data
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { honeypot, ...cleanFieldValues } = formState.current.fieldValues;
-
-            const abandonData = {
-                data: {
-                    ...cleanFieldValues,
-                    form_status: "abandoned",
-                    page_url: window.location.href,
-                    date: new Date().toUTCString(),
-                    website: window.location.origin,
-                },
-                sheetID: abandonedSheetId,
-            };
-
-            logDebug(`Sending abandoned form data: ${JSON.stringify(abandonData)}`);
-
-            fetch(endpoint, {
-                method: "POST",
-                body: JSON.stringify(abandonData),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8",
-                },
-                keepalive: true,
-            }).catch((err) => {
-                logDebug(`Fetch error: ${err.message}`);
-            });
-
-            // Track the abandoned form in analytics
-            if (typeof window !== "undefined" && (window as any).dataLayer) {
-                (window as any).dataLayer.push({
-                    event: "abandoned_lead",
-                    form_type: formType,
-
-                });
-                logDebug("GTM event pushed");
-            }
-        } catch (error) {
-            logDebug(`Error in abandoned form: ${(error as Error)?.message}`);
-        }
-    }, [logDebug, endpoint, abandonedSheetId, formType, trackingFields]);
-
-    // Form tracking effect
-    useEffect(() => {
-        const scheduleAbandonedFormSubmission = () => {
-            if (formState.current.abandonTimer) {
-                clearTimeout(formState.current.abandonTimer);
-                logDebug("Cleared existing abandon timer");
-            }
-
-            logDebug("Scheduling abandoned form submission in 3 seconds");
-            formState.current.abandonTimer = setTimeout(() => {
-                formState.current.abandonTimer = null;
-                logDebug("Executing delayed abandoned form submission");
-                submitAbandonedForm();
-            }, 3000);
-        };
-
-        const cancelScheduledSubmission = () => {
-            if (formState.current.abandonTimer) {
-                clearTimeout(formState.current.abandonTimer);
-                formState.current.abandonTimer = null;
-                logDebug("Canceled scheduled abandon form submission");
-            }
-        };
-
-        const handleBeforeUnload = (e: any) => {
-            const hasData = trackingFields.some(
-                field => formState.current.fieldValues[field]?.trim()
-            );
-
-            logDebug(
-                `BeforeUnload triggered - Data: ${JSON.stringify(formState.current.fieldValues)}`
-            );
-
-            if (formState.current.started && !isSubmitSuccessful && hasData) {
-                // Clear any pending scheduled submission since we're submitting immediately
-                cancelScheduledSubmission();
-                logDebug("Submitting abandoned form immediately (beforeunload)");
-                submitAbandonedForm();
-                e.preventDefault();
-                e.returnValue = "Are you sure you want to leave?";
-                return "Are you sure you want to leave?";
-            }
-        };
-
-        const handleVisibilityChange = () => {
-            const hasData = trackingFields.some(
-                field => formState.current.fieldValues[field]?.trim()
-            );
-
-            if (document.visibilityState === "hidden") {
-                logDebug(`Visibility changed to: hidden`);
-
-                if (formState.current.started && !isSubmitSuccessful && hasData) {
-                    logDebug("Scheduling abandoned form submission (visibility:hidden)");
-                    scheduleAbandonedFormSubmission();
-                }
-            } else if (document.visibilityState === "visible") {
-                logDebug(`Visibility changed to: visible`);
-                cancelScheduledSubmission();
-                // Reset abandoned flag since user came back (didn't actually abandon)
-                formState.current.abandonedSubmitted = false;
-            }
-        };
-
-        window.addEventListener("beforeunload", handleBeforeUnload);
-        document.addEventListener("visibilitychange", handleVisibilityChange);
-
-        return () => {
-            cancelScheduledSubmission();
-            window.removeEventListener("beforeunload", handleBeforeUnload);
-            document.removeEventListener("visibilitychange", handleVisibilityChange);
-        };
-    }, [isSubmitSuccessful, logDebug, submitAbandonedForm, trackingFields]);
-
-    // Track when form is started
-    useEffect(() => {
-        if (isDirty && !formStarted) {
-            setFormStarted(true);
-            formState.current.started = true;
-            logDebug("Form started via isDirty");
-        }
-    }, [isDirty, formStarted, logDebug]);
-
-    // Enhanced register function to track field values
-    const registerWithTracking = useCallback(
-        (name: string, options?: any) => {
-            return {
-                ...register(name, options),
-                onChange: (e: any) => {
-                    formState.current.fieldValues[name] = e.target.value;
-                    formState.current.lastFieldChanged = name;
-
-                    if (!formState.current.started) {
-                        formState.current.started = true;
-                        setFormStarted(true);
-                        logDebug(`Form started with ${name} field`);
-                    }
-                },
-                onInput: (e: any) => {
-                    formState.current.fieldValues[name] = e.target.value;
-                    formState.current.lastFieldChanged = name;
-                },
-                onAnimationStart: (e: any) => {
-                    if (e.animationName === "onAutoFillStart") {
-                        setTimeout(() => {
-                            formState.current.fieldValues[name] = e.target.value;
-                            formState.current.lastFieldChanged = name;
-                        }, 100);
-                    }
-                },
-            };
-        },
-        [register, logDebug]
+  // Submit abandoned form function
+  const submitAbandonedForm = useCallback(() => {
+    const hasData = trackingFields.some((field) =>
+      formState.current.fieldValues[field]?.trim()
     );
 
-    // Submit completed form
-    const submitCompletedForm = useCallback(async (data: any) => {
-        // Honeypot validation - if honeypot field is filled, it's likely a bot
-        if (data.honeypot && data.honeypot.trim() !== "") {
-            logDebug("Bot detected - honeypot field filled");
+    if (!formState.current.started || !hasData) {
+      logDebug("Abandoned form not submitted - no data or not started");
+      return;
+    }
 
-            // Show success toast to trick the bot
-            toast.success("Request has been submitted successfully");
+    try {
+      const idemKey = readAppDeviceId(formName) || getAppDeviceId(formName);
 
-            // Reset form without actually submitting
-            formState.current = {
-                started: false,
-                lastFieldChanged: null,
-                fieldValues: {},
-                debugMessages: "",
-                abandonTimer: null,
-                abandonedSubmitted: false,
-            };
-            setFormStarted(false);
-            reset();
+      // Extract name, email, phone for top level (if they exist)
+      const topLevelFields: Record<string, string> = {};
+      if (formState.current.fieldValues.name) {
+        topLevelFields.name = formState.current.fieldValues.name;
+      }
+      if (formState.current.fieldValues.email) {
+        topLevelFields.email = formState.current.fieldValues.email;
+      }
+      if (formState.current.fieldValues.phone) {
+        topLevelFields.phone = formState.current.fieldValues.phone;
+      }
 
-            return; // Exit early, don't submit to server
+      // Get all other fields (excluding name, email, phone)
+      const otherFields = Object.keys(formState.current.fieldValues)
+        .filter((key) => !["name", "email", "phone"].includes(key))
+        .reduce((acc, key) => {
+          acc[key] = formState.current.fieldValues[key];
+          return acc;
+        }, {} as Record<string, string>);
+
+      const abandonData = {
+        ...additionalFields,
+        ...topLevelFields,
+        source_url: typeof window !== "undefined" ? window.location.href : "",
+        status: "abandoned",
+        data: {
+          ...otherFields,
+          date: new Date().toUTCString(),
+        },
+        formId,
+      };
+
+      logDebug(`Sending abandoned form data: ${JSON.stringify(abandonData)}`);
+
+      fetch("/api/forms-api", {
+        method: "POST",
+        body: JSON.stringify(abandonData),
+        headers: {
+          "Content-Type": "application/json; charset=UTF-8",
+          ...(idemKey ? { "idempotency-key": idemKey } : {}),
+        },
+        keepalive: true,
+      }).catch((err) => {
+        logDebug(`Fetch error: ${err.message}`);
+      });
+
+      // Track the abandoned form in analytics
+      if (typeof window !== "undefined" && (window as any).dataLayer) {
+        (window as any).dataLayer.push({
+          event: "form_abandon",
+          form_type: formName,
+          ...trackingFields.reduce((acc, field) => {
+            acc[`has_${field}`] = !!formState.current.fieldValues[field];
+            return acc;
+          }, {} as Record<string, boolean>),
+          last_field_completed: formState.current.lastFieldChanged,
+        });
+        logDebug("GTM event pushed");
+      }
+    } catch (error) {
+      logDebug(`Error in abandoned form: ${(error as Error)?.message}`);
+    }
+  }, [logDebug, formId, formName, trackingFields, additionalFields]);
+
+  // Form tracking effect
+  useEffect(() => {
+    const scheduleAbandonedFormSubmission = () => {
+      if (formState.current.abandonTimer) {
+        clearTimeout(formState.current.abandonTimer);
+        logDebug("Cleared existing abandon timer");
+      }
+
+      logDebug("Scheduling abandoned form submission in 3 seconds");
+      formState.current.abandonTimer = setTimeout(() => {
+        formState.current.abandonTimer = null;
+        logDebug("Executing delayed abandoned form submission");
+        submitAbandonedForm();
+      }, 3000);
+    };
+
+    const cancelScheduledSubmission = () => {
+      if (formState.current.abandonTimer) {
+        clearTimeout(formState.current.abandonTimer);
+        formState.current.abandonTimer = null;
+        logDebug("Canceled scheduled abandon form submission");
+      }
+    };
+
+    const handleBeforeUnload = (e: any) => {
+      const hasData = trackingFields.some((field) =>
+        formState.current.fieldValues[field]?.trim()
+      );
+
+      logDebug(
+        `BeforeUnload triggered - Data: ${JSON.stringify(
+          formState.current.fieldValues
+        )}`
+      );
+
+      if (formState.current.started && !isSubmitSuccessful && hasData) {
+        logDebug("Submitting abandoned form immediately (beforeunload)");
+        submitAbandonedForm();
+        e.preventDefault();
+        e.returnValue = "Are you sure you want to leave?";
+        return "Are you sure you want to leave?";
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      const hasData = trackingFields.some((field) =>
+        formState.current.fieldValues[field]?.trim()
+      );
+
+      if (document.visibilityState === "hidden") {
+        logDebug(`Visibility changed to: hidden`);
+
+        if (formState.current.started && !isSubmitSuccessful && hasData) {
+          logDebug("Scheduling abandoned form submission (visibility:hidden)");
+          scheduleAbandonedFormSubmission();
+        }
+      } else if (document.visibilityState === "visible") {
+        logDebug(`Visibility changed to: visible`);
+        cancelScheduledSubmission();
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      cancelScheduledSubmission();
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isSubmitSuccessful, logDebug, submitAbandonedForm, trackingFields]);
+
+  // Track when form is started
+  useEffect(() => {
+    if (isDirty && !formStarted) {
+      setFormStarted(true);
+      formState.current.started = true;
+      logDebug("Form started via isDirty");
+    }
+  }, [isDirty, formStarted, logDebug]);
+
+  // Enhanced register function to track field values
+  const registerWithTracking = useCallback(
+    (name: string, options: any) => {
+      return {
+        ...register(name, options),
+        onChange: (e: any) => {
+          formState.current.fieldValues[name] = e.target.value;
+          formState.current.lastFieldChanged = name;
+
+          if (!formState.current.started) {
+            formState.current.started = true;
+            setFormStarted(true);
+            logDebug(`Form started with ${name} field`);
+          }
+        },
+        onInput: (e: any) => {
+          formState.current.fieldValues[name] = e.target.value;
+          formState.current.lastFieldChanged = name;
+        },
+        onAnimationStart: (e: any) => {
+          if (e.animationName === "onAutoFillStart") {
+            setTimeout(() => {
+              formState.current.fieldValues[name] = e.target.value;
+              formState.current.lastFieldChanged = name;
+            }, 100);
+          }
+        },
+      };
+    },
+    [register, logDebug]
+  );
+
+  // Submit completed form
+  const submitCompletedForm = useCallback(
+    async (data: any) => {
+      const toastId = toast.loading("Submitting...");
+
+      // Clear any pending abandon form submissions
+      if (formState.current.abandonTimer) {
+        clearTimeout(formState.current.abandonTimer);
+        formState.current.abandonTimer = null;
+        logDebug("Cleared abandon timer during form submission");
+      }
+
+      // Always pass an idempotency key: use existing or create new
+      const idemKey = readAppDeviceId(formName) || getAppDeviceId(formName);
+
+      // Log all incoming form data to verify all fields are captured
+      logDebug(
+        `Received form data with fields: ${Object.keys(data).join(", ")}`
+      );
+      logDebug(`Form data values: ${JSON.stringify(data)}`);
+
+      // Extract name, email, phone for top level (if they exist)
+      const topLevelFields: Record<string, any> = {};
+      if (data.name !== undefined && data.name !== null && data.name !== "") {
+        topLevelFields.name = data.name;
+      }
+      if (
+        data.email !== undefined &&
+        data.email !== null &&
+        data.email !== ""
+      ) {
+        topLevelFields.email = data.email;
+      }
+      if (
+        data.phone !== undefined &&
+        data.phone !== null &&
+        data.phone !== ""
+      ) {
+        topLevelFields.phone = data.phone;
+      }
+
+      // Get all other fields (excluding name, email, phone)
+      const otherFields = Object.keys(data)
+        .filter((key) => !["name", "email", "phone", "_hp"].includes(key))
+        .reduce((acc, key) => {
+          acc[key] = data[key];
+          return acc;
+        }, {} as Record<string, any>);
+
+      logDebug(`Top level fields: ${Object.keys(topLevelFields).join(", ")}`);
+      logDebug(
+        `Other fields in data object: ${Object.keys(otherFields).join(", ")}`
+      );
+
+      const formData = {
+        ...additionalFields,
+        ...topLevelFields,
+        source_url: typeof window !== "undefined" ? window.location.href : "",
+        status: "completed",
+        data: {
+          ...otherFields,
+          date: new Date().toUTCString(),
+        },
+        formId,
+      };
+
+      logDebug(
+        `Final form data structure: ${JSON.stringify(formData, null, 2)}`
+      );
+
+      try {
+        const response = await fetch("/api/forms-api", {
+          method: "POST",
+          body: JSON.stringify(formData),
+          headers: {
+            "Content-Type": "application/json; charset=UTF-8",
+            ...(idemKey ? { "idempotency-key": idemKey } : {}),
+          },
+        });
+
+        const text = await response.text();
+
+        if (!response.ok) {
+          throw new Error(text || "Form submission failed");
         }
 
-        const toastId = toast.loading("Submitting...");
-
-        // Clear any pending abandon form submissions
-        if (formState.current.abandonTimer) {
-            clearTimeout(formState.current.abandonTimer);
-            formState.current.abandonTimer = null;
-            logDebug("Cleared abandon timer during form submission");
-        }
-
-        // Remove honeypot field from actual submission data
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { honeypot, ...cleanData } = data;
-
-        const formData = {
-            data: {
-                ...cleanData,
-                form_status: "completed",
-                date: new Date().toUTCString(),
-                page_url: window.location.href,
-                website: window.location.origin,
-            },
-            sheetID: completedSheetId,
+        // Reset everything
+        formState.current = {
+          started: false,
+          lastFieldChanged: null,
+          fieldValues: {},
+          debugMessages: "",
+          abandonTimer: null,
         };
+        setFormStarted(false);
+        reset();
 
-        try {
-            const response = await fetch(endpoint, {
-                method: "POST",
-                body: JSON.stringify(formData),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8",
-                },
-            });
+        toast.dismiss(toastId);
 
-            if (!response.ok) {
-                throw new Error("Form submission failed");
-            }
-
-            await response.json();
-
-            // Reset everything
-            formState.current = {
-                started: false,
-                lastFieldChanged: null,
-                fieldValues: {},
-                debugMessages: "",
-                abandonTimer: null,
-                abandonedSubmitted: false,
-            };
-            setFormStarted(false);
-            reset();
-
-            toast.dismiss(toastId);
-
-            // DataLayer tracking
-            if (typeof window !== "undefined" && (window as any).dataLayer) {
-                (window as any).dataLayer.push({
-                    event: "generate_lead",
-                    form_type: formType,
-                });
-            }
-
-            toast.success("Request has been submitted successfully");
-        } catch (error) {
-            console.error("Form submission error:", error);
-            toast.error("Something went wrong! Please try again");
+        // DataLayer tracking
+        if (typeof window !== "undefined" && (window as any).dataLayer) {
+          (window as any).dataLayer.push({
+            event: "generate_lead",
+          });
         }
-    }, [endpoint, completedSheetId, reset, logDebug, formType]);
 
-    // Add autofill detection CSS
-    useEffect(() => {
-        const styleEl = document.createElement("style");
-        styleEl.textContent = `
+        toast.success(successMessage);
+
+        // Delete idempotency key on successful completed submission
+        deleteAppDeviceId(formName);
+      } catch (error) {
+        console.error("Form submission error:", error);
+        toast.error("Something went wrong! Please try again");
+        toast.dismiss(toastId);
+      }
+    },
+    [formId, formName, reset, logDebug, successMessage, additionalFields]
+  );
+
+  // Add autofill detection CSS
+  useEffect(() => {
+    const styleEl = document.createElement("style");
+    styleEl.textContent = `
       @keyframes onAutoFillStart { from {} to {} }
       input:-webkit-autofill {
         animation-name: onAutoFillStart;
       }
     `;
-        document.head.appendChild(styleEl);
-        return () => {
-            if (styleEl.parentNode) {
-                document.head.removeChild(styleEl);
-            }
-        };
-    }, []);
-
-    return {
-        register,
-        registerWithTracking,
-        handleSubmit,
-        reset,
-        errors,
-        isSubmitSuccessful,
-        isDirty,
-        submitCompletedForm,
-        submitAbandonedForm,
+    document.head.appendChild(styleEl);
+    return () => {
+      if (styleEl.parentNode) {
+        document.head.removeChild(styleEl);
+      }
     };
+  }, []);
+
+  return {
+    register,
+    registerWithTracking,
+    handleSubmit,
+    reset,
+    errors,
+    isSubmitSuccessful,
+    isDirty,
+    submitCompletedForm,
+    submitAbandonedForm,
+  };
 };
