@@ -5,7 +5,7 @@ import { useFormSubmission } from "@/hooks/useFormSubmission";
 // Extend Window interface for analytics
 declare global {
   interface Window {
-    dataLayer?: Record<string, unknown>[];
+    dataLayer?: Object[];
     gtag?: (
       command: string,
       targetId: string,

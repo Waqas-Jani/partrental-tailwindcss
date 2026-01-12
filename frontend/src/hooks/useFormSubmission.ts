@@ -221,7 +221,7 @@ export const useFormSubmission = (config: FormSubmissionConfig) => {
 
   // Enhanced register function to track field values
   const registerWithTracking = useCallback(
-    (name: string, options: any) => {
+    (name: string, options?: any) => {
       return {
         ...register(name, options),
         onChange: (e: any) => {
