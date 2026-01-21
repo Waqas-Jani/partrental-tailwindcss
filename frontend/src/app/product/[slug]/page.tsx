@@ -41,6 +41,7 @@ async function ProductPage({ params }: { params: any }) {
   const { slug } = await params;
   const product = await getEquipmentBySlug(slug);
 
+
   if (!product) {
     return <div>Product not found</div>;
   }
