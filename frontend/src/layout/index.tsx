@@ -28,7 +28,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({
         (page: any) => page?.slug === pathname.split("/")[1]
     );
     useEffect(() => {
-        if (siteSettings?.simplePopup && !localStorage.getItem("simplePopup")) {
+        if (siteSettings?.simplePopup) {
             localStorage.setItem("simplePopup", JSON.stringify(siteSettings.simplePopup));
         }
     }, [])
