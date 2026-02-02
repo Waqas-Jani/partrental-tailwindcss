@@ -33,6 +33,7 @@ export default defineType({
                     { title: 'Internal', value: 'internal' },
                     { title: 'External', value: 'external' },
                     { title: 'Reservation', value: 'reservation' },
+                    { title: 'Simple Popup', value: 'simplePopup' },
                     { title: 'Section Id', value: 'id' },
                 ],
             },
@@ -53,7 +54,7 @@ export default defineType({
             title: 'Link',
             type: 'string',
             description: 'Depend on the frontend implementation',
-            hidden: ({ parent }) => parent?.linkType === 'normal' || parent?.linkType === 'reservation',
+            hidden: ({ parent }) => parent?.linkType === 'normal' || parent?.linkType === 'reservation' || parent?.linkType === 'simplePopup',
         }),
     ],
 })

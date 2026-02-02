@@ -102,6 +102,15 @@ export interface SlideoutPopup {
     button: SanityButton
 }
 
+export interface SimplePopup {
+    heading: string
+    description?: string
+    msgField?: string
+    buttonText: string
+    button2Text?: string
+    phoneNumber?: string
+}
+
 // Blog types
 export interface BlogSlug {
     current: string
@@ -129,6 +138,7 @@ export interface SiteSettings {
     footer: Footer
     exitIntentPopup: ExitIntentPopup
     slideoutPopup: SlideoutPopup
+    simplePopup?: SimplePopup
 }
 
 // API Response type

@@ -97,6 +97,14 @@ export const siteSettingsQuery = `
       successMessage,
       note
     },
+    simplePopup {
+      heading,
+      description,
+      msgField,
+      buttonText,
+      button2Text,
+      phoneNumber
+    },
     slideoutPopup {
       enable,
       heading,

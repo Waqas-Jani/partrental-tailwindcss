@@ -10,7 +10,6 @@ import VideoPopup from "@/components/common/VideoPopup";
 const Services = ({ data }: any) => {
     const [video, setVideo] = useState(false);
     const isIcon = data?.isIcon || false;
-    console.log("dddd", data);
 
 
     return (

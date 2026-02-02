@@ -15,7 +15,7 @@ export interface SanityLink {
 
 export interface SanityButton {
     title: string
-    linkType: 'internal' | 'external' | 'reservation' | 'id' | 'normal' | 'button' | string
+    linkType: 'internal' | 'external' | 'reservation' | 'id' | 'normal' | 'button' | 'simplePopup' | string
     link: string
     btnType: 'primary' | 'secondary' | string
     cls?: string;

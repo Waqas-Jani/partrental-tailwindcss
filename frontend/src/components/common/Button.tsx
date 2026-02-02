@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ReservationForm from "../product/ReservationForm";
+import SimplePopup from "../product/SimplePopup";
 import { SanityButton } from "@/types/common";
 import { CircleArrowRightIcon } from "./Icons";
 
@@ -21,6 +22,7 @@ const Button = ({
 }: SanityButton) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [isSimplePopupOpen, setIsSimplePopupOpen] = useState(false);
 
   useEffect(() => {
     // Check if user is on mobile device
@@ -135,6 +137,25 @@ const Button = ({
           productTitle={product?.title}
           product={product}
           locations={locations}
+        />
+      </div>
+    );
+  } else if (linkType === "simplePopup") {
+    return (
+      <div>
+        <button
+          type="button"
+          onClick={() => setIsSimplePopupOpen(true)}
+          className={`main-btn ${cls} ${
+            btnType === "primary" ? "primary-btn" : `secondary-btn ${borderCls}`
+          }`}
+        >
+          {title}
+          <CircleArrowRightIcon />
+        </button>
+        <SimplePopup
+          isOpen={isSimplePopupOpen}
+          onClose={() => setIsSimplePopupOpen(false)}
         />
       </div>
     );

@@ -109,6 +109,7 @@ import button2 from './objects/components/button2'
 import serviceSec from './objects/landingpage/serviceSec'
 import serviceItem from './objects/landingpage/serviceItem'
 import slideoutPopup from './objects/slideoutPopup'
+import simplePopup from './objects/simplePopup'
 
 // Documents
 const documents: SchemaTypeDefinition[] = [
@@ -223,6 +224,7 @@ const objects: SchemaTypeDefinition[] = [
     serviceSec,
     serviceItem,
     slideoutPopup,
+    simplePopup,
 ]
 
 
