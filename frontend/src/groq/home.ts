@@ -206,6 +206,7 @@ export const homePageQuery = `
       },
       _type == "serviceSecOne" => {
         enable,
+        isIcon,
         heading,
         subheading,
         videoURL,
