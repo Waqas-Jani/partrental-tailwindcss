@@ -40,4 +40,16 @@ export default defineType({
       type: 'text',
     }),
   ],
+  preview: {
+    select: {
+        title: 'title',
+        enable: 'enable',
+    },
+    prepare(selection) {
+        return {
+            title: selection.title,
+            subtitle: `Promotional Banner: ${selection.enable ? 'Enabled' : 'Disabled'}`,
+        }
+    },
+},
 })

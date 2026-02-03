@@ -112,11 +112,25 @@ export default defineType({
             description: 'Optional heading for the recent news section'
         }),
         defineField({
+            name: 'toggleMenu',
+            type: 'boolean',
+            initialValue: true,
+            title: 'Toggle Blog or Location',
+            description: 'Toggle Blog or Location Links (Default: Blog)'
+        }),
+        defineField({
+            name: 'locationMenu',
+            type: 'array',
+            of: [{ type: 'headerMenu' }],
+            title: 'Location Links',
+            hidden: ({ parent }) => !parent?.toggleMenu,
+        }),
+        defineField({
             title: 'Recent News',
             name: 'news',
             type: 'array',
-            // validation: (rule) => rule.required(),
             of: [{ type: 'reference', to: { type: 'blog' } }],
+            hidden: ({ parent }) => parent?.toggleMenu,
         }),
 
         defineField({

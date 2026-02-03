@@ -25,4 +25,16 @@ export default defineType({
             of: [{ type: 'reference', to: [{ type: 'partner' }] }],
         }),
     ],
+    preview: {
+        select: {
+            title: 'heading',
+            enable: 'enable',
+        },
+        prepare(selection) {
+            return {
+                title: selection.title || "Partner Section",
+                subtitle: `Partner Section: ${selection.enable ? 'Enabled' : 'Disabled'}`,
+            }
+        },
+    },
 })

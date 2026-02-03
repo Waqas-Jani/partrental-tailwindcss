@@ -78,6 +78,8 @@ export interface Footer {
         hours: string
     }
     recentNewsHeading?: string,
+    toggleMenu?: boolean,
+    locationMenu?: any,
     menuHeading?: string,
     newsletter: FooterNewsletter,
     social: SocialLink[]

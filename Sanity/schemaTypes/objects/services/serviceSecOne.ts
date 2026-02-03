@@ -59,4 +59,16 @@ export default defineType({
             of: [{ type: 'serviceItemOne' }],
         }),
     ],
+    preview: {
+        select: {
+            title: 'heading',
+            enable: 'enable',
+        },
+        prepare(selection) {
+            return {
+                title: selection.title,
+                subtitle: `Service Type One: ${selection.enable ? 'Enabled' : 'Disabled'}`,
+            }
+        },
+    },
 })

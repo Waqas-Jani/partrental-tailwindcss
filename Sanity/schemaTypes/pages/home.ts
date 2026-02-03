@@ -1,4 +1,3 @@
-import { findDuplicates } from '../../utils/common'
 import { defineType, defineField } from 'sanity'
 
 export default defineType({
@@ -42,24 +41,8 @@ export default defineType({
                 { type: 'blogSec' },
                 { type: 'partnerSec' },
             ],
-            validation: (rule) =>
-                rule.custom((currentValue) => {
-                    if (currentValue !== undefined && findDuplicates(currentValue)) {
-                        return 'Duplicate section found! Only single type acceptable'
-                    }
-                    return true
-                }),
         }),
-        // defineField({
-        //   name: 'feature',
-        //   type: 'array',
-        //   title: 'Feature',
-        //   of: [defineArrayMember({type: 'feature'})],
-        //   options: {
-        //     collapsible: true,
-        //     collapsed: true,
-        //   },
-        // }),
+
     ],
     preview: {
         prepare() {

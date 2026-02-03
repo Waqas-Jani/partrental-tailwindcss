@@ -167,7 +167,7 @@ const TestimonialsTwo = ({ data }: TestimonialsProps) => {
 
         {/* Carousel */}
         <div className="relative max-w-7xl mx-auto">
-          <div className="embla overflow-hidden rounded-2xl" ref={emblaRef}>
+          <div className="embla overflow-hidden rounded-2xl !py-8" ref={emblaRef}>
             <div className="flex gap-6">
               {data?.clients.map((item, index) => (
                 <div
@@ -175,7 +175,7 @@ const TestimonialsTwo = ({ data }: TestimonialsProps) => {
                   className="min-w-0 flex-[0_0_100%] sm:flex-[0_0_50%] lg:flex-[0_0_33.333%]"
                 >
                   <div className="group h-full">
-                    <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 p-8 h-full flex flex-col relative overflow-hidden border border-gray-100">
+                    <div className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 p-8 h-full flex flex-col relative overflow-hidden border border-gray-100">
                       <div className="absolute top-6 right-6 text-primary/10 text-6xl font-serif leading-none">
                         &ldquo;
                       </div>

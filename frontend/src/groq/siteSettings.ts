@@ -72,6 +72,19 @@ export const siteSettingsQuery = `
         hours
       },
       recentNewsHeading,
+      toggleMenu,
+      locationMenu[] {
+        parent {
+          label,
+          link,
+          type
+        },
+        childMenu[] {
+          type,
+          link,
+          label
+        }
+      },
       newsletter {
         enable,
         heading,

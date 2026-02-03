@@ -271,7 +271,7 @@ export const homePageQuery = `
           link,
           btnType
         },
-        bg {
+        bgImage {
           asset-> {
             url
           }
