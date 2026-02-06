@@ -19,10 +19,10 @@
     "@sanity/color-input": "^6.0.4",
     "@sanity/dashboard": "^5.0.1",
     "@sanity/table": "^2.0.1",
-    "@sanity/vision": "^5.7.0",
+    "@sanity/vision": "^5.8.1",
     "react": "^19.2.2",
     "react-dom": "^19.2.2",
-    "sanity": "^5.7.0",
+    "sanity": "^5.8.1",
     "sanity-plugin-dashboard-widget-netlify": "^2.0.4",
     "sanity-plugin-media": "^4.1.1",
     "styled-components": "^6.1.18"

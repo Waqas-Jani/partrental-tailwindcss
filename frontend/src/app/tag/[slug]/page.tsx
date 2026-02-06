@@ -17,11 +17,13 @@ export async function generateMetadata({ params }: PageProps) {
   const tag = await getTagBySlug(slug);
 
   return {
-    title: `${tag?.name || "Tag"} - Partner Rentals`,
-    description: `Browse our articles in the ${tag?.name || "selected"} tag`,
+    title: tag?.seo?.title || `${tag?.name || "Tag"} - Partner Rentals`,
+    description: tag?.seo?.description || `Browse our articles in the ${tag?.name || "selected"} tag`,
+    keywords: tag?.seo?.keywords || [],
     openGraph: {
-      title: `${tag?.name || "Tag"} - Partner Rentals`,
-      description: `Browse our articles in the ${tag?.name || "selected"} tag`,
+      title: tag?.seo?.title || `${tag?.name || "Tag"} - Partner Rentals`,
+      description: tag?.seo?.description || `Browse our articles in the ${tag?.name || "selected"} tag`,
+      keywords: tag?.seo?.keywords || [],
     },
     alternates: {
       canonical: `https://partnerrentals.com/tag/${slug}`,

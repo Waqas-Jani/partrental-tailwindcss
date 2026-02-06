@@ -1,33 +1,42 @@
-import {defineType, defineField} from 'sanity'
-import {TiersIcon} from '@sanity/icons'
+import { defineType, defineField } from 'sanity'
+import { TiersIcon } from '@sanity/icons'
 
 export default defineType({
-  name: 'tag',
-  type: 'document',
-  title: 'Tag',
-  icon: TiersIcon,
-  fields: [
-    defineField({
-      name: 'name',
-      type: 'string',
-      title: 'Name',
-      validation: (Rule) => Rule.required(),
-    }),
-    defineField({
-      name: 'slug',
-      type: 'slug',
-      title: 'Slug',
-      description: 'URL-friendly version of the name',
-      options: {
-        source: 'name',
-      },
-      validation: (Rule) => Rule.required(),
-    }),
-  ],
-  preview: {
-    select: {
-      title: 'name',
-      subtitle: 'slug.current',
+    name: 'tag',
+    type: 'document',
+    title: 'Tag',
+    icon: TiersIcon,
+    fields: [
+        defineField({
+            name: 'seo',
+            type: 'seo',
+            title: 'Seo',
+            options: {
+                collapsible: true,
+                collapsed: true,
+            },
+        }),
+        defineField({
+            name: 'name',
+            type: 'string',
+            title: 'Name',
+            validation: (Rule) => Rule.required(),
+        }),
+        defineField({
+            name: 'slug',
+            type: 'slug',
+            title: 'Slug',
+            description: 'URL-friendly version of the name',
+            options: {
+                source: 'name',
+            },
+            validation: (Rule) => Rule.required(),
+        }),
+    ],
+    preview: {
+        select: {
+            title: 'name',
+            subtitle: 'slug.current',
+        },
     },
-  },
 })

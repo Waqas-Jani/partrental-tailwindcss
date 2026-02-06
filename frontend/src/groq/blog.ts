@@ -98,6 +98,12 @@ export const recentBlogsQuery = `{
 
 // category by slug
 export const categoryBySlugQuery = `*[_type == "category" && slug.current == $slug][0]{
+seo {
+      title,
+      ldSchema,
+      keywords,
+      description
+    },
   name,
   slug {
     current
@@ -106,6 +112,12 @@ export const categoryBySlugQuery = `*[_type == "category" && slug.current == $sl
 
 // tag by slug
 export const tagBySlugQuery = `*[_type == "tag" && slug.current == $slug][0]{
+seo {
+      title,
+      ldSchema,
+      keywords,
+      description
+    },
   name,
   slug {
     current
