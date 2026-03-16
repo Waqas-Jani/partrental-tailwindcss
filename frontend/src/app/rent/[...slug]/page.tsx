@@ -3,6 +3,7 @@ import React from "react";
 import { _renderSection } from "@/components/RenderSection";
 import PageBanner from "@/components/common/PageBanner";
 import { getRentCategory, getRentSubCategory, getAllLocation } from "@/lib";
+import JsonLd from "@/components/JsonLd";
 import ProductHeader from "@/components/product/ProductHeader";
 
 export async function generateMetadata({ params }: any) {
@@ -73,6 +74,7 @@ const RentPage = async ({ params }: any) => {
 
     return (
       <div>
+        <JsonLd ldSchema={data?.sanityRentSubCategory?.seo?.ldSchema || []} prefix="ld-schema-rent-subcategory" />
         {data?.sanityRentSubCategory && (
           <ProductHeader
             data={data?.sanityRentSubCategory}
@@ -94,6 +96,7 @@ const RentPage = async ({ params }: any) => {
     const data = await getRentCategory(rentParams.slug[0]);
     return (
       <div>
+        <JsonLd ldSchema={data?.sanityRentCategory?.seo?.ldSchema || []} prefix="ld-schema-rent-category" />
         <PageBanner
           pageName={data?.sanityRentCategory?.hero?.heading}
           data={data?.sanityRentCategory?.hero}

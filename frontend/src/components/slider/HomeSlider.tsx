@@ -79,9 +79,15 @@ const HeroSlider = ({ data }: HomeHeroProps) => {
                   <h2 className="text-2xl underline ring-offset-4 ring-white tracking-wide text-white mb-2 font-extrabold">
                     {slide.subheading}
                   </h2>
-                  <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
-                    {slide.heading}
-                  </h1>
+                  {index === 0 ? (
+                    <h1 className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                      {slide.heading}
+                    </h1>
+                  ) : (
+                    <p className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">
+                      {slide.heading}
+                    </p>
+                  )}
                   {slide.description && (
                     <p className="text-lg md:text-xl mb-8 leading-relaxed opacity-90 max-w-2xl">
                       {slide.description}

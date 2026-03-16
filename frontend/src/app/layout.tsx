@@ -8,35 +8,37 @@ import LayoutWrapper from "@/layout";
 import { getSiteSettings } from "@/lib/getSiteSettings";
 import { getAllLandingPages } from "@/lib/getLandingPage";
 import PowerGenSlideout from "@/components/common/PowerGenSlideout";
+import JsonLd from "@/components/JsonLd";
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+    variable: "--font-geist-sans",
+    subsets: ["latin"],
 });
 
 const manrope = Manrope({
-  variable: "--font-manrope",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
+    variable: "--font-manrope",
+    subsets: ["latin"],
+    weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
-  title: "PartnerRentals - TailwindCSS",
-  description:
-    "Your trusted partner for construction equipment rentals. Serving NY Hudson Valley & Northeast PA with quality equipment and reliable service.",
+    title: "PartnerRentals - TailwindCSS",
+    description:
+        "Your trusted partner for construction equipment rentals. Serving NY Hudson Valley & Northeast PA with quality equipment and reliable service.",
 };
 
 export default async function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  const data = await getSiteSettings();
-  const landingPages = await getAllLandingPages();
+    const data = await getSiteSettings();
+    const landingPages = await getAllLandingPages();
 
-  return (
-    <html lang="en">
-      {/*
+    return (
+        <html lang="en">
+            <JsonLd ldSchema={data?.siteSettings?.ldSchema || []} prefix="ld-schema-site" />
+            {/*
       <Script
         strategy="afterInteractive"
         id="signals-script"
@@ -61,21 +63,21 @@ export default async function RootLayout({
       })();`,
         }}
       ></Script> */}
-      <body className={`${geistSans.variable} ${manrope.variable} antialiased`}>
-        <LayoutWrapper
-          siteSettings={data?.siteSettings || null}
-          recentBlogs={data?.latestBlogs || []}
-          landingPages={landingPages || []}
-        >
-          {children}
-        </LayoutWrapper>
-        {data?.siteSettings?.slideoutPopup?.enable &&
-          data?.siteSettings?.slideoutPopup && (
-            <PowerGenSlideout data={data?.siteSettings?.slideoutPopup} />
-          )}
-        <Toaster />
-      </body>
-      <GoogleTagManager gtmId="GTM-P4GRHMCD" />
-    </html>
-  );
+            <body className={`${geistSans.variable} ${manrope.variable} antialiased`}>
+                <LayoutWrapper
+                    siteSettings={data?.siteSettings || null}
+                    recentBlogs={data?.latestBlogs || []}
+                    landingPages={landingPages || []}
+                >
+                    {children}
+                </LayoutWrapper>
+                {data?.siteSettings?.slideoutPopup?.enable &&
+                    data?.siteSettings?.slideoutPopup && (
+                        <PowerGenSlideout data={data?.siteSettings?.slideoutPopup} />
+                    )}
+                <Toaster />
+            </body>
+            <GoogleTagManager gtmId="GTM-P4GRHMCD" />
+        </html>
+    );
 }

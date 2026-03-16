@@ -3,6 +3,7 @@ import React from "react";
 import { _renderSection } from "@/components/RenderSection";
 import PageBanner from "@/components/common/PageBanner";
 import { getServicePage } from "@/lib";
+import JsonLd from "@/components/JsonLd";
 
 export async function generateMetadata() {
   const data = await getServicePage();
@@ -34,6 +35,7 @@ const ServicesPage = async () => {
 
   return (
     <div>
+      <JsonLd ldSchema={data?.sanityServicesPage?.seo?.ldSchema || []} prefix="ld-schema-services" />
       {data?.sanityServicesPage?.hero && (
         <PageBanner
           pageName={data?.sanityServicesPage?.hero?.heading}

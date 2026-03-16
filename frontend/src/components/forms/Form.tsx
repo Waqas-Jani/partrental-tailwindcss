@@ -22,8 +22,8 @@ export default function Form({ data }: any) {
   return (
     <section className="shadow-lg rounded-lg p-10">
       <div>
-        <div className="mb-10">
-          <span className="sub-title ml-12">{data?.subheading}</span>
+        <div className="mb-10 text-center lg:text-left">
+          <span className="sub-title lg:ml-12">{data?.subheading}</span>
           <h2 className="h1-type mt-5">{data?.heading}</h2>
         </div>
         <div>

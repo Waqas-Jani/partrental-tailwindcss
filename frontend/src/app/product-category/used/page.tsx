@@ -5,6 +5,7 @@ import ProductCategories from "@/components/product/ProductCategories";
 import ProductGrid from "@/components/product/ProductGrid";
 import { getEquipments, getEquipmentCategory } from "@/lib/equipments";
 import { getUsedProductsPageData } from "@/lib/product";
+import JsonLd from "@/components/JsonLd";
 import { SearchParams } from "@/types/common";
 
 export async function generateMetadata() {
@@ -64,6 +65,7 @@ export default async function UsedProductsPage({
 
   return (
     <>
+      <JsonLd ldSchema={sanityUsedProductsPage?.seo?.ldSchema || []} prefix="ld-schema-product-used" />
       {sanityUsedProductsPage?.hero && (
         <PageBanner
           pageName={sanityUsedProductsPage?.hero?.heading}

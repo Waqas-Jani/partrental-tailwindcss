@@ -7,6 +7,7 @@ import RecentCard from "@/components/blog/RecentCard";
 import CategoryCard from "@/components/blog/CategoryCard";
 import TagCard from "@/components/blog/TagCard";
 import { getTagBySlug, getTagByBlogPage } from "@/lib";
+import JsonLd from "@/components/JsonLd";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
@@ -41,6 +42,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
   return (
     <>
+      <JsonLd ldSchema={tag?.seo?.ldSchema || []} prefix="ld-schema-tag" />
       {hero && <PageBanner pageName={"Tag"} data={hero} heading={tag?.name} />}
       <section className="py-10 md:py-16">
         <div className="container mx-auto px-5">

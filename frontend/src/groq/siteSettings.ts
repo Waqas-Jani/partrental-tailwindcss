@@ -13,6 +13,7 @@ export const siteSettingsQuery = `
         url
       }
     },
+    ldSchema,
     header {
       logo {
         alt,

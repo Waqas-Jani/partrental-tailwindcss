@@ -2,6 +2,7 @@
 import { _renderSection } from "@/components/RenderSection";
 import PageBanner from "@/components/common/PageBanner";
 import { getRentPage } from "@/lib";
+import JsonLd from "@/components/JsonLd";
 import React from "react";
 
 export async function generateMetadata() {
@@ -35,6 +36,7 @@ const RentPage = async () => {
 
   return (
     <div>
+      <JsonLd ldSchema={data?.seo?.ldSchema || []} prefix="ld-schema-rent" />
       {data?.hero && (
         <PageBanner pageName={data?.hero?.heading} data={data?.hero} />
       )}

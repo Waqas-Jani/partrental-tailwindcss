@@ -136,6 +136,7 @@ export interface BlogPost {
 // Main Site Settings type
 export interface SiteSettings {
     topBanner: TopBanner
+    ldSchema?: any[]
     header: Header
     footer: Footer
     exitIntentPopup: ExitIntentPopup

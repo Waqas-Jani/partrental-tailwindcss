@@ -1,5 +1,6 @@
 import React from "react";
 import BlogContent from "@/components/blog";
+import JsonLd from "@/components/JsonLd";
 import {
   getBlogBySlug,
   getBlogFullBySlug,
@@ -58,7 +59,10 @@ const BlogDetail = async ({ params }: PageProps) => {
   }
 
   return (
-    <BlogContent data={{ blog, categories, tags, recentBlogs, contact }} />
+    <>
+      <JsonLd ldSchema={blog?.seo?.ldSchema || []} prefix="ld-schema-blog-post" />
+      <BlogContent data={{ blog, categories, tags, recentBlogs, contact }} />
+    </>
   );
 };
 

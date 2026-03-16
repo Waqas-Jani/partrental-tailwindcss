@@ -3,6 +3,7 @@ import React from "react";
 import PageBanner from "@/components/common/PageBanner";
 import { getNewProductsPageData } from "@/lib/product";
 import { getEquipments, getEquipmentCategory } from "@/lib/equipments";
+import JsonLd from "@/components/JsonLd";
 import ProductCategories from "@/components/product/ProductCategories";
 import ProductGrid from "@/components/product/ProductGrid";
 import { SearchParams } from "@/types/common";
@@ -64,6 +65,7 @@ export default async function NewProductsPage({
 
   return (
     <>
+      <JsonLd ldSchema={sanityNewProductsPage?.seo?.ldSchema || []} prefix="ld-schema-product-new" />
       {sanityNewProductsPage?.hero && (
         <PageBanner
           pageName={sanityNewProductsPage?.hero?.heading}

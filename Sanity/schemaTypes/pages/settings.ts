@@ -42,6 +42,17 @@ export default defineType({
             },
         }),
         defineField({
+            name: 'ldSchema',
+            title: 'LD Schema',
+            type: 'array',
+            description: 'Add LD Schema for the site',
+            of: [
+                {
+                    type: 'text',
+                },
+            ],
+        }),
+        defineField({
             name: 'statistic',
             type: 'statistic',
             title: 'Statistics',

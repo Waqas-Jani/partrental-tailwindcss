@@ -5,6 +5,7 @@ import PageBanner from "@/components/common/PageBanner";
 import { convertToDailNumber } from "@/utils";
 import Form from "@/components/forms/Form";
 import { getContactPage } from "@/lib";
+import JsonLd from "@/components/JsonLd";
 
 export async function generateMetadata() {
   const { sanityContactPage } = await getContactPage();
@@ -33,6 +34,7 @@ const Contact = async () => {
 
   return (
     <>
+      <JsonLd ldSchema={sanityContactPage?.seo?.ldSchema || []} prefix="ld-schema-contact" />
       {/* Page Banner */}
       {hero && <PageBanner pageName={hero?.heading} data={hero as any} />}
 
@@ -40,10 +42,10 @@ const Contact = async () => {
       {contactSec && contactSec.enable && (
         <section className="py-[90px]">
           <div className="container mx-auto px-5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
               <div className="col-lg-6">
-                <div className="mb-8">
-                  <span className="sub-title ml-12">
+                <div className="mb-8 text-center lg:text-left">
+                  <span className="sub-title lg:ml-12">
                     {contactSec.subheading}
                   </span>
                   <h2 className="h1-type mt-5">{contactSec.heading}</h2>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import PageBanner from "@/components/common/PageBanner";
 import Button from "@/components/common/Button";
 import { getDownloadsPage } from "@/lib";
+import JsonLd from "@/components/JsonLd";
 import SanityImage from "@/components/common/SanityImage";
 
 export async function generateMetadata() {
@@ -62,6 +63,7 @@ const DownloadsPage = async () => {
 
   return (
     <>
+      <JsonLd ldSchema={data?.seo?.ldSchema || []} prefix="ld-schema-downloads" />
       {data?.hero && (
         <PageBanner pageName={data?.hero?.heading} data={data?.hero as any} />
       )}

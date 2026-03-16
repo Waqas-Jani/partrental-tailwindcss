@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import { parseImageUrl } from "@/lib/sanity";
 import { getAccountAccessPage } from "@/lib";
+import JsonLd from "@/components/JsonLd";
 import PageBanner from "@/components/common/PageBanner";
 
 import { PortableText } from "@portabletext/react";
@@ -37,6 +38,7 @@ export default async function AccountAccess() {
 
   return (
     <>
+      <JsonLd ldSchema={sanityAccountAccess?.seo?.ldSchema || []} prefix="ld-schema-account-access" />
       {hero && <PageBanner pageName={hero?.heading} data={hero as any} />}
       <section className="container py-10 mx-auto px-5">
         <div className="prose max-w-none">

@@ -4,6 +4,7 @@ import PageBanner from "@/components/common/PageBanner";
 import AboutTwo from "@/sections/AboutTwo";
 import TeamSection from "@/sections/TeamSection";
 import { getAboutPage } from "@/lib";
+import JsonLd from "@/components/JsonLd";
 import Partners from "@/sections/Partners";
 import Testimonials from "@/sections/TestimonialsTwo";
 import Statistics from "@/sections/Statistics";
@@ -49,6 +50,7 @@ export default async function About() {
 
   return (
     <>
+      <JsonLd ldSchema={sanityAboutPage?.seo?.ldSchema || []} prefix="ld-schema-about" />
       {hero && <PageBanner pageName={hero?.heading} data={hero as any} />}
       {sanityAboutPage?.pageBuilder?.map((element: any, idx: number) =>
         _renderSection(element, idx)

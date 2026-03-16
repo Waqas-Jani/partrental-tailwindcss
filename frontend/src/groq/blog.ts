@@ -15,6 +15,12 @@ export const blogShortQueryBySlug = `*[_type == "blog" && slug.current == $slug]
 // Full Blog info by slug
 export const blogFullQueryBySlug = `*[_type == "blog" && slug.current == $slug][0]{
     title,
+    seo {
+      title,
+      ldSchema,
+      keywords,
+      description
+    },
     slug {
       current
     },
@@ -154,6 +160,12 @@ export const categoryPageQuery = `{
       name,
       slug {
         current
+      },
+      seo {
+        title,
+        ldSchema,
+        keywords,
+        description
       }
     },
     "allSanityBlog": {
@@ -238,6 +250,12 @@ export const tagPageQuery = `{
       name,
       slug {
         current
+      },
+      seo {
+        title,
+        ldSchema,
+        keywords,
+        description
       }
     },
     "allSanityBlog": {

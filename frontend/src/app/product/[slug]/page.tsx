@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { getEquipmentBySlug } from "@/lib/equipments";
+import JsonLd from "@/components/JsonLd";
 import ProductGallery from "@/components/product/ProductGallery";
 import ProductSpecifications from "@/components/product/ProductSpecifications";
 import ProductInfo from "@/components/product/ProductInfo";
@@ -48,6 +49,7 @@ async function ProductPage({ params }: { params: any }) {
 
   return (
     <div className="container mx-auto px-5">
+      <JsonLd ldSchema={product?.seo?.ldSchema || []} prefix="ld-schema-product" />
       <div className="py-10 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 border-b border-gray-200 pb-10">
           {/* Product Gallery Section */}

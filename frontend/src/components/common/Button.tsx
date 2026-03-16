@@ -7,6 +7,7 @@ import ReservationForm from "../product/ReservationForm";
 import SimplePopup from "../product/SimplePopup";
 import { SanityButton } from "@/types/common";
 import { CircleArrowRightIcon } from "./Icons";
+import {slug} from "@/utils";
 
 const Button = ({
   title,
@@ -66,7 +67,7 @@ const Button = ({
   } else if (linkType === "internal") {
     return (
       <Link
-        href={link ?? ""}
+        href={slug(link ?? "")}
         className={`main-btn ${cls} ${
           btnType === "primary" ? "primary-btn" : `secondary-btn ${borderCls}`
         }`}

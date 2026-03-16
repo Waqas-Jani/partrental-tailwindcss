@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import HomeSlider from "@/components/slider/HomeSlider";
 import { getHomePage } from "@/lib";
+import JsonLd from "@/components/JsonLd";
 
 const HomeAbout = dynamic(() => import("@/sections/About"));
 const Services = dynamic(() => import("@/sections/Services"));
@@ -73,6 +74,7 @@ export default async function Home() {
 
     return (
         <>
+            <JsonLd ldSchema={homePage?.seo?.ldSchema || []} prefix="ld-schema-home" />
             <HomeSlider data={hero} />
             {pageBuilder?.map((element: any, idx: number) =>
                 _renderSection(element, idx)

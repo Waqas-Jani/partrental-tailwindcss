@@ -3,7 +3,8 @@ export const landingPageBySlugQuery = `
   seo {
     title,
     description,
-    keywords
+    keywords,
+    ldSchema
   },
   phoneBanner {
     phoneNumber,

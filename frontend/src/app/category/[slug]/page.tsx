@@ -5,6 +5,7 @@ import Contact from "@/components/blog/ContactCard";
 import PostCard from "@/components/blog/PostCard";
 import RecentCard from "@/components/blog/RecentCard";
 import { getCategoryBySlug, getCategoryByBlogPage } from "@/lib";
+import JsonLd from "@/components/JsonLd";
 import CategoryCard from "@/components/blog/CategoryCard";
 import TagCard from "@/components/blog/TagCard";
 
@@ -49,6 +50,7 @@ export default async function CategoryPage({ params }: PageProps) {
 
     return (
         <>
+            <JsonLd ldSchema={category?.seo?.ldSchema || []} prefix="ld-schema-category" />
             {hero && <PageBanner pageName={"Category"} data={hero as any} heading={category?.name} />}
             <section className="py-10 md:py-16">
                 <div className="container mx-auto px-5">

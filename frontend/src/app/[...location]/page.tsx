@@ -7,6 +7,7 @@ import PageBanner from "@/components/common/PageBanner";
 import { getLocationBySlug, getAllLocation } from "@/lib";
 import { getAllLandingPages, getLandingPageBySlug } from "@/lib/getLandingPage";
 import LandingPage from "@/components/landingpage";
+import JsonLd from "@/components/JsonLd";
 import { CircleArrowRightIcon } from "@/components/common/Icons";
 
 interface MetadataProps {
@@ -138,8 +139,13 @@ const ServicesPage = async ({ params }: ServicesPageProps) => {
       if (!data) {
         notFound();
       }
-      
-      return <LandingPage data={data} />;
+
+      return (
+        <>
+          <JsonLd ldSchema={data?.seo?.ldSchema || []} prefix="ld-schema-landing" />
+          <LandingPage data={data} />
+        </>
+      );
     }
 
     // Check for location page
@@ -160,6 +166,7 @@ const ServicesPage = async ({ params }: ServicesPageProps) => {
 
       return (
         <div>
+          <JsonLd ldSchema={data?.sanityLocation?.seo?.ldSchema || []} prefix="ld-schema-location" />
           <PageBanner
             pageName={data.sanityLocation.hero?.heading}
             data={data.sanityLocation.hero}

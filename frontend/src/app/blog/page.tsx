@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { getBlogPageData } from "@/lib/getBlogPageData";
+import JsonLd from "@/components/JsonLd";
 import PageBanner from "@/components/common/PageBanner";
 import Contact from "@/components/blog/ContactCard";
 import RecentCard from "@/components/blog/RecentCard";
@@ -52,6 +53,7 @@ export default async function Blog({ searchParams }: PageProps) {
 
   return (
     <>
+      <JsonLd ldSchema={sanityBlogPage?.seo?.ldSchema || []} prefix="ld-schema-blog" />
       {hero && <PageBanner pageName={hero?.heading} data={hero as any} />}
       <section className="py-10 md:py-16">
         <div className="lg:container mx-auto px-5">

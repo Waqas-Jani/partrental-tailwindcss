@@ -1,5 +1,6 @@
 import React from "react";
 import { getFaqPage } from "@/lib";
+import JsonLd from "@/components/JsonLd";
 import PageBanner from "@/components/common/PageBanner";
 import FaqList from "@/sections/FaqList";
 import Button from "@/components/common/Button";
@@ -27,6 +28,7 @@ export default async function Faqs() {
 
   return (
     <>
+      <JsonLd ldSchema={sanityFaqPage?.seo?.ldSchema || []} prefix="ld-schema-faq" />
       {hero && <PageBanner pageName={hero?.heading} data={hero} />}
 
       {sanityFaqPage?.faqSec && sanityFaqPage.faqSec.enable && (
